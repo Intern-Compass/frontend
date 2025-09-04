@@ -4,7 +4,7 @@ export const Todos = () => {
   return (
     <section className="mb-6">
       <header className="mb-4.5 flex justify-between items-center gap-4">
-        <h2 className="text-lg leading-7">Daily To-do's</h2>
+        <h2 className="text-lg leading-7">{"Daily To-do's"}</h2>
 
         <Button variant="link" className="font-medium text-link">Create</Button>
       </header>
