@@ -44,16 +44,12 @@ import { DataTableToolbar } from "./data-table-toolbar";
 
 import { Ban, Calendar, CircleCheckBig, CircleDot, Clock1 } from "lucide-react";
 
-import type { Project, Status } from "./columns";
+import type { Status } from "./columns";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
-
-type ProjectCount = {
-  [K in Status]: number;
-};
 
 type DateFilterValue = "today" | "week" | "month" | "year";
 
@@ -61,22 +57,12 @@ type DateRangeType = {
   [K in DateFilterValue]: [Date, Date];
 };
 
-export function DataTable<TData extends { status: Status }, TValue>({
+export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
-  const projectCount: ProjectCount = {
-    inProgress: 0,
-    overdue: 0,
-    completed: 0,
-  };
-
-  for (const { status } of data) {
-    projectCount[status as Status] += 1;
-  }
 
   const table = useReactTable({
     data,
@@ -115,6 +101,24 @@ export function DataTable<TData extends { status: Status }, TValue>({
     year: [startOfYear(today), endOfYear(today)],
   };
 
+  const rows = table.getCoreRowModel().rows;
+
+  let inProgressProjectsCount = 0;
+  let completedProjectsCount = 0;
+  let overdueProjectsCount = 0;
+
+  rows.forEach((row) => {
+    const status = row.getValue("status");
+
+    if (status === "inProgress") {
+      inProgressProjectsCount += 1;
+    } else if (status === "completed") {
+      completedProjectsCount += 1;
+    } else if (status === "overdue") {
+      overdueProjectsCount += 1;
+    }
+  });
+
   return (
     <>
       <header>
@@ -150,7 +154,7 @@ export function DataTable<TData extends { status: Status }, TValue>({
                 <span className="font-medium leading-6">Completed</span>
               </div>
               <span className="font-medium text-4xl leading-10">
-                {projectCount["completed"]}
+                {completedProjectsCount}
               </span>
             </div>
             <div className="bg-white p-6 rounded-xl space-y-6 border border-muted-foreground-50">
@@ -159,7 +163,7 @@ export function DataTable<TData extends { status: Status }, TValue>({
                 <span className="font-medium leading-6">In Progress</span>
               </div>
               <span className="font-medium text-4xl leading-10">
-                {projectCount["inProgress"]}
+                {inProgressProjectsCount}
               </span>
             </div>
             <div className="bg-white p-6 rounded-xl space-y-6 border border-muted-foreground-50">
@@ -168,7 +172,7 @@ export function DataTable<TData extends { status: Status }, TValue>({
                 <span className="font-medium leading-6">Overdue</span>
               </div>
               <span className="font-medium text-4xl leading-10">
-                {projectCount["overdue"]}
+                {overdueProjectsCount}
               </span>
             </div>
           </div>

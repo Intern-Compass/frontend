@@ -1,9 +1,6 @@
-import Image from "next/image";
-
 import {
   columns,
   type Project,
-  type Status,
 } from "@/components/features/milestones/columns";
 import projects from "@/components/features/milestones/data.json";
 import { DataTable } from "@/components/features/milestones/data-table";
@@ -17,17 +14,6 @@ import { DataTable } from "@/components/features/milestones/data-table";
 export default async function MilestonesPage() {
   const data: Project[] = projects;
 
-  const projectCount = {
-    inProgress: 0,
-    overdue: 0,
-    completed: 0,
-  };
-
-  for (const { status } of data) {
-    if (status in projectCount) {
-      projectCount[status as Status] += 1;
-    }
-  }
 
   return (
     <div className="my-8 mx-auto w-95/100">
