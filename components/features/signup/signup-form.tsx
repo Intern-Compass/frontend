@@ -1,15 +1,23 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import { useState } from "react";
 
+import {
+  QueryClient,
+  QueryClientProvider,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-// import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+
 import {
   Form,
   FormControl,
@@ -22,12 +30,52 @@ import { Input } from "@/components/ui/input";
 
 import { SignupFormSchema } from "@/lib/zod";
 
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, CircleAlert } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import axios from "@/lib/axios";
 
 export const SignupForm = () => {
-  const router = useRouter();
+  const mutation = useMutation({
+    mutationFn: async (newUser: {
+      firstName: string;
+      surname: string;
+      email: string;
+      password: string;
+    }) => {
+      const response = await axios.post("/user", newUser);
+
+      console.log(response.data);
+      return response.data;
+    },
+    //   onSuccess: () => {
+    //     // redirect("/login");
+    //   },
+    //   onError: (error) => {
+    //     console.log(error)
+
+    //     // toast(
+    //     //   <div className="flex items-start gap-3 font-sans">
+    //     //     <CircleAlert className="text-error-base" />
+
+    //     //     <div className="flex flex-col gap-2.5 text-sm leading-5">
+    //     //       <span className="text-foreground font-medium">
+    //     //         Invalid Email or Password.
+    //     //       </span>
+    //     //       <span className="text-foreground/75 font-normal">
+    //     //         Please check your credentials and try again.
+    //     //       </span>
+    //     //     </div>
+    //     //   </div>,
+    //     //   {
+    //     //     classNames: {
+    //     //       toast: "!bg-error-light",
+    //     //     },
+    //     //     position: "top-center",
+    //     //   }
+    //     // );
+    //   }
+  });
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -46,8 +94,34 @@ export const SignupForm = () => {
   };
 
   function onSubmit(data: z.infer<typeof SignupFormSchema>) {
-    router.push("/login");
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        console.log("Success: ", data);
+      },
+    });
 
+    // toast(
+    //       <div className="flex items-start gap-3 font-sans">
+    //         <CircleAlert className="text-error-base" />
+
+    //         <div className="flex flex-col gap-2.5 text-sm leading-5">
+    //           <span className="text-foreground font-medium">
+    //             Invalid Email or Password.
+    //           </span>
+    //           <span className="text-foreground/75 font-normal">
+    //             Please check your credentials and try again.
+    //           </span>
+    //         </div>
+    //       </div>,
+    //       {
+    //         classNames: {
+    //           toast: "!bg-error-light",
+    //         },
+    //         position: "top-center",
+    //       }
+    //     )
+
+    // router.push("/login");
     // toast("You submitted the following values", {
     //   description: (
     //     <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
@@ -60,6 +134,7 @@ export const SignupForm = () => {
   return (
     <Form {...form}>
       <form
+        method="POST"
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full my-[5.6875rem]"
       >
@@ -158,9 +233,9 @@ export const SignupForm = () => {
                       className="absolute right-2 top-1/2 -translate-y-1/2 disabled:cursor-not-allowed"
                     >
                       {showPassword ? (
-                        <EyeOffIcon aria-hidden="true" className="w-4 h-4" />
+                        <EyeOffIcon aria-hidden="true" className="size-4" />
                       ) : (
-                        <EyeIcon aria-hidden="true" className="w-4 h-4" />
+                        <EyeIcon aria-hidden="true" className="size-4" />
                       )}
                       <span className="sr-only">
                         {showPassword ? "Hide" : "Show"} password
@@ -176,6 +251,7 @@ export const SignupForm = () => {
 
         <Button
           type="submit"
+          disabled={mutation.isPending}
           className={cn(
             "w-full py-2 px-8 mb-4 rounded-[9999px] font-medium leading-5 text-muted-foreground hover:bg-transparent",
             form.formState.isValid

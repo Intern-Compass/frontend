@@ -6,18 +6,35 @@ import {
 
 export const statuses = [
   {
-    value: "upcoming",
-    label: "Upcoming",
-    icon: HelpCircle,
+    value: "inProgress",
+    label: "In Progress",
   },
   {
     value: "overdue",
     label: "Overdue",
-    icon: Circle,
   },
   {
     value: "completed",
     label: "Completed",
-    icon: Timer,
   }
 ];
+
+export const dates = [
+  {
+    value: "today",
+    label: "Today",
+  },
+  {
+    value: "week",
+    label: "This week",
+  },
+  {
+    value: "month",
+    label: "This month",
+  },
+  {
+    value: "year",
+    label: "This year",
+  }
+  
+]

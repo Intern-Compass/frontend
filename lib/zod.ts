@@ -4,31 +4,31 @@ export const LoginFormSchema = z
   .object({
     email: z
       .email({
-        message: "Please provide a valid email address.",
+        error: "Please provide a valid email address.",
       })
       .max(30, {
-        message: "Email cannot exceed 30 characters.",
+        error: "Email cannot exceed 30 characters.",
       })
       .toLowerCase(),
     password: z
       .string()
       .min(8, {
-        message: "Password must contain at least 8 characters.",
+        error: "Password must contain at least 8 characters.",
       })
       .max(64, {
-        message: "Password cannot exceed 64 characters.",
+        error: "Password cannot exceed 64 characters.",
       })
       .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter.",
+        error: "Password must contain at least one lowercase letter.",
       })
       .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter.",
+        error: "Password must contain at least one uppercase letter.",
       })
       .regex(/\d/, {
-        message: "Password must contain at least one digit.",
+        error: "Password must contain at least one digit.",
       })
       .regex(/[^A-Za-z0-9]/, {
-        message: "Password must contain at least one special character.",
+        error: "Password must contain at least one special character.",
       }),
     rememberMe: z.boolean(),
   })
@@ -40,55 +40,55 @@ export const SignupFormSchema = z
       .string()
       .trim()
       .min(1, {
-        message: "First name must start with a letter.",
+        error: "First name must start with a letter.",
       })
       .max(30, {
-        message: "First name cannot exceed 30 characters.",
+        error: "First name cannot exceed 30 characters.",
       })
       .regex(/^[A-Za-z][A-Za-z'-]{1,29}$/, {
-        message:
+        error:
           "First name should start with a letter, and can contain letters, dashes and apostrophes.",
       }),
     surname: z
       .string()
       .trim()
       .min(1, {
-        message: "Surname must start with a letter.",
+        error: "Surname must start with a letter.",
       })
       .max(30, {
-        message: "Surname cannot exceed 30 characters.",
+        error: "Surname cannot exceed 30 characters.",
       })
       .regex(/^[A-Za-z][A-Za-z'’-]{1,29}$/, {
-        message:
+        error:
           "Surname should start with a letter, and can contain letters, dashes and apostrophes.",
       }),
     email: z
       .email({
-        message: "Please provide a valid email address.",
+        error: "Please provide a valid email address.",
       })
       .max(30, {
-        message: "Email cannot exceed 30 characters.",
+        error: "Email cannot exceed 30 characters.",
       })
       .toLowerCase(),
     password: z
       .string()
       .min(8, {
-        message: "Password must contain at least 8 characters.",
+        error: "Password must contain at least 8 characters.",
       })
       .max(64, {
-        message: "Password cannot exceed 64 characters.",
+        error: "Password cannot exceed 64 characters.",
       })
       .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter.",
+        error: "Password must contain at least one lowercase letter.",
       })
       .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter.",
+        error: "Password must contain at least one uppercase letter.",
       })
       .regex(/\d/, {
-        message: "Password must contain at least one number.",
+        error: "Password must contain at least one number.",
       })
       .regex(/[^A-Za-z0-9]/, {
-        message: "Password must contain at least one special character.",
+        error: "Password must contain at least one special character.",
       }),
   })
   .required();
@@ -96,16 +96,36 @@ export const SignupFormSchema = z
 export const ProfileFormSchema = z
   .object({
     skills: z.array(z.string()).min(1, {
-      message: "Select at least one skill.",
+      error: "Select at least one skill.",
     }),
     experience: z.string().min(2, {
-      message: "Input at least one experience.",
+      error: "Input at least one experience.",
     }),
     interests: z.string().min(2, {
-      message: "Input at least one interest.",
+      error: "Input at least one interest.",
     }),
     expectations: z.string().min(10, {
-      message: "Tell us your expectations in at least one sentence.",
+      error: "Tell us your expectations in at least one sentence.",
+    }),
+  })
+  .required();
+
+export const CreateTodoFormSchema = z
+  .object({
+    title: z
+      .string()
+      .min(1, {
+        error: "Please provide a valid title.",
+      })
+      .trim(),
+    description: z
+      .string()
+      .min(1, {
+        error: "Please provide a valid description.",
+      })
+      .trim(),
+    date: z.iso.date({
+      error: "Please provide a valid date format: YYYY-MM-DD",
     }),
   })
   .required();

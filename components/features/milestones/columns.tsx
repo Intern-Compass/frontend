@@ -17,61 +17,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { DataTableColumnHeader } from "./data-table-column-header";
+import {
+  format,
+  isThisMonth,
+  isThisWeek,
+  isThisYear,
+  isToday,
+  parseISO,
+} from "date-fns";
 
-export type Status = "upcoming" | "overdue" | "completed";
+export type Status = "inProgress" | "overdue" | "completed";
+type FilterDateOptions = "today" | "week" | "month" | "year";
 
 export type Project = {
   id: string;
   name: string;
-  date: Date;
+  date: string;
   assigner: string;
   status: Status;
 };
-
-export const projects: Project[] = [
-  {
-    id: "728ed52f",
-    name: "UX Report",
-    date: new Date("2025-02-02"),
-    assigner: "Blessing Musa",
-    status: "upcoming",
-  },
-  {
-    id: "728ed52f",
-    name: "My Lagos App Design",
-    date: new Date("2025-01-19"),
-    assigner: "Blessing Musa",
-    status: "overdue",
-  },
-  {
-    id: "728ed52f",
-    name: "MyMTN App Redesign",
-    date: new Date("2025-01-20"),
-    assigner: "Blessing Musa",
-    status: "upcoming",
-  },
-  {
-    id: "728ed52f",
-    name: "UX Report",
-    date: new Date("2025-01-21"),
-    assigner: "Blessing Musa",
-    status: "completed",
-  },
-  {
-    id: "728ed52f",
-    name: "UX Report",
-    date: new Date("2025-01-22"),
-    assigner: "Blessing Musa",
-    status: "completed",
-  },
-  {
-    id: "728ed52f",
-    name: "MyMTN App Report",
-    date: new Date("2025-01-23"),
-    assigner: "Blessing Musa",
-    status: "overdue",
-  },
-];
 
 export const columns: ColumnDef<Project>[] = [
   {
@@ -85,9 +49,26 @@ export const columns: ColumnDef<Project>[] = [
     ),
     cell: ({ row }) => {
       const date = new Date(row.getValue("date"));
-      const dateString = date.toISOString().split("T")[0];
+      const dateString = format(date, "yyyy-MM-dd");
 
       return <span>{dateString}</span>;
+    },
+    sortingFn: "datetime",
+    filterFn: (row, columnId, filterValue) => {
+      const date = new Date(row.getValue(columnId));
+
+      switch (filterValue) {
+        case "today":
+          return isToday(date);
+        case "week":
+          return isThisWeek(date);
+        case "month":
+          return isThisMonth(date);
+        case "year":
+          return isThisYear(date);
+        default:
+          return false;
+      }
     },
   },
   {
@@ -104,16 +85,16 @@ export const columns: ColumnDef<Project>[] = [
         <Badge
           className={cn(
             "capitalize font-medium text-xs leading-4 py-0.5 px-2.5 rounded-[9999px]",
-            status === "upcoming" && "bg-warning-light text-warning-dark",
+            status === "inProgress" && "bg-warning-light text-warning-dark",
             status === "overdue" && "bg-error-light text-error-dark",
             status === "completed" && "bg-success-light text-success-dark"
           )}
         >
-          {status}
+          {status === "inProgress" ? "In Progress" : status}
         </Badge>
       );
     },
-    filterFn: "arrIncludesSome",
+    // filterFn: "arrIncludesSome",
   },
   {
     id: "actions",

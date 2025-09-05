@@ -39,7 +39,6 @@ export function DataTableFacetedFilter<TData, TValue>({
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
-  console.log(selectedValues)
 
   return (
     <Popover>
@@ -133,7 +132,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
-                    onSelect={() => column?.setFilterValue(undefined)}
+                    onSelect={() => {column?.setFilterValue(undefined); console.log(selectedValues)}}
                     className="justify-center text-center"
                   >
                     Clear filters

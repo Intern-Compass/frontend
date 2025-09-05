@@ -5,10 +5,10 @@ import { Search, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DataTableViewOptions } from "@/components/features/milestones/data-table-view-options";
 
-import { statuses } from "@/components/features/milestones/data";
+import { statuses, dates } from "@/components/features/milestones/data";
 import { DataTableFacetedFilter } from "@/components/features/milestones/data-table-faceted-filter";
+import { DataTableSingleFilter } from "@/components/features/milestones/data-table-single-filter";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -23,7 +23,7 @@ export function DataTableToolbar<TData>({
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center gap-2">
         <div className="relative flex-1 flex items-center py-4">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2" />
 
           <Input
             placeholder="Search by projects"
@@ -35,10 +35,17 @@ export function DataTableToolbar<TData>({
           />
         </div>
         {table.getColumn("status") && (
-          <DataTableFacetedFilter
+          <DataTableSingleFilter
             column={table.getColumn("status")}
             title="Status"
             options={statuses}
+          />
+        )}
+        {table.getColumn("date") && (
+          <DataTableSingleFilter
+            column={table.getColumn("date")}
+            title="Date"
+            options={dates}
           />
         )}
         {isFiltered && (
@@ -47,14 +54,10 @@ export function DataTableToolbar<TData>({
             size="sm"
             onClick={() => table.resetColumnFilters()}
           >
-            Reset
+            Clear all
             <X />
           </Button>
         )}
-      </div>
-      <div className="flex items-center gap-2">
-        <DataTableViewOptions table={table} />
-        <Button size="sm">Add Task</Button>
       </div>
     </div>
   );

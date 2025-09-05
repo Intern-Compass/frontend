@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -9,8 +11,10 @@ export const Community = () => {
       <header className="mb-4.5 flex justify-between items-center gap-4">
         <h2 className="text-lg leading-7">Community</h2>
 
-        <Button variant="link" className="font-medium text-link">
+        <Button asChild variant="link" className="font-medium text-link">
+          <Link href="/dashboard/community">
           View all
+          </Link>
         </Button>
       </header>
 
@@ -28,7 +32,7 @@ export const Community = () => {
                 <div className="flex items-center gap-7.5">
                   <h3 className="text-xl leading-6">Opemipo Ashiru</h3>
                   <div className="flex items-center gap-1.25">
-                    <Clock3 className="w-4 h-4 text-black/38" />
+                    <Clock3 className="size-4 text-black/38" />
                     <span className="text-black/35 text-xs leading-6">
                       1 day ago
                     </span>
