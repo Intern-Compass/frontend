@@ -61,7 +61,7 @@ type DateRangeType = {
   [K in DateFilterValue]: [Date, Date];
 };
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends { status: Status }, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
