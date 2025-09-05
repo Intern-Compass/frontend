@@ -50,62 +50,51 @@ export const CreateTodoForm = () => {
     defaultValues: {
       title: "",
       description: "",
-      date: format(new Date(), "yyyy-mm-dd"),
     },
   });
 
   function onSubmit(data: z.infer<typeof CreateTodoFormSchema>) {
+    console.log(data);
     mutation.mutate(data, {
       onSuccess: () => {
-        router.push("/dashboard");
+        // router.push("/dashboard");
       },
       onError: (error) => {
-        console.log(error);
-
-        toast(
-          <div className="flex items-start gap-3 font-sans">
-            <CircleAlert className="text-error-base" />
-
-            <div className="flex flex-col gap-2.5 text-sm leading-5">
-              <span className="text-foreground font-medium">
-                Invalid Email or Password.
-              </span>
-              <span className="text-foreground/75 font-normal">
-                Please check your credentials and try again.
-              </span>
-            </div>
-          </div>,
-          {
-            classNames: {
-              toast: "!bg-error-light",
-            },
-            position: "top-center",
-          }
-        );
+        // console.log(error);
+        // toast(
+        //   <div className="flex items-start gap-3 font-sans">
+        //     <CircleAlert className="text-error-base" />
+        //     <div className="flex flex-col gap-2.5 text-sm leading-5">
+        //       <span className="text-foreground font-medium">
+        //         Invalid Email or Password.
+        //       </span>
+        //       <span className="text-foreground/75 font-normal">
+        //         Please check your credentials and try again.
+        //       </span>
+        //     </div>
+        //   </div>,
+        //   {
+        //     classNames: {
+        //       toast: "!bg-error-light",
+        //     },
+        //     position: "top-center",
+        //   }
+        // );
       },
     });
   }
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full my-[5.6875rem]"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
-            <FormItem className="mb-6">
-              <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
-                Title
-              </FormLabel>
+            <FormItem>
+              <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="firstname.lastname@mtn.com"
-                  className="text-foreground border border-input p-3 leading-6 placeholder:text-muted-foreground-50"
-                  {...field}
-                />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -116,32 +105,17 @@ export const CreateTodoForm = () => {
           control={form.control}
           name="description"
           render={({ field }) => (
-            <FormItem className="mb-6">
-              <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
-                Description
-              </FormLabel>
+            <FormItem>
+              <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="firstname.lastname@mtn.com"
-                  className="text-foreground border border-input p-3 leading-6 placeholder:text-muted-foreground-50"
-                  {...field}
-                />
+                <Textarea {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button
-          type="submit"
-          disabled={mutation.isPending}
-          className={cn(
-            "w-full mb-4 py-2 px-8 rounded-[9999px] font-medium leading-5 text-muted-foreground hover:bg-transparent",
-            form.formState.isValid
-              ? "bg-primary cursor-pointer text-foreground hover:bg-primary"
-              : "bg-muted cursor-not-allowed hover:bg-muted"
-          )}
-        >
+        <Button type="submit" disabled={mutation.isPending}>
           Create
         </Button>
       </form>

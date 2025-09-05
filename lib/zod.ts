@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { z } from "zod";
 
 export const LoginFormSchema = z
@@ -124,8 +125,10 @@ export const CreateTodoFormSchema = z
         error: "Please provide a valid description.",
       })
       .trim(),
-    date: z.iso.date({
-      error: "Please provide a valid date format: YYYY-MM-DD",
-    }),
+    date: z.iso
+      .date({
+        error: "Please provide a valid date format: YYYY-MM-DD",
+      })
+      .default(format(new Date(), "yyyy-MM-dd")),
   })
   .required();
