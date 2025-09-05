@@ -13,6 +13,7 @@ import { DataTable } from "@/components/features/milestones/data-table";
 //   // return projects;
 // }
 
+
 export default async function MilestonesPage() {
   const data: Project[] = projects;
 
@@ -23,12 +24,14 @@ export default async function MilestonesPage() {
   };
 
   for (const { status } of data) {
-    projectCount[status] += 1;
+    if (status in projectCount) {
+      projectCount[status as Status] += 1;
+    }
   }
 
   return (
     <div className="my-8 mx-auto w-95/100">
-        <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data} />
     </div>
   );
 }

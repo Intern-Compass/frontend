@@ -34,7 +34,7 @@ export type Project = {
   name: string;
   date: string;
   assigner: string;
-  status: Status;
+  status: string;
 };
 
 export const columns: ColumnDef<Project>[] = [
