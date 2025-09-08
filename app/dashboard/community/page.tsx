@@ -9,7 +9,7 @@ export default function CommunityPage() {
   const [likeCounts, setLikeCounts] = React.useState<{ [key: number]: number }>(
     {
       1: 12,
-      2: 12,
+      2: 5,
     }
   );
   const [openRepliesId, setOpenRepliesId] = React.useState<number | null>(null);
@@ -35,7 +35,14 @@ export default function CommunityPage() {
     },
   ];
 
-  const replies = {
+  interface Reply {
+  id: number;
+  author: string;
+  position: string;
+  content: string;
+}
+
+  const replies: Record<number, Reply[]> =  {
     1: [
       {
         id: 1,
@@ -45,7 +52,7 @@ export default function CommunityPage() {
           "Great question! I'd recommend focusing on performance optimization early. Use FlatList for large datasets and avoid unnecessary re-renders.",
       },
       {
-        id: 1,
+        id: 2,
         author: "Jane Doe",
         position: "Supervisor",
         content: "Great question! Avoid using too many libraries.",
@@ -60,7 +67,7 @@ export default function CommunityPage() {
           "Great question! I'd recommend focusing on performance optimization early.",
       },
       {
-        id: 1,
+        id: 2,
         author: "Mary Johnson",
         position: "Supervisor",
         content: "Great question! Avoid using too many libraries.",
@@ -122,7 +129,7 @@ export default function CommunityPage() {
                 src="/assets/images/no-projects-illustration.png"
                 alt="Not found"
                 fill
-                className="object-cover"
+                className="object-contain"
               />
             ) : filteredPosts.length > 0 ? (
               <div className="w-full bg-card p-2">
@@ -163,7 +170,7 @@ export default function CommunityPage() {
                       </div>
                       {openRepliesId === post.id && (
                         <div className="mt-8 border-l-2 border-primary mx-2 md:mx-8 p-4 space-y-4">
-                          {replies[post.id]?.map((reply) => (
+                          {(replies[post.id] || []).map((reply) =>(
                             <div key={reply.id} className="mb-2">
                               <div className="border border-primary p-4 rounded-lg ">
                                 <h1>{reply.author}</h1>
