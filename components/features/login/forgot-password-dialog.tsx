@@ -29,6 +29,12 @@ const description: Record<number, string> = {
   3: "Enter your new password below",
 };
 
+const image: Record<number, JSX.Element> = {
+  1: <img src="/assets/images/https_.png" alt="" />,
+  2: <img src="/assets/images/verification.png" alt="" />,
+  3: <img src="/assets/images/https_.png" alt="" />,
+};
+
 export const ForgotPasswordDialog = () => {
   const [open, setOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
@@ -58,8 +64,11 @@ export const ForgotPasswordDialog = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{title[currentStep]}</DialogTitle>
-          <DialogDescription>{description[currentStep]}</DialogDescription>
+          <DialogTitle className="flex flex-col items-center gap-2 mb-2">
+            {image[currentStep]}
+            {title[currentStep]}
+          </DialogTitle>
+          <DialogDescription className="flex flex-col items-center text-center gap-2 mb-6">{description[currentStep]}</DialogDescription>
         </DialogHeader>
         {form[currentStep]}
       </DialogContent>
