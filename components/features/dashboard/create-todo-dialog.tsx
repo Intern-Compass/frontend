@@ -13,7 +13,7 @@ import { CreateTodoForm } from "./create-todo-form";
 export const CreateTodoDialog = () => {
   return (
     <Dialog>
-      <form>
+      <form className="space-y-4">
         <DialogTrigger asChild>
           <Button variant="link" className="font-medium text-link">
             Create
@@ -21,9 +21,9 @@ export const CreateTodoDialog = () => {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Title goes here...</DialogTitle>
+            <DialogTitle className="text-center font-normal mb-4">Create To-Do List</DialogTitle>
             <DialogDescription>
-              Description goes here...
+              
             </DialogDescription>
           </DialogHeader>
           <CreateTodoForm />

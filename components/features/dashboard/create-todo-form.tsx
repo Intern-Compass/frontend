@@ -86,15 +86,16 @@ export const CreateTodoForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
+            <FormItem className="space-y-2">
+              <FormLabel className="font-medium text-black space-y-4">Title</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input placeholder="Type your message here." 
+                    className="placeholder:text-gray-400 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -105,19 +106,22 @@ export const CreateTodoForm = () => {
           control={form.control}
           name="description"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
+            <FormItem className="space-y-2">
+              <FormLabel className="font-medium text-black">Description</FormLabel>
               <FormControl>
-                <Textarea {...field} />
+                <Textarea placeholder="Type your message here." 
+                    className="placeholder:text-gray-400 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
-        <Button type="submit" disabled={mutation.isPending}>
+<div className="pt-4 flex justify-center rounded-full">
+  <Button type="submit" disabled={mutation.isPending} className="rounded-full text-black">
           Create
         </Button>
+</div>
+        
       </form>
     </Form>
   );
