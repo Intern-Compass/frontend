@@ -29,7 +29,7 @@ import { LoginFormSchema } from "@/lib/zod";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-import axios from "@/lib/axios";
+import { axiosAuthInstance } from "@/lib/axios";
 import { isAxiosError } from "axios";
 import { ForgotPasswordDialog } from "@/components/features/login/forgot-password-dialog";
 
@@ -49,7 +49,7 @@ export const LoginForm = () => {
       params.append("password", user.password);
       params.append("rememberMe", user.rememberMe.toString());
 
-      const response = await axios.post("/auth/token", params, {
+      const response = await axiosAuthInstance.post("/token", params, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
