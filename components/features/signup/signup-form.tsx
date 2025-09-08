@@ -56,7 +56,6 @@ import { EyeIcon, EyeOffIcon, CircleAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import axios from "@/lib/axios";
 import { VerifyAccountDialog } from "./verify-account-dialog";
-import { DateField } from "./date-field";
 
 type OptionType = {
   value: string;
@@ -177,11 +176,11 @@ export const SignupForm = () => {
     setOpen(true);
     console.log(data);
 
-    mutation.mutate(data, {
-      onSuccess: (data) => {
-        console.log("Success: ", data);
-      },
-    });
+    // mutation.mutate(data, {
+    //   onSuccess: (data) => {
+    //     console.log("Success: ", data);
+    //   },
+    // });
 
     // toast(
     //       <div className="flex items-start gap-3 font-sans">
