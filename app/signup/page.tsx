@@ -38,6 +38,7 @@ export default function SignupPage() {
                   Login
                 </Link>
               </p>
+              
             </div>
           </main>
           <footer className="flex flex-wrap justify-center items-center gap-x-3 gap-y-6 text-sm md:flex-row">

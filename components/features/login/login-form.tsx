@@ -30,13 +30,26 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 import axios from "@/lib/axios";
+import { isAxiosError } from "axios";
+import { ForgotPasswordDialog } from "@/components/features/login/forgot-password-dialog";
+
+type User = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
 
 export const LoginForm = () => {
   const router = useRouter();
 
   const mutation = useMutation({
-    mutationFn: async (user: { email: string; password: string }) => {
-      const response = await axios.post("/auth/token", user, {
+    mutationFn: async (user: User) => {
+      const params = new URLSearchParams();
+      params.append("username", user.email);
+      params.append("password", user.password);
+      params.append("rememberMe", user.rememberMe.toString());
+
+      const response = await axios.post("/auth/token", params, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -70,26 +83,30 @@ export const LoginForm = () => {
       onError: (error) => {
         console.log(error);
 
-        toast(
-          <div className="flex items-start gap-3 font-sans">
-            <CircleAlert className="text-error-base" />
+        if (isAxiosError(error)) {
+          if (error.status === 401) {
+            toast(
+              <div className="flex items-start gap-3 font-sans">
+                <CircleAlert className="text-error-base" />
 
-            <div className="flex flex-col gap-2.5 text-sm leading-5">
-              <span className="text-foreground font-medium">
-                Invalid Email or Password.
-              </span>
-              <span className="text-foreground/75 font-normal">
-                Please check your credentials and try again.
-              </span>
-            </div>
-          </div>,
-          {
-            classNames: {
-              toast: "!bg-error-light",
-            },
-            position: "top-center",
+                <div className="flex flex-col gap-2.5 text-sm leading-5">
+                  <span className="text-foreground font-medium">
+                    Invalid Email or Password.
+                  </span>
+                  <span className="text-foreground/75 font-normal">
+                    Please check your credentials and try again.
+                  </span>
+                </div>
+              </div>,
+              {
+                classNames: {
+                  toast: "!bg-error-light",
+                },
+                position: "top-center",
+              }
+            );
           }
-        );
+        }
       },
     });
 
@@ -154,118 +171,118 @@ export const LoginForm = () => {
   }
 
   return (
-    <Form {...form}>
-      <form
-        method="POST"
-        encType="application/x-www-form-urlencoded"
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full my-[5.6875rem]"
-      >
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem className="mb-6">
-              <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
-                Email
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="firstname.lastname@mtn.com"
-                  className="text-foreground border border-input p-3 leading-6 placeholder:text-muted-foreground-50"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className="mb-6">
-              <FormLabel
-                htmlFor="password"
-                className="font-medium text-sm leading-5 text-muted-foreground"
-              >
-                Password
-              </FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    aria-describedby="password-constraints"
-                    autoComplete="current-password"
-                    id="password"
-                    placeholder="*********"
-                    className="text-foreground border border-input p-3 pr-11 leading-6 placeholder:text-muted-foreground-50"
-                    {...field}
-                  />
-                  <Button
-                    type="button"
-                    id="toggle-password"
-                    aria-label="Show password as plain text. Warning: this will display your password on the screen."
-                    variant="ghost"
-                    size="icon"
-                    onClick={togglePasswordVisibility}
-                    disabled={form.getValues("password").length === 0}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 disabled:cursor-not-allowed"
-                  >
-                    {showPassword ? (
-                      <EyeOffIcon aria-hidden="true" className="size-4" />
-                    ) : (
-                      <EyeIcon aria-hidden="true" className="size-4" />
-                    )}
-                    <span className="sr-only">
-                      {showPassword ? "Hide" : "Show"} password
-                    </span>
-                  </Button>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex items-center justify-between mb-8">
+    <div className="relative">
+      <Form {...form}>
+        <form
+          method="POST"
+          encType="application/x-www-form-urlencoded"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full my-[5.6875rem]"
+        >
           <FormField
             control={form.control}
-            name="rememberMe"
+            name="email"
             render={({ field }) => (
-              <FormItem className="flex items-center gap-x-1">
+              <FormItem className="mb-6">
+                <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
+                  Email
+                </FormLabel>
                 <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className="data-[state=checked]:text-foreground"
+                  <Input
+                    placeholder="firstname.lastname@mtn.com"
+                    className="text-foreground border border-input p-3 leading-6 placeholder:text-muted-foreground-50"
+                    {...field}
                   />
                 </FormControl>
-                <FormLabel className="text-sm font-normal">
-                  Remember me
-                </FormLabel>
+                <FormMessage />
               </FormItem>
             )}
           />
 
-          <Link href="/" className="underline leading-5 text-sm">
-            Forgot Password?
-          </Link>
-        </div>
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="mb-6">
+                <FormLabel
+                  htmlFor="password"
+                  className="font-medium text-sm leading-5 text-muted-foreground"
+                >
+                  Password
+                </FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      aria-describedby="password-constraints"
+                      autoComplete="current-password"
+                      id="password"
+                      placeholder="*********"
+                      className="text-foreground border border-input p-3 pr-11 leading-6 placeholder:text-muted-foreground-50"
+                      {...field}
+                    />
+                    <Button
+                      type="button"
+                      id="toggle-password"
+                      aria-label="Show password as plain text. Warning: this will display your password on the screen."
+                      variant="ghost"
+                      size="icon"
+                      onClick={togglePasswordVisibility}
+                      disabled={form.getValues("password").length === 0}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 disabled:cursor-not-allowed"
+                    >
+                      {showPassword ? (
+                        <EyeOffIcon aria-hidden="true" className="size-4" />
+                      ) : (
+                        <EyeIcon aria-hidden="true" className="size-4" />
+                      )}
+                      <span className="sr-only">
+                        {showPassword ? "Hide" : "Show"} password
+                      </span>
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex items-center justify-between mb-8">
+            <FormField
+              control={form.control}
+              name="rememberMe"
+              render={({ field }) => (
+                <FormItem className="flex items-center gap-x-1">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className="data-[state=checked]:text-foreground"
+                    />
+                  </FormControl>
+                  <FormLabel className="text-sm font-normal">
+                    Remember me
+                  </FormLabel>
+                </FormItem>
+              )}
+            />
+          </div>
 
-        <Button
-          type="submit"
-          disabled={mutation.isPending}
-          className={cn(
-            "w-full mb-4 py-2 px-8 rounded-[9999px] font-medium leading-5 text-muted-foreground hover:bg-transparent",
-            form.formState.isValid
-              ? "bg-primary cursor-pointer text-foreground hover:bg-primary"
-              : "bg-muted cursor-not-allowed hover:bg-muted"
-          )}
-        >
-          Login
-        </Button>
-      </form>
-    </Form>
+          <Button
+            type="submit"
+            disabled={mutation.isPending}
+            className={cn(
+              "w-full mb-4 py-2 px-8 rounded-[9999px] font-medium leading-5 text-muted-foreground hover:bg-transparent",
+              form.formState.isValid
+                ? "bg-primary cursor-pointer text-foreground hover:bg-primary"
+                : "bg-muted cursor-not-allowed hover:bg-muted"
+            )}
+          >
+            Login
+          </Button>
+        </form>
+      </Form>
+
+      <ForgotPasswordDialog />
+    </div>
   );
 };

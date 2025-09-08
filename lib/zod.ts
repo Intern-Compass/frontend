@@ -37,7 +37,7 @@ export const LoginFormSchema = z
 
 export const SignupFormSchema = z
   .object({
-    firstName: z
+    firstname: z
       .string()
       .trim()
       .min(1, {
@@ -50,19 +50,22 @@ export const SignupFormSchema = z
         error:
           "First name should start with a letter, and can contain letters, dashes and apostrophes.",
       }),
-    surname: z
+    lastname: z
       .string()
       .trim()
       .min(1, {
-        error: "Surname must start with a letter.",
+        error: "Last name must start with a letter.",
       })
       .max(30, {
-        error: "Surname cannot exceed 30 characters.",
+        error: "Last name cannot exceed 30 characters.",
       })
       .regex(/^[A-Za-z][A-Za-z'’-]{1,29}$/, {
         error:
           "Surname should start with a letter, and can contain letters, dashes and apostrophes.",
       }),
+    phone_number: z.string().length(11, {
+      error: "Please provide your 11-digit phone number.",
+    }),
     email: z
       .email({
         error: "Please provide a valid email address.",
@@ -91,13 +94,105 @@ export const SignupFormSchema = z
       .regex(/[^A-Za-z0-9]/, {
         error: "Password must contain at least one special character.",
       }),
+    school: z.string().min(1, { error: "Please provide a valid school." }),
+    date_of_birth: z.iso.datetime({ error: "Please provide a valid date." }),
+    department: z.string({
+      error: "Please select a department.",
+    }),
+    internship_start_date: z.iso.datetime({
+      error: "Please provide a valid date.",
+    }),
+    internship_end_date: z.iso.datetime({
+      error: "Please provide a valid date.",
+    }),
+    skills: z
+      .array(z.object({ name: z.string() }))
+      .min(1, {
+        error: "Please select at least three skills.",
+      })
+      .min(3, {
+        error: "Please select at least three skills.",
+      }),
+    work_location: z.string().trim().min(1, {
+      error: "Please provide a valid work location.",
+    }),
   })
   .required();
 
+export const VerifyAccountFormSchema = z
+  .object({
+    pin: z.string().min(6, {
+      error: "Your one-time password must be 6 digits.",
+    }),
+  })
+  .required();
+
+export const ForgotPasswordFormSchema = z
+  .object({
+    email: z
+      .email({
+        error: "Please provide a valid email address.",
+      })
+      .max(30, {
+        error: "Email cannot exceed 30 characters.",
+      })
+      .toLowerCase(),
+  })
+  .required();
+
+export const ResetPasswordFormSchema = z
+  .object({
+    newPassword: z
+      .string()
+      .min(8, {
+        error: "Password must contain at least 8 characters.",
+      })
+      .max(64, {
+        error: "Password cannot exceed 64 characters.",
+      })
+      .regex(/[a-z]/, {
+        error: "Password must contain at least one lowercase letter.",
+      })
+      .regex(/[A-Z]/, {
+        error: "Password must contain at least one uppercase letter.",
+      })
+      .regex(/\d/, {
+        error: "Password must contain at least one digit.",
+      })
+      .regex(/[^A-Za-z0-9]/, {
+        error: "Password must contain at least one special character.",
+      }),
+    confirmPassword: z
+      .string()
+      .min(8, {
+        error: "Password must contain at least 8 characters.",
+      })
+      .max(64, {
+        error: "Password cannot exceed 64 characters.",
+      })
+      .regex(/[a-z]/, {
+        error: "Password must contain at least one lowercase letter.",
+      })
+      .regex(/[A-Z]/, {
+        error: "Password must contain at least one uppercase letter.",
+      })
+      .regex(/\d/, {
+        error: "Password must contain at least one digit.",
+      })
+      .regex(/[^A-Za-z0-9]/, {
+        error: "Password must contain at least one special character.",
+      }),
+  })
+  .required()
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });
+
 export const ProfileFormSchema = z
   .object({
-    skills: z.array(z.string()).min(1, {
-      error: "Select at least one skill.",
+    skills: z.array(z.string()).min(3, {
+      error: "Select at least three skills.",
     }),
     experience: z.string().min(2, {
       error: "Input at least one experience.",
