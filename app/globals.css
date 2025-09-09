@@ -47,23 +47,13 @@
   /* Project  Colors */
   --color-input: rgba(224, 224, 224, 1);
   --color-foreground: rgba(0, 0, 0, 1);
-  --color-muted-foreground: rgba(
-    131,
-    131,
-    131,
-    1
-  ); /* same as sidebar-foreground-70 */
+  --color-muted-foreground: rgba(131, 131, 131, 1); /* same as sidebar-foreground-70 */
   --color-muted-foreground-50: rgba(131, 131, 131, 0.5);
   --color-muted: rgba(239, 239, 239, 1);
   --color-primary: rgba(249, 198, 0, 1);
   --color-primary-30: rgba(249, 198, 0, 0.3);
   --color-secondary: rgba(232, 232, 232, 1);
-  --color-secondary-foreground: rgba(
-    32,
-    32,
-    32,
-    1
-  ); /* same as accent-foreground */
+  --color-secondary-foreground: rgba(32, 32, 32 ,1); /* same as accent-foreground */
   --color-base-color: rgba(255, 255, 255, 1);
   --color-error-light: rgba(255, 192, 197, 1);
   --color-error-base: rgba(251, 55, 72, 1);

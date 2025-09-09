@@ -20,9 +20,14 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 
+import { useMutation } from "@tanstack/react-query";
+
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { ResendOTPButton } from "./resend-otp-button";
 import { VerifyAccountFormSchema } from "@/lib/zod";
+
+import { axiosAuthInstance } from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 type VerifyAccountFormProps = {
   open: boolean;
@@ -33,15 +38,23 @@ export const VerifyAccountForm = ({
   open,
   setOpen,
 }: VerifyAccountFormProps) => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof VerifyAccountFormSchema>>({
     resolver: zodResolver(VerifyAccountFormSchema),
     defaultValues: {
-      pin: "",
+      verification_code: "",
     },
   });
 
   function onSubmit(data: z.infer<typeof VerifyAccountFormSchema>) {
-    setOpen(false);
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        setOpen(false);
+
+        router.push("/login");
+      },
+    });
 
     toast("You submitted the following values", {
       description: (
@@ -52,12 +65,20 @@ export const VerifyAccountForm = ({
     });
   }
 
+  const mutation = useMutation({
+    mutationFn: async (newUser: z.infer<typeof VerifyAccountFormSchema>) => {
+      const response = await axiosAuthInstance.post("/verify-code", newUser);
+
+      return response.data;
+    },
+  });
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="pin"
+          name="verification_code"
           render={({ field }) => (
             <FormItem>
               <FormControl>
