@@ -80,7 +80,7 @@ export const ResetPasswordForm = ({
           name="newPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="new-password">New Password</FormLabel>
+              <FormLabel htmlFor="new-password" className="text-muted-foreground font-medium">New Password</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
@@ -122,7 +122,7 @@ export const ResetPasswordForm = ({
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="confirm-new-password">
+              <FormLabel htmlFor="confirm-new-password" className="text-muted-foreground font-medium">
                 Confirm Password
               </FormLabel>
               <FormControl>
@@ -161,7 +161,7 @@ export const ResetPasswordForm = ({
             </FormItem>
           )}
         />
-        <Button type="submit">Reset Password</Button>
+        <Button type="submit" className="w-full rounded-3xl text-foreground cursor-pointer font-medium">Reset Password</Button>
       </form>
     </Form>
   );

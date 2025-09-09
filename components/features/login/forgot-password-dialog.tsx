@@ -17,6 +17,8 @@ import { ForgotPasswordForm } from "@/components/features/login/forgot-password-
 import { VerifyAccountForm } from "@/components/features/login/verify-account-form";
 import { ResetPasswordForm } from "@/components/features/login/reset-password-form";
 
+import Image from "next/image";
+
 const title: Record<number, string> = {
   1: "Reset your password",
   2: "Enter verification code",
@@ -27,6 +29,13 @@ const description: Record<number, string> = {
   1: "Enter the email you used for registration and we'll send you a one time code to reset your password.",
   2: "We have just sent a verification code to fik*******@gmail.com",
   3: "Enter your new password below",
+};
+
+
+const image: Record<number, JSX.Element> = {
+  1: <Image src="/assets/images/https_.png" alt="Password" width={116} height={116} />,
+  2: <Image src="/assets/images/verification.png" alt="Verification" width={116} height={116} />,
+  3: <Image src="/assets/images/https_.png" alt="Password" width={116} height={116} />,
 };
 
 export const ForgotPasswordDialog = () => {
@@ -58,8 +67,11 @@ export const ForgotPasswordDialog = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{title[currentStep]}</DialogTitle>
-          <DialogDescription>{description[currentStep]}</DialogDescription>
+          <DialogTitle className="flex flex-col items-center gap-2 mb-2">
+            {image[currentStep]}
+            {title[currentStep]}
+          </DialogTitle>
+          <DialogDescription className="flex flex-col items-center text-center gap-2 mb-6">{description[currentStep]}</DialogDescription>
         </DialogHeader>
         {form[currentStep]}
       </DialogContent>

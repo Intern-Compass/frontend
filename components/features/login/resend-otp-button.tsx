@@ -1,7 +1,11 @@
 import { cn } from "@/lib/utils";
 import React, { useState, useEffect } from "react";
 
-export const ResendOTPButton = () => {
+interface ResendOTPButtonProps {
+  className?: string;
+}
+
+export const ResendOTPButton: React.FC<ResendOTPButtonProps> = ({className}) => {
   const [timer, setTimer] = useState(30);
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -33,7 +37,7 @@ export const ResendOTPButton = () => {
     <button
       onClick={handleResend}
       disabled={isDisabled}
-      className={cn(isDisabled ? "cursor-not-allowed" : "cursor-pointer")}
+      className={cn(isDisabled ? "cursor-not-allowed" : "cursor-pointer", className)}
     >
       {isDisabled ? `Resend in ${timer}s` : "Resend OTP"}
     </button>
