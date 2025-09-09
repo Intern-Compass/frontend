@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
 
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -27,13 +25,21 @@ export const VerifyAccountDialog = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Enter verification code</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="flex flex-col items-center gap-2 mb-2">
+            <Image
+              src="/assets/images/verification.png"
+              alt=""
+              width={116}
+              height={116}
+            />
+            Enter verification code
+          </DialogTitle>
+          <DialogDescription className="text-center mb-6">
             We have just sent a verification code to fik*******@gmail.com
           </DialogDescription>
         </DialogHeader>
 
-        <VerifyAccountForm open={open} setOpen={setOpen} />
+        <VerifyAccountForm setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );

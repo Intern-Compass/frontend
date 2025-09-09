@@ -30,12 +30,10 @@ import { axiosAuthInstance } from "@/lib/axios";
 import { useRouter } from "next/navigation";
 
 type VerifyAccountFormProps = {
-  open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const VerifyAccountForm = ({
-  open,
   setOpen,
 }: VerifyAccountFormProps) => {
   const router = useRouter();
@@ -43,25 +41,17 @@ export const VerifyAccountForm = ({
   const form = useForm<z.infer<typeof VerifyAccountFormSchema>>({
     resolver: zodResolver(VerifyAccountFormSchema),
     defaultValues: {
-      verification_code: "",
+      code: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof VerifyAccountFormSchema>) {
-    mutation.mutate(data, {
+  function onSubmit(formData: z.infer<typeof VerifyAccountFormSchema>) {
+    mutation.mutate(formData, {
       onSuccess: (data) => {
         setOpen(false);
 
         router.push("/login");
       },
-    });
-
-    toast("You submitted the following values", {
-      description: (
-        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
     });
   }
 
@@ -75,10 +65,13 @@ export const VerifyAccountForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 w-full flex flex-col items-center"
+      >
         <FormField
           control={form.control}
-          name="verification_code"
+          name="code"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -110,11 +103,17 @@ export const VerifyAccountForm = ({
           )}
         />
 
-        <p>
-          {"Didn't"} get a code? <ResendOTPButton />
+        <p className="text-sm">
+          {"Didn't"} get a code?{" "}
+          <ResendOTPButton className="text-muted-foreground" />
         </p>
 
-        <Button type="submit">Verify my account</Button>
+        <Button
+          type="submit"
+          className="w-full text-foreground font-medium rounded-3xl cursor-pointer"
+        >
+          Verify my account
+        </Button>
       </form>
     </Form>
   );

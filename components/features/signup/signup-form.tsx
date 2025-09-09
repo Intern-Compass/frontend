@@ -51,37 +51,42 @@ import { cn } from "@/lib/utils";
 import { axiosAuthInstance } from "@/lib/axios";
 import { VerifyAccountDialog } from "@/components/features/signup/verify-account-dialog";
 
-type OptionType = {
+interface SkillOptionType {
   value: string;
   label: string;
 };
 
-const skillsOptions: OptionType[] = [
+interface DepartmentOptionType {
+  value: number;
+  label: string;
+};
+
+const skillsOptions: SkillOptionType[] = [
   { value: "Cybersecurity", label: "Cybersecurity" },
   { value: "Developer", label: "Developer" },
   { value: "Frontend", label: "Front-end" },
   { value: "Backend", label: "Back-end" },
-  { value: "UI/UX", label: "UI/UX" },
+  { value: "UI / UX", label: "UI/UX" },
 ];
 
-const departments = [
-  { value: "1", label: "Chief Executive Officer Office" },
-  { value: "2", label: "Chief Operating Officer Office" },
-  { value: "3", label: "Company Secretariat" },
-  { value: "4", label: "Corporate Services and Sustainability" },
-  { value: "5", label: "Customer Relations and Experience" },
-  { value: "6", label: "Digital Services" },
-  { value: "7", label: "Enterprise Business" },
-  { value: "8", label: "Finance" },
-  { value: "9", label: "Fixed BroadBand" },
-  { value: "10", label: "Human Resources" },
-  { value: "11", label: "Information Technology" },
-  { value: "12", label: "Internal Audit and Forensic Services" },
-  { value: "13", label: "Marketing" },
-  { value: "14", label: "Network" },
-  { value: "15", label: "Risk and Compliance" },
-  { value: "16", label: "Sales and Distribution" },
-  { value: "17", label: "Strategy and Innovation" },
+const departments: DepartmentOptionType[] = [
+  { value: 0, label: "Chief Executive Officer Office" },
+  { value: 1, label: "Chief Operating Officer Office" },
+  { value: 2, label: "Company Secretariat" },
+  { value: 3, label: "Corporate Services and Sustainability" },
+  { value: 4, label: "Customer Relations and Experience" },
+  { value: 5, label: "Digital Services" },
+  { value: 6, label: "Enterprise Business" },
+  { value: 7, label: "Finance" },
+  { value: 8, label: "Fixed BroadBand" },
+  { value: 9, label: "Human Resources" },
+  { value: 10, label: "Information Technology" },
+  { value: 11, label: "Internal Audit and Forensic Services" },
+  { value: 12, label: "Marketing" },
+  { value: 13, label: "Network" },
+  { value: 14, label: "Risk and Compliance" },
+  { value: 15, label: "Sales and Distribution" },
+  { value: 16, label: "Strategy and Innovation" },
 ];
 
 export const SignupForm = () => {
@@ -100,6 +105,7 @@ export const SignupForm = () => {
       email: "",
       password: "",
       school: "",
+      department: 0,
       work_location: "",
     },
     mode: currentStep === 1 ? "onChange" : "onSubmit",
@@ -107,7 +113,7 @@ export const SignupForm = () => {
 
   const mutation = useMutation({
     mutationFn: async (newUser: z.infer<typeof SignupFormSchema>) => {
-      const response = await axiosAuthInstance.post("/register", newUser);
+      const response = await axiosAuthInstance.post("/register-intern", newUser);
 
       return response.data;
     },
@@ -441,32 +447,27 @@ export const SignupForm = () => {
                   name="department"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">Department</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <ReactSelect<OptionType, false>
-                            className="basic-single text-sm"
-                            classNamePrefix="select"
-                            isClearable
-                            isSearchable
-                            options={departments}
-                            value={
-                              departments.find(
-                                (option) => option.value === field.value
-                              ) ?? null
-                            }
-                            onChange={(option) =>
-                              field.onChange(option?.value ?? "")
-                            }
-                            onBlur={field.onBlur}
-                            name={field.name}
-                            ref={field.ref}
-                          />
-                        </FormControl>
-                      </Select>
+                      <FormLabel>Department</FormLabel>
+                      <FormControl>
+                        <ReactSelect<DepartmentOptionType, false>
+                          className="basic-single"
+                          classNamePrefix="select"
+                          isClearable
+                          isSearchable
+                          options={departments}
+                          value={
+                            departments.find(
+                              (option) => option.value === field.value
+                            ) ?? null
+                          }
+                          onChange={(option) =>
+                            field.onChange(option?.value ?? undefined)
+                          }
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          ref={field.ref}
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -575,7 +576,7 @@ export const SignupForm = () => {
                         Skills
                       </FormLabel>
                       <FormControl>
-                        <CreatableReactSelect<OptionType, true>
+                        <CreatableReactSelect<SkillOptionType, true>
                           isMulti
                           isClearable
                           options={skillsOptions}

@@ -101,9 +101,16 @@ export const SignupFormSchema = z
       }),
     school: z.string().min(1, { error: "Please provide a valid school." }),
     date_of_birth: z.iso.datetime({ error: "Please provide a valid date." }),
-    department: z.string({
-      error: "Please select a department.",
-    }),
+    department: z
+      .number({
+        error: "Please select a department.",
+      })
+      .min(0, {
+        error: "Please select a valid department.",
+      })
+      .max(17, {
+        error: "Please select a valid department.",
+      }),
     internship_start_date: z.iso.datetime({
       error: "Please provide a valid date.",
     }),
@@ -135,7 +142,7 @@ export const SignupFormSchema = z
 
 export const VerifyAccountFormSchema = z
   .object({
-    verification_code: z.string().min(6, {
+    code: z.string().min(6, {
       error: "Your verification code must be 6 digits long.",
     }),
   })

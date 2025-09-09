@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MTN Intern Compass -  A new Interns Guide
 
-## Getting Started
+## Table of contents
 
-First, run the development server:
+  - [Overview](#overview)
+  - [Functionality](#functionality)
+  - [Built with](#built-with)
+  - [Typography](#typography)
+  - [Challenges faced](#challenges-faced)
+  - [Contributors](#contributors)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+MTN Intern Compass is a comprehensive web application designed to help new interns at MTN navigate their first few months. The platform provides a centralized hub for key resources, team contacts, onboarding checklists, and FAQs, ensuring a smooth and productive start.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Functionality
 
-To learn more about Next.js, take a look at the following resources:
+Users should be able to:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- See hover and focus states for all interactive elements on the page
+- Create an account if no account exists
+- Log in if an account already exists
+- View and interact wth the user profile
+- Enter and edit information in the User Profile
+- Connect with Interns and Supervisors via the community forum
+- View projects in active, in progress and completed states
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Built with
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [react-hook-form](https://www.react-hook-form.com/)
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Zod](https://zod.dev/)
+- [lucide-react](https://lucide.dev/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Typography
+
+ - Font: MTN Brighter Sans
+
+
+## Challenges faced
+ - Initial merge conflict of package.json file
+ - Restricted access to MTN icons
+
+## Contributors
+ 
+ - [Ayobami Tunwase](https://github.com/ayobami11)
+ - [Adenuga Adedamola Aliyah](https://github.com/ade1damola)
+ - [Femi-Akande Oluwanifemi](https://github.com/Oboroteni/)

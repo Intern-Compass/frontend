@@ -19,41 +19,62 @@ import { ResetPasswordForm } from "@/components/features/login/reset-password-fo
 
 import Image from "next/image";
 
-const title: Record<number, string> = {
-  1: "Reset your password",
-  2: "Enter verification code",
-  3: "Create new password",
-};
+const title = [
+  "Reset your password",
+  "Enter verification code",
+  "Create new password",
+];
 
-const description: Record<number, string> = {
-  1: "Enter the email you used for registration and we'll send you a one time code to reset your password.",
-  2: "We have just sent a verification code to fik*******@gmail.com",
-  3: "Enter your new password below",
-};
+const description = [
+  "Enter the email you used for registration and we'll send you a one time code to reset your password.",
+  "We have just sent a verification code to fik*******@gmail.com",
+  "Enter your new password below",
+];
 
-
-const image: Record<number, JSX.Element> = {
-  1: <Image src="/assets/images/https_.png" alt="Password" width={116} height={116} />,
-  2: <Image src="/assets/images/verification.png" alt="Verification" width={116} height={116} />,
-  3: <Image src="/assets/images/https_.png" alt="Password" width={116} height={116} />,
-};
+const images = [
+  "/assets/images/https_.png",
+  "/assets/images/verification.png",
+  "/assets/images/https_.png",
+];
 
 export const ForgotPasswordDialog = () => {
+  const [otpCode, setOtpCode] = useState("");
   const [open, setOpen] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const incrementCurrentStep = () => {
+    setCurrentStep((prevStep) => prevStep + 1);
+  };
+
+  const resetCurrentStep = () => {
+    setCurrentStep(0);
+  };
+
+  const saveOtpCode = (code: string) => {
+    setOtpCode(code);
+  };
 
   // reset the dialog form state to the initial value when the dialog is closed
   useEffect(() => {
     if (!open) {
-      setCurrentStep(1);
+      resetCurrentStep();
     }
   }, [open]);
 
-  const form: Record<number, JSX.Element> = {
-    1: <ForgotPasswordForm setCurrentStep={setCurrentStep} />,
-    2: <VerifyAccountForm setCurrentStep={setCurrentStep} />,
-    3: <ResetPasswordForm setOpen={setOpen} setCurrentStep={setCurrentStep} />,
-  };
+  const form: Record<number, JSX.Element> = [
+    <ForgotPasswordForm key={0} incrementCurrentStep={incrementCurrentStep} />,
+    <VerifyAccountForm
+      key={1}
+      incrementCurrentStep={incrementCurrentStep}
+      saveOtpCode={saveOtpCode}
+    />,
+    <ResetPasswordForm
+      key={2}
+      setOpen={setOpen}
+      resetCurrentStep={resetCurrentStep}
+      otpCode={otpCode}
+    />,
+  ];
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -68,10 +89,12 @@ export const ForgotPasswordDialog = () => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex flex-col items-center gap-2 mb-2">
-            {image[currentStep]}
+            <Image src={images[currentStep]} alt="" width={116} height={116} />
             {title[currentStep]}
           </DialogTitle>
-          <DialogDescription className="flex flex-col items-center text-center gap-2 mb-6">{description[currentStep]}</DialogDescription>
+          <DialogDescription className="flex flex-col items-center text-center gap-2 mb-6">
+            {description[currentStep]}
+          </DialogDescription>
         </DialogHeader>
         {form[currentStep]}
       </DialogContent>
