@@ -1,23 +1,17 @@
 "use client";
 
-import { redirect } from "next/navigation";
-
 import { useState } from "react";
 
-import CreatableSelect from "react-select/creatable";
+import ReactSelect from "react-select";
+import CreatableReactSelect from "react-select/creatable";
 
-import {
-  QueryClient,
-  QueryClientProvider,
-  useMutation,
-  useQuery,
-} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { format, formatISO } from "date-fns";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -54,8 +48,8 @@ import { SignupFormSchema } from "@/lib/zod";
 import { EyeIcon, EyeOffIcon, CircleAlert } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import axios from "@/lib/axios";
-import { VerifyAccountDialog } from "./verify-account-dialog";
+import { axiosAuthInstance } from "@/lib/axios";
+import { VerifyAccountDialog } from "@/components/features/signup/verify-account-dialog";
 
 type OptionType = {
   value: string;
@@ -71,23 +65,23 @@ const skillsOptions: OptionType[] = [
 ];
 
 const departments = [
-  { id: "1", name: "Chief Executive Officer Office" },
-  { id: "2", name: "Chief Operating Officer Office" },
-  { id: "3", name: "Company Secretariat" },
-  { id: "4", name: "Corporate Services and Sustainability" },
-  { id: "5", name: "Customer Relations and Experience" },
-  { id: "6", name: "Digital Services" },
-  { id: "7", name: "Enterprise Business" },
-  { id: "8", name: "Finance" },
-  { id: "9", name: "Fixed BroadBand" },
-  { id: "10", name: "Human Resources" },
-  { id: "11", name: "Information Technology" },
-  { id: "12", name: "Internal Audit and Forensic Services" },
-  { id: "13", name: "Marketing" },
-  { id: "14", name: "Network" },
-  { id: "15", name: "Risk and Compliance" },
-  { id: "16", name: "Sales and Distribution" },
-  { id: "17", name: "Strategy and Innovation" },
+  { value: "1", label: "Chief Executive Officer Office" },
+  { value: "2", label: "Chief Operating Officer Office" },
+  { value: "3", label: "Company Secretariat" },
+  { value: "4", label: "Corporate Services and Sustainability" },
+  { value: "5", label: "Customer Relations and Experience" },
+  { value: "6", label: "Digital Services" },
+  { value: "7", label: "Enterprise Business" },
+  { value: "8", label: "Finance" },
+  { value: "9", label: "Fixed BroadBand" },
+  { value: "10", label: "Human Resources" },
+  { value: "11", label: "Information Technology" },
+  { value: "12", label: "Internal Audit and Forensic Services" },
+  { value: "13", label: "Marketing" },
+  { value: "14", label: "Network" },
+  { value: "15", label: "Risk and Compliance" },
+  { value: "16", label: "Sales and Distribution" },
+  { value: "17", label: "Strategy and Innovation" },
 ];
 
 export const SignupForm = () => {
@@ -97,16 +91,24 @@ export const SignupForm = () => {
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const mutation = useMutation({
-    mutationFn: async (newUser: {
-      firstName: string;
-      surname: string;
-      email: string;
-      password: string;
-    }) => {
-      const response = await axios.post("/user", newUser);
+  const form = useForm<z.infer<typeof SignupFormSchema>>({
+    resolver: zodResolver(SignupFormSchema),
+    defaultValues: {
+      firstname: "",
+      lastname: "",
+      phone_number: "",
+      email: "",
+      password: "",
+      school: "",
+      work_location: "",
+    },
+    mode: currentStep === 1 ? "onChange" : "onSubmit",
+  });
 
-      console.log(response.data);
+  const mutation = useMutation({
+    mutationFn: async (newUser: z.infer<typeof SignupFormSchema>) => {
+      const response = await axiosAuthInstance.post("/register", newUser);
+
       return response.data;
     },
     //   onSuccess: () => {
@@ -138,26 +140,17 @@ export const SignupForm = () => {
     //   }
   });
 
-  const form = useForm<z.infer<typeof SignupFormSchema>>({
-    resolver: zodResolver(SignupFormSchema),
-    defaultValues: {
-      firstname: "",
-      lastname: "",
-      phone_number: "",
-      email: "",
-      password: "",
-      school: "",
-      work_location: "",
-    },
-    mode: currentStep === 1 ? "onChange" : "onSubmit",
-  });
+  const areStepOneInputsValid = !(
+    form.getFieldState("firstname").invalid ||
+    form.getFieldState("lastname").invalid ||
+    form.getFieldState("phone_number").invalid ||
+    form.getFieldState("email").invalid ||
+    form.getFieldState("password").invalid
+  );
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
-
-  console.log(form.getValues("date_of_birth"));
-  console.log(formatISO(new Date()));
 
   const handleNext = async () => {
     const areStepOneInputsValid = await form.trigger([
@@ -170,17 +163,22 @@ export const SignupForm = () => {
     if (areStepOneInputsValid) {
       setCurrentStep(2);
     }
+
+    console.log(
+      form.getFieldState("firstname").invalid ||
+        form.getFieldState("lastname").invalid ||
+        form.getFieldState("phone_number").invalid ||
+        form.getFieldState("email").invalid ||
+        form.getFieldState("password").invalid
+    );
   };
 
   function onSubmit(data: z.infer<typeof SignupFormSchema>) {
-    setOpen(true);
-    console.log(data);
-
-    // mutation.mutate(data, {
-    //   onSuccess: (data) => {
-    //     console.log("Success: ", data);
-    //   },
-    // });
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        setOpen(true);
+      },
+    });
 
     // toast(
     //       <div className="flex items-start gap-3 font-sans">
@@ -350,16 +348,10 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
-
                 <Button
                   type="button"
                   onClick={handleNext}
-                  className={cn(
-                    "py-2 px-8 mb-4 rounded-[9999px] font-medium leading-5 text-muted-foreground hover:bg-transparent",
-                    form.formState.isValid
-                      ? "bg-primary cursor-pointer text-foreground hover:bg-primary"
-                      : "bg-muted cursor-not-allowed hover:bg-muted"
-                  )}
+                  className="py-2 px-8 mb-4 rounded-[9999px] font-medium leading-5 bg-primary cursor-pointer text-foreground hover:bg-primary"
                 >
                   Next
                 </Button>
@@ -424,9 +416,7 @@ export const SignupForm = () => {
                                 field.onChange(null);
                               }
                             }}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
+                            disabled={(date) => date > new Date()}
                             captionLayout="dropdown"
                           />
                         </PopoverContent>
@@ -446,17 +436,25 @@ export const SignupForm = () => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a department" />
-                          </SelectTrigger>
+                          <ReactSelect<OptionType, false>
+                            className="basic-single"
+                            classNamePrefix="select"
+                            isClearable
+                            isSearchable
+                            options={departments}
+                            value={
+                              departments.find(
+                                (option) => option.value === field.value
+                              ) ?? null
+                            }
+                            onChange={(option) =>
+                              field.onChange(option?.value ?? "")
+                            }
+                            onBlur={field.onBlur}
+                            name={field.name}
+                            ref={field.ref}
+                          />
                         </FormControl>
-                        <SelectContent>
-                          {departments.map(({ id, name }) => (
-                            <SelectItem key={id} value={id}>
-                              {name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
                       </Select>
                       <FormMessage />
                     </FormItem>
@@ -500,9 +498,6 @@ export const SignupForm = () => {
                                 field.onChange(null);
                               }
                             }}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
                             captionLayout="dropdown"
                           />
                         </PopoverContent>
@@ -549,9 +544,6 @@ export const SignupForm = () => {
                                 field.onChange(null);
                               }
                             }}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
                             captionLayout="dropdown"
                           />
                         </PopoverContent>
@@ -569,21 +561,22 @@ export const SignupForm = () => {
                         Skills
                       </FormLabel>
                       <FormControl>
-                        <CreatableSelect<OptionType, true>
+                        <CreatableReactSelect<OptionType, true>
                           isMulti
                           isClearable
                           options={skillsOptions}
                           classNamePrefix="select"
                           className="basic-multi-select w-full text-foreground border-muted-foreground-50 rounded-md text-sm placeholder:text-muted-foreground-50"
-                          placeholder="Tap to select"
-                          value={skillsOptions.filter((opt) =>
-                            field.value?.some(
-                              (val: { name: string }) => val.name === opt.value
-                            )
-                          )}
+                          placeholder="Type or select at least three skills"
+                          value={
+                            field.value?.map((val) => ({
+                              value: val.name,
+                              label: val.name,
+                            })) ?? []
+                          }
                           onChange={(selected) =>
                             field.onChange(
-                              selected.map((opt) => ({ name: opt.value }))
+                              selected.map((option) => ({ name: option.value }))
                             )
                           }
                           onBlur={field.onBlur}
