@@ -69,7 +69,7 @@ export const VerifyAccountForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full flex flex-col items-center">
         <FormField
           control={form.control}
           name="code"
@@ -104,11 +104,11 @@ export const VerifyAccountForm = ({
           )}
         />
 
-        <p>
-          {"Didn't"} get a code? <ResendOTPButton />
+        <p className="text-sm">
+          {"Didn't"} get a code? <ResendOTPButton className="text-muted-foreground"/>
         </p>
 
-        <Button type="submit">Verify my account</Button>
+        <Button type="submit" className="w-full text-foreground font-medium rounded-3xl cursor-pointer">Verify my account</Button>
       </form>
     </Form>
   );
