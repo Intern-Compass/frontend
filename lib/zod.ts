@@ -106,8 +106,8 @@ export const SignupFormSchema = z
       error: "Please provide a valid date.",
     }),
     skills: z
-      .array(z.object({ name: z.string() }))
-      .min(1, {
+      .array(z.object({ name: z.string() }), {
+        // handles empty input case
         error: "Please select at least three skills.",
       })
       .min(3, {
@@ -117,12 +117,21 @@ export const SignupFormSchema = z
       error: "Please provide a valid work location.",
     }),
   })
-  .required();
+  .required()
+  .refine(
+    (data) =>
+      new Date(data.internship_end_date) >=
+      new Date(data.internship_start_date),
+    {
+      error: "Internship end date must be greater than internship start date.",
+      path: ["internship_end_date"],
+    }
+  );
 
 export const VerifyAccountFormSchema = z
   .object({
-    pin: z.string().min(6, {
-      error: "Your one-time password must be 6 digits.",
+    verification_code: z.string().min(6, {
+      error: "Your verification code must be 6 digits long.",
     }),
   })
   .required();
@@ -191,17 +200,22 @@ export const ResetPasswordFormSchema = z
 
 export const ProfileFormSchema = z
   .object({
-    skills: z.array(z.string()).min(3, {
-      error: "Select at least three skills.",
+    skills: z
+      .array(z.object({ name: z.string() }), {
+        // handles empty input case
+        error: "Please select at least three skills.",
+      })
+      .min(3, {
+        error: "Please select at least three skills.",
+      }),
+    experience: z.string().min(1, {
+      error: "Tell us about your experience.",
     }),
-    experience: z.string().min(2, {
-      error: "Input at least one experience.",
-    }),
-    interests: z.string().min(2, {
-      error: "Input at least one interest.",
+    interests: z.string().min(1, {
+      error: "Tell us about your interests.",
     }),
     expectations: z.string().min(10, {
-      error: "Tell us your expectations in at least one sentence.",
+      error: "Tell us about your expectations for the internship.",
     }),
   })
   .required();
@@ -214,16 +228,9 @@ export const CreateTodoFormSchema = z
         error: "Please provide a valid title.",
       })
       .trim(),
-    description: z
-      .string()
-      .min(1, {
-        error: "Please provide a valid description.",
-      })
-      .trim(),
+    description: z.string().trim(),
     date: z.iso
-      .date({
-        error: "Please provide a valid date format: YYYY-MM-DD",
-      })
-      .default(format(new Date(), "yyyy-MM-dd")),
+      .datetime({ error: "Please provide a valid date." })
+      .default(new Date().toISOString()),
   })
   .required();
