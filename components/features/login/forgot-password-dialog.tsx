@@ -17,6 +17,8 @@ import { ForgotPasswordForm } from "@/components/features/login/forgot-password-
 import { VerifyAccountForm } from "@/components/features/login/verify-account-form";
 import { ResetPasswordForm } from "@/components/features/login/reset-password-form";
 
+import Image from "next/image";
+
 const title: Record<number, string> = {
   1: "Reset your password",
   2: "Enter verification code",
@@ -29,10 +31,11 @@ const description: Record<number, string> = {
   3: "Enter your new password below",
 };
 
+
 const image: Record<number, JSX.Element> = {
-  1: <img src="/assets/images/https_.png" alt="" />,
-  2: <img src="/assets/images/verification.png" alt="" />,
-  3: <img src="/assets/images/https_.png" alt="" />,
+  1: <Image src="/assets/images/https_.png" alt="Password" width={116} height={116} />,
+  2: <Image src="/assets/images/verification.png" alt="Verification" width={116} height={116} />,
+  3: <Image src="/assets/images/https_.png" alt="Password" width={116} height={116} />,
 };
 
 export const ForgotPasswordDialog = () => {
