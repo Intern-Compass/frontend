@@ -59,13 +59,6 @@ export const VerifyAccountForm = ({
       },
     });
 
-    toast("You submitted the following values", {
-      description: (
-        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(formData, null, 2)}</code>
-        </pre>
-      ),
-    });
   }
 
   return (
