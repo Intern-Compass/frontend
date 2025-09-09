@@ -33,14 +33,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { Input } from "@/components/ui/input";
 
 import { SignupFormSchema } from "@/lib/zod";
@@ -54,12 +46,12 @@ import { VerifyAccountDialog } from "@/components/features/signup/verify-account
 interface SkillOptionType {
   value: string;
   label: string;
-};
+}
 
 interface DepartmentOptionType {
   value: number;
   label: string;
-};
+}
 
 const skillsOptions: SkillOptionType[] = [
   { value: "Cybersecurity", label: "Cybersecurity" },
@@ -90,7 +82,7 @@ const departments: DepartmentOptionType[] = [
 ];
 
 export const SignupForm = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
 
   // controls the verify-account dialog
   const [open, setOpen] = useState(false);
@@ -105,15 +97,17 @@ export const SignupForm = () => {
       email: "",
       password: "",
       school: "",
-      department: 0,
       work_location: "",
     },
-    mode: currentStep === 1 ? "onChange" : "onSubmit",
+    mode: currentStep === 0 ? "onChange" : "onSubmit",
   });
 
   const mutation = useMutation({
     mutationFn: async (newUser: z.infer<typeof SignupFormSchema>) => {
-      const response = await axiosAuthInstance.post("/register-intern", newUser);
+      const response = await axiosAuthInstance.post(
+        "/register-intern",
+        newUser
+      );
 
       return response.data;
     },
@@ -146,19 +140,15 @@ export const SignupForm = () => {
     //   }
   });
 
-  const areStepOneInputsValid = !(
-    form.getFieldState("firstname").invalid ||
-    form.getFieldState("lastname").invalid ||
-    form.getFieldState("phone_number").invalid ||
-    form.getFieldState("email").invalid ||
-    form.getFieldState("password").invalid
-  );
-
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
 
-  const handleNext = async () => {
+  const handlePrevButton = () => {
+    setCurrentStep((prevStep) => prevStep - 1);
+  };
+
+  const handleNextButton = async () => {
     const areStepOneInputsValid = await form.trigger([
       "firstname",
       "lastname",
@@ -166,17 +156,10 @@ export const SignupForm = () => {
       "email",
       "password",
     ]);
-    if (areStepOneInputsValid) {
-      setCurrentStep(2);
-    }
 
-    console.log(
-      form.getFieldState("firstname").invalid ||
-        form.getFieldState("lastname").invalid ||
-        form.getFieldState("phone_number").invalid ||
-        form.getFieldState("email").invalid ||
-        form.getFieldState("password").invalid
-    );
+    if (areStepOneInputsValid) {
+      setCurrentStep((prevStep) => prevStep + 1);
+    }
   };
 
   function onSubmit(data: z.infer<typeof SignupFormSchema>) {
@@ -226,9 +209,9 @@ export const SignupForm = () => {
           className="w-full"
         >
           <div className="space-y-6 my-8">
-            {currentStep === 1 && (
+            {currentStep === 0 && (
               <>
-              {/* First name */}
+                {/* First name */}
                 <FormField
                   control={form.control}
                   name="firstname"
@@ -363,7 +346,7 @@ export const SignupForm = () => {
                 {/* Buttons */}
                 <Button
                   type="button"
-                  onClick={handleNext}
+                  onClick={handleNextButton}
                   className="py-2 px-8 mb-4 rounded-[9999px] font-medium leading-5 bg-primary cursor-pointer text-foreground hover:bg-primary"
                 >
                   Next
@@ -371,9 +354,9 @@ export const SignupForm = () => {
               </>
             )}
 
-            {currentStep === 2 && (
+            {currentStep === 1 && (
               <>
-              {/* School */}
+                {/* School */}
                 <FormField
                   control={form.control}
                   name="school"
@@ -399,7 +382,9 @@ export const SignupForm = () => {
                   name="date_of_birth"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">Date of birth</FormLabel>
+                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
+                        Date of birth
+                      </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -413,7 +398,9 @@ export const SignupForm = () => {
                               {field.value ? (
                                 format(field.value, "PPP")
                               ) : (
-                                <span className="text-muted-foreground-50">Pick a date</span>
+                                <span className="text-muted-foreground-50">
+                                  Pick a date
+                                </span>
                               )}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
@@ -478,7 +465,9 @@ export const SignupForm = () => {
                   name="internship_start_date"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">Internship start date</FormLabel>
+                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
+                        Internship start date
+                      </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -525,7 +514,9 @@ export const SignupForm = () => {
                   name="internship_end_date"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">Internship end date</FormLabel>
+                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
+                        Internship end date
+                      </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -625,7 +616,11 @@ export const SignupForm = () => {
                 />
                 {/* Buttons */}
                 <div className="flex justify-between">
-                  <Button type="button" className="text-foreground hover:bg-muted-foreground hover:text-white cursor-pointer rounded-3xl" onClick={() => setCurrentStep(1)}>
+                  <Button
+                    type="button"
+                    className="text-foreground hover:bg-muted-foreground hover:text-white cursor-pointer rounded-3xl"
+                    onClick={handlePrevButton}
+                  >
                     Back
                   </Button>
                   <Button
