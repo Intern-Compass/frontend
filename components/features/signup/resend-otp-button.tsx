@@ -1,9 +1,24 @@
+import { useState, useEffect } from "react";
+
+import { z } from "zod";
+
 import { cn } from "@/lib/utils";
-import React, { useState, useEffect } from "react";
+
+import { useMutation } from "@tanstack/react-query";
+import { VerifyAccountFormSchema } from "@/lib/zod";
+import { axiosAuthInstance } from "@/lib/axios";
 
 export const ResendOTPButton = () => {
   const [timer, setTimer] = useState(30);
   const [isDisabled, setIsDisabled] = useState(true);
+
+  const mutation = useMutation({
+    mutationFn: async (newUser: z.infer<typeof VerifyAccountFormSchema>) => {
+      const response = await axiosAuthInstance.post("/resend", newUser);
+
+      return response.data;
+    },
+  });
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -27,7 +42,13 @@ export const ResendOTPButton = () => {
   const handleResend = () => {
     setTimer(30);
     setIsDisabled(true);
+
+    // mutation.mutate(data, {
+    //   onSuccess: (data) => {
+    //   },
+    // });
   };
+
 
   return (
     <button

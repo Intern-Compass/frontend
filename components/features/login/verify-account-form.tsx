@@ -5,6 +5,10 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import {
+  useMutation,
+} from "@tanstack/react-query";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -23,6 +27,7 @@ import {
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { ResendOTPButton } from "./resend-otp-button";
 import { VerifyAccountFormSchema } from "@/lib/zod";
+import { axiosAuthInstance } from "@/lib/axios";
 
 interface VerifyAccountFormProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -34,12 +39,24 @@ export const VerifyAccountForm = ({
   const form = useForm<z.infer<typeof VerifyAccountFormSchema>>({
     resolver: zodResolver(VerifyAccountFormSchema),
     defaultValues: {
-      pin: "",
+      verification_code: "",
     },
   });
 
+  const mutation = useMutation({
+    mutationFn: async (data: z.infer<typeof VerifyAccountForm>) => {
+      const response = await axiosAuthInstance.post("/user", data);
+
+      return response.data;
+    }
+  });
+
   function onSubmit(data: z.infer<typeof VerifyAccountFormSchema>) {
-    setCurrentStep(3);
+     mutation.mutate(data, {
+       onSuccess: (data) => {
+         setCurrentStep(3);
+       },
+     });
 
     toast("You submitted the following values", {
       description: (
@@ -55,7 +72,7 @@ export const VerifyAccountForm = ({
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="pin"
+          name="verification_code"
           render={({ field }) => (
             <FormItem>
               <FormControl>
