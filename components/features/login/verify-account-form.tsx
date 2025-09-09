@@ -39,7 +39,7 @@ export const VerifyAccountForm = ({
   const form = useForm<z.infer<typeof VerifyAccountFormSchema>>({
     resolver: zodResolver(VerifyAccountFormSchema),
     defaultValues: {
-      verification_code: "",
+      code: "",
     },
   });
 
@@ -72,7 +72,7 @@ export const VerifyAccountForm = ({
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="verification_code"
+          name="code"
           render={({ field }) => (
             <FormItem>
               <FormControl>

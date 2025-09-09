@@ -135,7 +135,7 @@ export const SignupFormSchema = z
 
 export const VerifyAccountFormSchema = z
   .object({
-    verification_code: z.string().min(6, {
+    code: z.string().min(6, {
       error: "Your verification code must be 6 digits long.",
     }),
   })
