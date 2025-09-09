@@ -170,7 +170,7 @@ export const LoginForm = () => {
           method="POST"
           encType="application/x-www-form-urlencoded"
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full my-[5.6875rem]"
+          className="w-full my-8 mb-16"
         >
           <FormField
             control={form.control}
@@ -266,7 +266,7 @@ export const LoginForm = () => {
             className={cn(
               "w-full mb-4 py-2 px-8 rounded-[9999px] font-medium leading-5 text-muted-foreground hover:bg-transparent",
               form.formState.isValid
-                ? "bg-primary cursor-pointer text-foreground hover:bg-primary"
+                ? "bg-primary cursor-pointer text-foreground hover:bg-muted-foreground hover:text-white"
                 : "bg-muted cursor-not-allowed hover:bg-muted"
             )}
           >

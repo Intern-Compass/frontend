@@ -7,7 +7,7 @@ import { SignupForm } from "@/components/features/signup/signup-form";
 
 export default function SignupPage() {
   return (
-    <div className="py-6 px-8">
+    <div className="py-6 px-8 h-screen min-h-screen">
       <div className="mb-8">
         <Image
           src="/assets/images/logo.svg"
@@ -18,16 +18,16 @@ export default function SignupPage() {
           className="w-[91px] h-[45px]"
         />
       </div>
-      <div className="flex justify-evenly items-center gap-12 pt-10">
+      <div className="flex justify-evenly items-center gap-12 p-6 md:p-10">
         <div className="flex flex-col">
           <header>
             <h1 className="font-medium text-4xl leading-10 mb-1">{"Y'ello"}</h1>
-            <h2 className="text-xl leading-7">
+            <h2 className="md:text-xl leading-7">
               Create an account to get started
             </h2>
           </header>
           <main className="flex-1">
-            <div className="md:max-w-[416px] mb-4.75">
+            <div className="md:max-w-full mb-4.75">
               <SignupForm />
               <p className="text-muted-foreground text-center text-sm">
                 Already have an account?{" "}
