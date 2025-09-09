@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Select from "react-select";
+import CreatableReactSelect from "react-select/creatable";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -128,7 +128,7 @@ export default function AccountPage() {
               <div className="text-foreground flex flex-wrap gap-2">
                 {form.getValues("skills").map((skill, i) => (
                   <p key={i} className="bg-muted py-2 px-4 rounded-3xl ">
-                    {skill}
+                    {skill.name}
                   </p>
                 ))}
               </div>
@@ -170,17 +170,23 @@ export default function AccountPage() {
                       Skills
                     </FormLabel>
                     <FormControl>
-                      <Select<OptionType, true>
+                      <CreatableReactSelect<OptionType, true>
                         isMulti
+                        isClearable
                         options={skillsOptions}
                         classNamePrefix="select"
                         className="basic-multi-select w-full text-foreground border-muted-foreground-50 rounded-md text-sm placeholder:text-muted-foreground-50"
-                        placeholder="Tap to select"
-                        value={skillsOptions.filter((opt) =>
-                          field.value?.includes(opt.value)
-                        )}
+                        placeholder="Type or select at least three skills"
+                        value={
+                          field.value?.map((val) => ({
+                            value: val.name,
+                            label: val.name,
+                          })) ?? []
+                        }
                         onChange={(selected) =>
-                          field.onChange(selected.map((opt) => opt.value))
+                          field.onChange(
+                            selected.map((option) => ({ name: option.value }))
+                          )
                         }
                         onBlur={field.onBlur}
                         name={field.name}

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const axiosInstance = axios.create({
-  baseURL: "https://intern-compass-1.onrender.com/",
+export const axiosAuthInstance = axios.create({
+  baseURL: "https://intern-compass-1.onrender.com/auth",
   headers: {
     "Content-Type": "application/json",
   },
@@ -10,5 +10,3 @@ const axiosInstance = axios.create({
   //     //'Authorization': 'token <your-token-here> -- https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token'
   //   },
 });
-
-export default axiosInstance;

@@ -5,6 +5,10 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import {
+  useMutation,
+} from "@tanstack/react-query";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -23,6 +27,7 @@ import {
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { ResendOTPButton } from "./resend-otp-button";
 import { VerifyAccountFormSchema } from "@/lib/zod";
+import { axiosAuthInstance } from "@/lib/axios";
 
 interface VerifyAccountFormProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -34,12 +39,24 @@ export const VerifyAccountForm = ({
   const form = useForm<z.infer<typeof VerifyAccountFormSchema>>({
     resolver: zodResolver(VerifyAccountFormSchema),
     defaultValues: {
-      pin: "",
+      verification_code: "",
     },
   });
 
+  const mutation = useMutation({
+    mutationFn: async (data: z.infer<typeof VerifyAccountForm>) => {
+      const response = await axiosAuthInstance.post("/user", data);
+
+      return response.data;
+    }
+  });
+
   function onSubmit(data: z.infer<typeof VerifyAccountFormSchema>) {
-    setCurrentStep(3);
+     mutation.mutate(data, {
+       onSuccess: (data) => {
+         setCurrentStep(3);
+       },
+     });
 
     toast("You submitted the following values", {
       description: (
@@ -52,10 +69,10 @@ export const VerifyAccountForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full flex flex-col items-center">
         <FormField
           control={form.control}
-          name="pin"
+          name="verification_code"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -87,11 +104,11 @@ export const VerifyAccountForm = ({
           )}
         />
 
-        <p>
-          {"Didn't"} get a code? <ResendOTPButton />
+        <p className="text-sm">
+          {"Didn't"} get a code? <ResendOTPButton className="text-muted-foreground"/>
         </p>
 
-        <Button type="submit">Verify my account</Button>
+        <Button type="submit" className="w-full text-foreground font-medium rounded-3xl cursor-pointer">Verify my account</Button>
       </form>
     </Form>
   );

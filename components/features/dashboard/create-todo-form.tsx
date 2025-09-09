@@ -26,7 +26,7 @@ import { CircleAlert } from "lucide-react";
 import { CreateTodoFormSchema } from "@/lib/zod";
 import { cn } from "@/lib/utils";
 
-import axios from "@/lib/axios";
+import { axiosAuthInstance } from "@/lib/axios";
 import { format } from "date-fns";
 
 export const CreateTodoForm = () => {
@@ -38,7 +38,7 @@ export const CreateTodoForm = () => {
       description: string;
       date: string;
     }) => {
-      const response = await axios.post("/auth/token", newTodo);
+      const response = await axiosAuthInstance.post("/token", newTodo);
 
       console.log(response.data);
       return response.data;
@@ -92,10 +92,15 @@ export const CreateTodoForm = () => {
           name="title"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="font-medium text-black space-y-4">Title</FormLabel>
+              <FormLabel className="font-medium text-black space-y-4">
+                Title
+              </FormLabel>
               <FormControl>
-                <Input placeholder="Type your message here." 
-                    className="placeholder:text-gray-400 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500" {...field} />
+                <Input
+                  placeholder="Type your message here."
+                  className="placeholder:text-gray-400 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -107,21 +112,29 @@ export const CreateTodoForm = () => {
           name="description"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="font-medium text-black">Description</FormLabel>
+              <FormLabel className="font-medium text-black">
+                Description
+              </FormLabel>
               <FormControl>
-                <Textarea placeholder="Type your message here." 
-                    className="placeholder:text-gray-400 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500" {...field} />
+                <Textarea
+                  placeholder="Type your message here."
+                  className="placeholder:text-gray-400 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-<div className="pt-4 flex justify-center rounded-full">
-  <Button type="submit" disabled={mutation.isPending} className="rounded-full text-black">
-          Create
-        </Button>
-</div>
-        
+        <div className="pt-4 flex justify-center rounded-full">
+          <Button
+            type="submit"
+            disabled={mutation.isPending}
+            className="rounded-full text-black"
+          >
+            Create
+          </Button>
+        </div>
       </form>
     </Form>
   );

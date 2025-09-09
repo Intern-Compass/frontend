@@ -29,38 +29,31 @@ import { LoginFormSchema } from "@/lib/zod";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-import axios from "@/lib/axios";
+import { axiosAuthInstance } from "@/lib/axios";
 import { isAxiosError } from "axios";
 import { ForgotPasswordDialog } from "@/components/features/login/forgot-password-dialog";
-
-type User = {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-};
 
 export const LoginForm = () => {
   const router = useRouter();
 
   const mutation = useMutation({
-    mutationFn: async (user: User) => {
+    mutationFn: async (user: z.infer<typeof LoginFormSchema>) => {
       const params = new URLSearchParams();
       params.append("username", user.email);
       params.append("password", user.password);
       params.append("rememberMe", user.rememberMe.toString());
 
-      const response = await axios.post("/auth/token", params, {
+      const response = await axiosAuthInstance.post("/token", params, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
       });
 
-      console.log(response.data);
       return response.data;
     },
   });
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),

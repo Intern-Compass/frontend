@@ -8,6 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { useMutation } from "@tanstack/react-query";
+
 import {
   Form,
   FormControl,
@@ -24,6 +26,7 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { ResetPasswordFormSchema } from "@/lib/zod";
+import { axiosAuthInstance } from "@/lib/axios";
 
 interface ResetPasswordFormProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,12 +34,11 @@ interface ResetPasswordFormProps {
 }
 
 export const ResetPasswordForm = ({
-    setOpen,
+  setOpen,
   setCurrentStep,
 }: ResetPasswordFormProps) => {
-  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
-  const [showConfirmPassword, setShowConfirmPassword] =
-    useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<z.infer<typeof ResetPasswordFormSchema>>({
     resolver: zodResolver(ResetPasswordFormSchema),
@@ -46,11 +48,24 @@ export const ResetPasswordForm = ({
     },
   });
 
-  async function onSubmit(data: z.infer<typeof ResetPasswordFormSchema>) {
-    console.log(data);
+  const mutation = useMutation({
+    mutationFn: async (newUser: z.infer<typeof ResetPasswordFormSchema>) => {
+      const response = await axiosAuthInstance.post("/user", newUser);
 
-    setOpen(false);
-    setCurrentStep(1);
+      return response.data;
+    },
+  });
+
+  async function onSubmit(data: z.infer<typeof ResetPasswordFormSchema>) {
+    
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+      },
+      // onSettled: (data) => {
+      //    setOpen(false);
+      //    setCurrentStep(1);
+      //  }
+     });
   }
 
   return (
@@ -65,7 +80,7 @@ export const ResetPasswordForm = ({
           name="newPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="new-password">New Password</FormLabel>
+              <FormLabel htmlFor="new-password" className="text-muted-foreground font-medium">New Password</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
@@ -107,7 +122,7 @@ export const ResetPasswordForm = ({
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="confirm-new-password">
+              <FormLabel htmlFor="confirm-new-password" className="text-muted-foreground font-medium">
                 Confirm Password
               </FormLabel>
               <FormControl>
@@ -146,7 +161,7 @@ export const ResetPasswordForm = ({
             </FormItem>
           )}
         />
-        <Button type="submit">Reset Password</Button>
+        <Button type="submit" className="w-full rounded-3xl text-foreground cursor-pointer font-medium">Reset Password</Button>
       </form>
     </Form>
   );
