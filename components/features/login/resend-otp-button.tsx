@@ -5,7 +5,9 @@ interface ResendOTPButtonProps {
   className?: string;
 }
 
-export const ResendOTPButton: React.FC<ResendOTPButtonProps> = ({className}) => {
+export const ResendOTPButton: React.FC<ResendOTPButtonProps> = ({
+  className,
+}) => {
   const [timer, setTimer] = useState(30);
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -37,7 +39,10 @@ export const ResendOTPButton: React.FC<ResendOTPButtonProps> = ({className}) => 
     <button
       onClick={handleResend}
       disabled={isDisabled}
-      className={cn(isDisabled ? "cursor-not-allowed" : "cursor-pointer", className)}
+      className={cn(
+        isDisabled ? "cursor-not-allowed" : "cursor-pointer",
+        className
+      )}
     >
       {isDisabled ? `Resend in ${timer}s` : "Resend OTP"}
     </button>

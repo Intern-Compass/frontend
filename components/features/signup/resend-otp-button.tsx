@@ -8,7 +8,11 @@ import { useMutation } from "@tanstack/react-query";
 import { VerifyAccountFormSchema } from "@/lib/zod";
 import { axiosAuthInstance } from "@/lib/axios";
 
-export const ResendOTPButton = () => {
+interface ResendOTPButtonProps {
+  className?: string;
+}
+
+export const ResendOTPButton = ({ className }: ResendOTPButtonProps) => {
   const [timer, setTimer] = useState(30);
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -49,12 +53,14 @@ export const ResendOTPButton = () => {
     // });
   };
 
-
   return (
     <button
       onClick={handleResend}
       disabled={isDisabled}
-      className={cn(isDisabled ? "cursor-not-allowed" : "cursor-pointer")}
+      className={cn(
+        isDisabled ? "cursor-not-allowed" : "cursor-pointer",
+        className
+      )}
     >
       {isDisabled ? `Resend in ${timer}s` : "Resend OTP"}
     </button>

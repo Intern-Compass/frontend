@@ -5,9 +5,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import {
-  useMutation,
-} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,49 +28,48 @@ import { VerifyAccountFormSchema } from "@/lib/zod";
 import { axiosAuthInstance } from "@/lib/axios";
 
 interface VerifyAccountFormProps {
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  incrementCurrentStep: () => void;
+  saveOtpCode: (code: string) => void;
 }
 
 export const VerifyAccountForm = ({
-  setCurrentStep,
+  incrementCurrentStep,
+  saveOtpCode,
 }: VerifyAccountFormProps) => {
   const form = useForm<z.infer<typeof VerifyAccountFormSchema>>({
     resolver: zodResolver(VerifyAccountFormSchema),
     defaultValues: {
-      verification_code: "",
+      code: "",
     },
   });
 
   const mutation = useMutation({
     mutationFn: async (data: z.infer<typeof VerifyAccountForm>) => {
-      const response = await axiosAuthInstance.post("/user", data);
+      const response = await axiosAuthInstance.post("/verify-code", data);
 
       return response.data;
-    }
+    },
   });
 
-  function onSubmit(data: z.infer<typeof VerifyAccountFormSchema>) {
-     mutation.mutate(data, {
-       onSuccess: (data) => {
-         setCurrentStep(3);
-       },
-     });
-
-    toast("You submitted the following values", {
-      description: (
-        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+  function onSubmit(formData: z.infer<typeof VerifyAccountFormSchema>) {
+    mutation.mutate(formData, {
+      onSuccess: (data) => {
+        saveOtpCode(formData.code);
+        incrementCurrentStep();
+      },
     });
+
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full flex flex-col items-center">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 w-full flex flex-col items-center"
+      >
         <FormField
           control={form.control}
-          name="verification_code"
+          name="code"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -105,10 +102,16 @@ export const VerifyAccountForm = ({
         />
 
         <p className="text-sm">
-          {"Didn't"} get a code? <ResendOTPButton className="text-muted-foreground"/>
+          {"Didn't"} get a code?{" "}
+          <ResendOTPButton className="text-muted-foreground" />
         </p>
 
-        <Button type="submit" className="w-full text-foreground font-medium rounded-3xl cursor-pointer">Verify my account</Button>
+        <Button
+          type="submit"
+          className="w-full text-foreground font-medium rounded-3xl cursor-pointer"
+        >
+          Verify my account
+        </Button>
       </form>
     </Form>
   );
