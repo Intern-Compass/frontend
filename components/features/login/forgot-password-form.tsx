@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { useMutation } from "@tanstack/react-query";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { ForgotPasswordFormSchema } from "@/lib/zod";
+import { axiosAuthInstance } from "@/lib/axios";
 
 interface ForgotPasswordFormProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -32,8 +35,20 @@ export const ForgotPasswordForm = ({
     },
   });
 
+  const mutation = useMutation({
+    mutationFn: async (data: z.infer<typeof ForgotPasswordFormSchema>) => {
+      const response = await axiosAuthInstance.post("/user", data);
+
+      return response.data;
+    },
+  });
+
   function onSubmit(data: z.infer<typeof ForgotPasswordFormSchema>) {
-    setCurrentStep(2);
+     mutation.mutate(data, {
+       onSuccess: (data) => {
+         setCurrentStep(2);
+       },
+     });
 
     toast("You submitted the following values", {
       description: (
