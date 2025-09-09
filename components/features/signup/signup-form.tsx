@@ -82,7 +82,7 @@ const departments: DepartmentOptionType[] = [
 ];
 
 export const SignupForm = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
 
   // controls the verify-account dialog
   const [open, setOpen] = useState(false);
