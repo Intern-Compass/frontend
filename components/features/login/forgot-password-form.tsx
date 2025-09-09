@@ -37,7 +37,7 @@ export const ForgotPasswordForm = ({
 
   const mutation = useMutation({
     mutationFn: async (data: z.infer<typeof ForgotPasswordFormSchema>) => {
-      const response = await axiosAuthInstance.post("/user", data);
+      const response = await axiosAuthInstance.post("/forgot-password", data);
 
       return response.data;
     },

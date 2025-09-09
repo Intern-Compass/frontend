@@ -50,7 +50,7 @@ export const ResetPasswordForm = ({
 
   const mutation = useMutation({
     mutationFn: async (newUser: z.infer<typeof ResetPasswordFormSchema>) => {
-      const response = await axiosAuthInstance.post("/user", newUser);
+      const response = await axiosAuthInstance.post("/reset-password", newUser);
 
       return response.data;
     },
