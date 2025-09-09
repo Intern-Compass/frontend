@@ -22,11 +22,11 @@ import { ForgotPasswordFormSchema } from "@/lib/zod";
 import { axiosAuthInstance } from "@/lib/axios";
 
 interface ForgotPasswordFormProps {
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  incrementCurrentStep: () => void
 }
 
 export const ForgotPasswordForm = ({
-  setCurrentStep,
+  incrementCurrentStep,
 }: ForgotPasswordFormProps) => {
   const form = useForm<z.infer<typeof ForgotPasswordFormSchema>>({
     resolver: zodResolver(ForgotPasswordFormSchema),
@@ -43,20 +43,12 @@ export const ForgotPasswordForm = ({
     },
   });
 
-  function onSubmit(data: z.infer<typeof ForgotPasswordFormSchema>) {
-     mutation.mutate(data, {
+  function onSubmit(formData: z.infer<typeof ForgotPasswordFormSchema>) {
+     mutation.mutate(formData, {
        onSuccess: (data) => {
-         setCurrentStep(2);
+         incrementCurrentStep();
        },
      });
-
-    toast("You submitted the following values", {
-      description: (
-        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
   }
 
   return (

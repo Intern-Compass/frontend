@@ -29,13 +29,20 @@ import { ResetPasswordFormSchema } from "@/lib/zod";
 import { axiosAuthInstance } from "@/lib/axios";
 
 interface ResetPasswordFormProps {
+  otpCode: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  resetCurrentStep: () => void;
+}
+
+interface ResetPasswordFormType {
+  code: string;
+  password: string;
 }
 
 export const ResetPasswordForm = ({
+  otpCode,
   setOpen,
-  setCurrentStep,
+  resetCurrentStep,
 }: ResetPasswordFormProps) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -49,23 +56,29 @@ export const ResetPasswordForm = ({
   });
 
   const mutation = useMutation({
-    mutationFn: async (newUser: z.infer<typeof ResetPasswordFormSchema>) => {
-      const response = await axiosAuthInstance.post("/reset-password", newUser);
+    mutationFn: async (data: ResetPasswordFormType) => {
+      const response = await axiosAuthInstance.post("/reset-password", data);
 
       return response.data;
     },
   });
 
-  async function onSubmit(data: z.infer<typeof ResetPasswordFormSchema>) {
-    
-    mutation.mutate(data, {
+  async function onSubmit(formData: z.infer<typeof ResetPasswordFormSchema>) {
+    const formValues = {
+      code: otpCode,
+      password: formData.newPassword,
+    };
+
+    mutation.mutate(formValues, {
       onSuccess: (data) => {
+        console.log("Success")
+
       },
       // onSettled: (data) => {
       //    setOpen(false);
-      //    setCurrentStep(1);
+      //    resetCurrentStep();
       //  }
-     });
+    });
   }
 
   return (
@@ -80,7 +93,12 @@ export const ResetPasswordForm = ({
           name="newPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="new-password" className="text-muted-foreground font-medium">New Password</FormLabel>
+              <FormLabel
+                htmlFor="new-password"
+                className="text-muted-foreground font-medium"
+              >
+                New Password
+              </FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
@@ -122,7 +140,10 @@ export const ResetPasswordForm = ({
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="confirm-new-password" className="text-muted-foreground font-medium">
+              <FormLabel
+                htmlFor="confirm-new-password"
+                className="text-muted-foreground font-medium"
+              >
                 Confirm Password
               </FormLabel>
               <FormControl>
@@ -161,7 +182,12 @@ export const ResetPasswordForm = ({
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full rounded-3xl text-foreground cursor-pointer font-medium">Reset Password</Button>
+        <Button
+          type="submit"
+          className="w-full rounded-3xl text-foreground cursor-pointer font-medium"
+        >
+          Reset Password
+        </Button>
       </form>
     </Form>
   );
