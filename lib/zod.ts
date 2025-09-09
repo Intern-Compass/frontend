@@ -63,9 +63,14 @@ export const SignupFormSchema = z
         error:
           "Surname should start with a letter, and can contain letters, dashes and apostrophes.",
       }),
-    phone_number: z.string().length(11, {
-      error: "Please provide your 11-digit phone number.",
-    }),
+    phone_number: z
+      .string()
+      .length(11, {
+        error: "Please provide your 11-digit phone number.",
+      })
+      .regex(/^\d+$/, {
+        error: "Phone number must contain only digits.",
+      }),
     email: z
       .email({
         error: "Please provide a valid email address.",
