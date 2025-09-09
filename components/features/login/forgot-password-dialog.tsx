@@ -62,12 +62,14 @@ export const ForgotPasswordDialog = () => {
   }, [open]);
 
   const form: Record<number, JSX.Element> = [
-    <ForgotPasswordForm incrementCurrentStep={incrementCurrentStep} />,
+    <ForgotPasswordForm key={0} incrementCurrentStep={incrementCurrentStep} />,
     <VerifyAccountForm
+      key={1}
       incrementCurrentStep={incrementCurrentStep}
       saveOtpCode={saveOtpCode}
     />,
     <ResetPasswordForm
+      key={2}
       setOpen={setOpen}
       resetCurrentStep={resetCurrentStep}
       otpCode={otpCode}
