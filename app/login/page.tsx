@@ -7,7 +7,7 @@ import { LoginForm } from "@/components/features/login/login-form";
 
 export default function LoginPage() {
   return (
-    <div className="py-6 px-8">
+    <div className="py-6 px-8 h-screen min-h-screen">
       <div className="mb-8">
         <Image
           src="/assets/images/logo.svg"
@@ -18,16 +18,16 @@ export default function LoginPage() {
           className="w-[91px] h-[45px]"
         />
       </div>
-      <div className="flex justify-evenly items-center gap-12 pt-10">
+      <div className="flex justify-evenly items-center gap-12 p-6 md:p-10">
         <div className="flex flex-col">
           <header>
             <h1 className="font-medium text-4xl leading-10 mb-1">{"Y'ello"}</h1>
-            <h2 className="text-xl leading-7">
+            <h2 className="md:text-xl leading-7">
               Welcome to the Intern-Supervisor Matching Platform
             </h2>
           </header>
           <main className="flex-1 mb-10">
-            <div className="md:max-w-[416px]">
+            <div className="md:max-w-full">
               <LoginForm />
               <p className="text-muted-foreground text-center text-sm">
                 {"Don't"} have an account?{" "}

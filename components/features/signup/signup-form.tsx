@@ -223,11 +223,12 @@ export const SignupForm = () => {
         <form
           method="POST"
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full my-[5.6875rem]"
+          className="w-full"
         >
           <div className="space-y-6 my-8">
             {currentStep === 1 && (
               <>
+              {/* First name */}
                 <FormField
                   control={form.control}
                   name="firstname"
@@ -247,6 +248,7 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* Last name */}
                 <FormField
                   control={form.control}
                   name="lastname"
@@ -266,6 +268,7 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* Phone number */}
                 <FormField
                   control={form.control}
                   name="phone_number"
@@ -277,6 +280,7 @@ export const SignupForm = () => {
                       <FormControl>
                         <Input
                           className="text-foreground border border-input p-3 leading-6 placeholder:text-muted-foreground-50"
+                          placeholder="0X0XXXXXXXXX"
                           {...field}
                         />
                       </FormControl>
@@ -284,6 +288,7 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* Email */}
                 <FormField
                   control={form.control}
                   name="email"
@@ -304,6 +309,7 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* Password */}
                 <FormField
                   control={form.control}
                   name="password"
@@ -354,6 +360,7 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* Buttons */}
                 <Button
                   type="button"
                   onClick={handleNext}
@@ -366,17 +373,19 @@ export const SignupForm = () => {
 
             {currentStep === 2 && (
               <>
+              {/* School */}
                 <FormField
                   control={form.control}
                   name="school"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem>
                       <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
                         School
                       </FormLabel>
                       <FormControl>
                         <Input
                           className="text-foreground border border-input p-3 leading-6 placeholder:text-muted-foreground-50"
+                          placeholder="Enter your school"
                           {...field}
                         />
                       </FormControl>
@@ -384,26 +393,27 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* D.O.B */}
                 <FormField
                   control={form.control}
                   name="date_of_birth"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Date of birth</FormLabel>
+                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">Date of birth</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
                               variant={"outline"}
                               className={cn(
-                                "w-[240px] pl-3 text-left font-normal",
+                                "w-full pl-3 text-left font-normal",
                                 !field.value && "text-muted-foreground"
                               )}
                             >
                               {field.value ? (
                                 format(field.value, "PPP")
                               ) : (
-                                <span>Pick a date</span>
+                                <span className="text-muted-foreground-50">Pick a date</span>
                               )}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
@@ -431,6 +441,7 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* Department */}
                 <FormField
                   control={form.control}
                   name="department"
@@ -461,19 +472,20 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* Start Date */}
                 <FormField
                   control={form.control}
                   name="internship_start_date"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Internship start date</FormLabel>
+                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">Internship start date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
                               variant={"outline"}
                               className={cn(
-                                "w-[240px] pl-3 text-left font-normal",
+                                "w-full pl-3 text-left font-normal",
                                 !field.value && "text-muted-foreground"
                               )}
                             >
@@ -507,19 +519,20 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* End Date */}
                 <FormField
                   control={form.control}
                   name="internship_end_date"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Internship end date</FormLabel>
+                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">Internship end date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
                               variant={"outline"}
                               className={cn(
-                                "w-[240px] pl-3 text-left font-normal",
+                                "w-full pl-3 text-left font-normal",
                                 !field.value && "text-muted-foreground"
                               )}
                             >
@@ -553,12 +566,13 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* Skills */}
                 <FormField
                   control={form.control}
                   name="skills"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="block text-muted-foreground">
+                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
                         Skills
                       </FormLabel>
                       <FormControl>
@@ -589,17 +603,19 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* Location */}
                 <FormField
                   control={form.control}
                   name="work_location"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem>
                       <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
                         Work location
                       </FormLabel>
                       <FormControl>
                         <Input
                           className="text-foreground border border-input p-3 leading-6 placeholder:text-muted-foreground-50"
+                          placeholder="123 plot, add street and state"
                           {...field}
                         />
                       </FormControl>
@@ -607,17 +623,18 @@ export const SignupForm = () => {
                     </FormItem>
                   )}
                 />
+                {/* Buttons */}
                 <div className="flex justify-between">
-                  <Button type="button" onClick={() => setCurrentStep(1)}>
+                  <Button type="button" className="text-foreground hover:bg-muted-foreground hover:text-white cursor-pointer rounded-3xl" onClick={() => setCurrentStep(1)}>
                     Back
                   </Button>
                   <Button
                     type="submit"
                     disabled={mutation.isPending}
                     className={cn(
-                      "w-full py-2 px-8 mb-4 rounded-[9999px] font-medium leading-5 text-muted-foreground hover:bg-transparent",
+                      "w-2/3 py-2 px-8 mb-4 rounded-3xl font-medium leading-5 text-muted-foreground hover:bg-transparent",
                       form.formState.isValid
-                        ? "bg-primary cursor-pointer text-foreground hover:bg-primary"
+                        ? "bg-primary cursor-pointer text-foreground hover:bg-muted-foreground hover:text-white"
                         : "bg-muted cursor-not-allowed hover:bg-muted"
                     )}
                   >
