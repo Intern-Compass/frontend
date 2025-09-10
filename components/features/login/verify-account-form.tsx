@@ -23,16 +23,20 @@ import {
 } from "@/components/ui/input-otp";
 
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+
 import { ResendOTPButton } from "./resend-otp-button";
 import { VerifyAccountFormSchema } from "@/lib/zod";
 import { axiosAuthInstance } from "@/lib/axios";
+import { CircleAlert } from "lucide-react";
 
 interface VerifyAccountFormProps {
+  email: string;
   incrementCurrentStep: () => void;
   saveOtpCode: (code: string) => void;
 }
 
 export const VerifyAccountForm = ({
+  email,
   incrementCurrentStep,
   saveOtpCode,
 }: VerifyAccountFormProps) => {
@@ -44,7 +48,7 @@ export const VerifyAccountForm = ({
   });
 
   const mutation = useMutation({
-    mutationFn: async (data: z.infer<typeof VerifyAccountForm>) => {
+    mutationFn: async (data: z.infer<typeof VerifyAccountFormSchema>) => {
       const response = await axiosAuthInstance.post("/verify-code", data);
 
       return response.data;
@@ -57,8 +61,30 @@ export const VerifyAccountForm = ({
         saveOtpCode(formData.code);
         incrementCurrentStep();
       },
-    });
+      onError: (error) => {
+        console.log(error);
 
+        toast(
+          <div className="flex items-start gap-3 font-sans">
+            <CircleAlert className="text-error-base" />
+            <div className="flex flex-col gap-2.5 text-sm leading-5">
+              <span className="text-foreground font-medium">
+                Invalid verification code.
+              </span>
+              <span className="text-foreground/75 font-normal">
+                Please provide a valid verification code.
+              </span>
+            </div>
+          </div>,
+          {
+            classNames: {
+              toast: "!bg-error-light",
+            },
+            position: "top-center",
+          }
+        );
+      },
+    });
   }
 
   return (
@@ -103,7 +129,7 @@ export const VerifyAccountForm = ({
 
         <p className="text-sm">
           {"Didn't"} get a code?{" "}
-          <ResendOTPButton className="text-muted-foreground" />
+          <ResendOTPButton email={email} className="text-muted-foreground" />
         </p>
 
         <Button

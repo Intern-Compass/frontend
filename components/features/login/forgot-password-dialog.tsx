@@ -25,12 +25,6 @@ const title = [
   "Create new password",
 ];
 
-const description = [
-  "Enter the email you used for registration and we'll send you a one time code to reset your password.",
-  "We have just sent a verification code to fik*******@gmail.com",
-  "Enter your new password below",
-];
-
 const images = [
   "/assets/images/https_.png",
   "/assets/images/verification.png",
@@ -38,9 +32,16 @@ const images = [
 ];
 
 export const ForgotPasswordDialog = () => {
+  const [email, setEmail] = useState("");
   const [otpCode, setOtpCode] = useState("");
   const [open, setOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+
+  const description = [
+    "Enter the email you used for registration and we'll send you a one time code to reset your password.",
+    `We have just sent a verification code to ${email}`,
+    "Enter your new password below",
+  ];
 
   const incrementCurrentStep = () => {
     setCurrentStep((prevStep) => prevStep + 1);
@@ -48,6 +49,10 @@ export const ForgotPasswordDialog = () => {
 
   const resetCurrentStep = () => {
     setCurrentStep(0);
+  };
+
+  const saveEmail = (email: string) => {
+    setEmail(email);
   };
 
   const saveOtpCode = (code: string) => {
@@ -62,17 +67,22 @@ export const ForgotPasswordDialog = () => {
   }, [open]);
 
   const form: Record<number, JSX.Element> = [
-    <ForgotPasswordForm key={0} incrementCurrentStep={incrementCurrentStep} />,
+    <ForgotPasswordForm
+      key={0}
+      saveEmail={saveEmail}
+      incrementCurrentStep={incrementCurrentStep}
+    />,
     <VerifyAccountForm
       key={1}
+      email={email}
       incrementCurrentStep={incrementCurrentStep}
       saveOtpCode={saveOtpCode}
     />,
     <ResetPasswordForm
       key={2}
+      otpCode={otpCode}
       setOpen={setOpen}
       resetCurrentStep={resetCurrentStep}
-      otpCode={otpCode}
     />,
   ];
 
