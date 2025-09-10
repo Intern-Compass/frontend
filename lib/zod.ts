@@ -100,7 +100,10 @@ export const SignupFormSchema = z
         error: "Password must contain at least one special character.",
       }),
     school: z.string().min(1, { error: "Please provide a valid school." }),
-    date_of_birth: z.iso.datetime({ error: "Please provide a valid date." }),
+    date_of_birth: z.iso.datetime({
+      local: true,
+      error: "Please provide a valid date.",
+    }),
     department: z
       .number({
         error: "Please select a department.",
@@ -112,9 +115,11 @@ export const SignupFormSchema = z
         error: "Please select a valid department.",
       }),
     internship_start_date: z.iso.datetime({
+      local: true,
       error: "Please provide a valid date.",
     }),
     internship_end_date: z.iso.datetime({
+      local: true,
       error: "Please provide a valid date.",
     }),
     skills: z
@@ -163,6 +168,9 @@ export const ForgotPasswordFormSchema = z
 
 export const ResetPasswordFormSchema = z
   .object({
+    code: z.string().min(6, {
+      error: "Your verification code must be 6 digits long.",
+    }),
     newPassword: z
       .string()
       .min(8, {
@@ -242,7 +250,7 @@ export const CreateTodoFormSchema = z
       .trim(),
     description: z.string().trim(),
     date: z.iso
-      .datetime({ error: "Please provide a valid date." })
-      .default(new Date().toISOString()),
+      .datetime({ local: true, error: "Please provide a valid date." })
+      .default(format(new Date(), "yyyy-MM-dd'T'HH:mm:ss")),
   })
   .required();

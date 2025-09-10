@@ -19,6 +19,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -29,7 +38,6 @@ import { ResetPasswordFormSchema } from "@/lib/zod";
 import { axiosAuthInstance } from "@/lib/axios";
 
 interface ResetPasswordFormProps {
-  otpCode: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   resetCurrentStep: () => void;
 }
@@ -40,7 +48,6 @@ interface ResetPasswordFormType {
 }
 
 export const ResetPasswordForm = ({
-  otpCode,
   setOpen,
   resetCurrentStep,
 }: ResetPasswordFormProps) => {
@@ -50,6 +57,7 @@ export const ResetPasswordForm = ({
   const form = useForm<z.infer<typeof ResetPasswordFormSchema>>({
     resolver: zodResolver(ResetPasswordFormSchema),
     defaultValues: {
+      code: "",
       newPassword: "",
       confirmPassword: "",
     },
@@ -65,14 +73,13 @@ export const ResetPasswordForm = ({
 
   async function onSubmit(formData: z.infer<typeof ResetPasswordFormSchema>) {
     const formValues = {
-      code: otpCode,
+      code: formData.code,
       password: formData.newPassword,
     };
 
     mutation.mutate(formValues, {
       onSuccess: (data) => {
-        console.log("Success")
-
+        console.log("Success");
       },
       // onSettled: (data) => {
       //    setOpen(false);
@@ -88,6 +95,41 @@ export const ResetPasswordForm = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8"
       >
+        <FormField
+          control={form.control}
+          name="code"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-muted-foreground font-medium">
+                OTP code
+              </FormLabel>
+              <FormControl>
+                <InputOTP
+                  autoFocus
+                  maxLength={6}
+                  pattern={REGEXP_ONLY_DIGITS}
+                  {...field}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="newPassword"

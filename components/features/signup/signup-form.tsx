@@ -414,7 +414,9 @@ export const SignupForm = () => {
                             }
                             onSelect={(date) => {
                               if (date) {
-                                field.onChange(date.toISOString());
+                                field.onChange(
+                                  format(date, "yyyy-MM-dd'T'HH:mm:ss")
+                                );
                               } else {
                                 field.onChange(null);
                               }
@@ -495,7 +497,9 @@ export const SignupForm = () => {
                             }
                             onSelect={(date) => {
                               if (date) {
-                                field.onChange(date.toISOString());
+                                field.onChange(
+                                  format(date, "yyyy-MM-dd'T'HH:mm:ss")
+                                );
                               } else {
                                 field.onChange(null);
                               }
@@ -544,7 +548,9 @@ export const SignupForm = () => {
                             }
                             onSelect={(date) => {
                               if (date) {
-                                field.onChange(date.toISOString());
+                                field.onChange(
+                                  format(date, "yyyy-MM-dd'T'HH:mm:ss")
+                                );
                               } else {
                                 field.onChange(null);
                               }
@@ -642,7 +648,11 @@ export const SignupForm = () => {
         </form>
       </Form>
 
-      <VerifyAccountDialog open={open} setOpen={setOpen} />
+      <VerifyAccountDialog
+        email={form.getValues("email")}
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   );
 };

@@ -11,13 +11,16 @@ import {
 } from "@/components/ui/dialog";
 
 import { VerifyAccountForm } from "./verify-account-form";
+import { maskEmail } from "@/lib/utils";
 
 type VerifyAccountDialogProps = {
+  email: string
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const VerifyAccountDialog = ({
+  email,
   open,
   setOpen,
 }: VerifyAccountDialogProps) => {
@@ -35,7 +38,7 @@ export const VerifyAccountDialog = ({
             Enter verification code
           </DialogTitle>
           <DialogDescription className="text-center mb-6">
-            We have just sent a verification code to fik*******@gmail.com
+            We have just sent a verification code to {maskEmail(email)}
           </DialogDescription>
         </DialogHeader>
 

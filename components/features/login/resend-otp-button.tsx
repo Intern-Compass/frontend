@@ -1,15 +1,57 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
+import { z } from "zod";
+
+import { useMutation } from "@tanstack/react-query";
+
+import { axiosAuthInstance } from "@/lib/axios";
+
+import { ForgotPasswordFormSchema } from "@/lib/zod";
+
 import { cn } from "@/lib/utils";
-import React, { useState, useEffect } from "react";
 
 interface ResendOTPButtonProps {
+  email: string;
   className?: string;
 }
 
-export const ResendOTPButton: React.FC<ResendOTPButtonProps> = ({
-  className,
-}) => {
+interface ResendOTPFormType {
+  email: string;
+}
+
+export const ResendOTPButton = ({ email, className }: ResendOTPButtonProps) => {
   const [timer, setTimer] = useState(30);
   const [isDisabled, setIsDisabled] = useState(true);
+
+  const mutation = useMutation({
+    mutationFn: async (data: ResendOTPFormType) => {
+      const response = await axiosAuthInstance.post("/forgot-password", {
+        email,
+      });
+
+      return response.data;
+    },
+  });
+
+  const handleResend = () => {
+    setTimer(30);
+    setIsDisabled(true);
+
+    const formValues = { email };
+
+     mutation.mutate(formValues, {
+       onSuccess: (data) => {
+         console.log("Success");
+       },
+      //  onSettled: (data) => {
+       //    setOpen(false);
+       //    resetCurrentStep();
+       //  }
+     });
+     
+  };
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -29,11 +71,6 @@ export const ResendOTPButton: React.FC<ResendOTPButtonProps> = ({
 
     return () => clearInterval(interval);
   }, [isDisabled]);
-
-  const handleResend = () => {
-    setTimer(30);
-    setIsDisabled(true);
-  };
 
   return (
     <button

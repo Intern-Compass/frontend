@@ -22,10 +22,12 @@ import { ForgotPasswordFormSchema } from "@/lib/zod";
 import { axiosAuthInstance } from "@/lib/axios";
 
 interface ForgotPasswordFormProps {
-  incrementCurrentStep: () => void
+  saveEmail: (email: string) => void;
+  incrementCurrentStep: () => void;
 }
 
 export const ForgotPasswordForm = ({
+  saveEmail,
   incrementCurrentStep,
 }: ForgotPasswordFormProps) => {
   const form = useForm<z.infer<typeof ForgotPasswordFormSchema>>({
@@ -44,22 +46,25 @@ export const ForgotPasswordForm = ({
   });
 
   function onSubmit(formData: z.infer<typeof ForgotPasswordFormSchema>) {
-     mutation.mutate(formData, {
-       onSuccess: (data) => {
-         incrementCurrentStep();
-       },
-     });
+    mutation.mutate(formData, {
+      onSuccess: (data) => {
+        saveEmail(formData.email);
+        incrementCurrentStep();
+      },
+    });
   }
 
   return (
-    <Form {...form} >
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-muted-foreground font-medium">Email</FormLabel>
+              <FormLabel className="text-muted-foreground font-medium">
+                Email
+              </FormLabel>
               <FormControl>
                 <Input placeholder="Enter Email" {...field} />
               </FormControl>
@@ -67,7 +72,12 @@ export const ForgotPasswordForm = ({
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full cursor-pointer rounded-3xl text-foreground font-medium">Continue</Button>
+        <Button
+          type="submit"
+          className="w-full cursor-pointer rounded-3xl text-foreground font-medium"
+        >
+          Continue
+        </Button>
       </form>
     </Form>
   );
