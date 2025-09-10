@@ -14,7 +14,7 @@ export default function Home() {
           <Link href="/intern/login">Intern</Link>
         </Button>
         <Button variant="link" asChild>
-          <Link href="/intern/supervisor">Supervisor</Link>
+          <Link href="/supervisor/login">Supervisor</Link>
         </Button>
       </main>
     </div>
