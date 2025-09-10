@@ -18,6 +18,7 @@ import { VerifyAccountForm } from "@/components/features/login/verify-account-fo
 import { ResetPasswordForm } from "@/components/features/login/reset-password-form";
 
 import Image from "next/image";
+import { maskEmail } from "@/lib/utils";
 
 const title = [
   "Reset your password",
@@ -39,7 +40,7 @@ export const ForgotPasswordDialog = () => {
 
   const description = [
     "Enter the email you used for registration and we'll send you a one time code to reset your password.",
-    `We have just sent a verification code to ${email}`,
+    `We have just sent a verification code to ${maskEmail(email)}`,
     "Enter your new password below",
   ];
 
