@@ -73,15 +73,14 @@ export const ForgotPasswordDialog = () => {
       saveEmail={saveEmail}
       incrementCurrentStep={incrementCurrentStep}
     />,
-    <VerifyAccountForm
-      key={1}
-      email={email}
-      incrementCurrentStep={incrementCurrentStep}
-      saveOtpCode={saveOtpCode}
-    />,
+    // <VerifyAccountForm
+    //   key={1}
+    //   email={email}
+    //   incrementCurrentStep={incrementCurrentStep}
+    //   saveOtpCode={saveOtpCode}
+    // />,
     <ResetPasswordForm
-      key={2}
-      otpCode={otpCode}
+      key={1}
       setOpen={setOpen}
       resetCurrentStep={resetCurrentStep}
     />,

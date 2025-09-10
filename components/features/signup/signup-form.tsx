@@ -648,7 +648,11 @@ export const SignupForm = () => {
         </form>
       </Form>
 
-      <VerifyAccountDialog open={open} setOpen={setOpen} />
+      <VerifyAccountDialog
+        email={form.getValues("email")}
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   );
 };
