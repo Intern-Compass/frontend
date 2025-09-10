@@ -168,6 +168,9 @@ export const ForgotPasswordFormSchema = z
 
 export const ResetPasswordFormSchema = z
   .object({
+    code: z.string().min(6, {
+      error: "Your verification code must be 6 digits long.",
+    }),
     newPassword: z
       .string()
       .min(8, {
