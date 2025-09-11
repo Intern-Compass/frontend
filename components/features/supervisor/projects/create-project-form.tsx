@@ -47,6 +47,7 @@ export const CreateProjectForm = () => {
     defaultValues: {
       title: "",
       description: "",
+      interns: "",
       comments: "",
     },
   });
@@ -128,7 +129,10 @@ export const CreateProjectForm = () => {
                     {field.value && field.value.length > 0 ? (
                       <ul className="w-full list-disc list-inside text-[#333] space-y-1 text-sm">
                         {field.value.map((file: File, index: number) => (
-                          <li key={index} className="break-words whitespace-normal">
+                          <li
+                            key={index}
+                            className="break-words whitespace-normal"
+                          >
                             {file.name}
                           </li>
                         ))}
