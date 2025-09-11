@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ReactSelect from "react-select";
 import CreatableReactSelect from "react-select/creatable";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -83,11 +83,19 @@ const departments: DepartmentOptionType[] = [
 ];
 
 export const SignupForm = () => {
+  const queryClient = useQueryClient();
+
   const [currentStep, setCurrentStep] = useState(0);
 
   // controls the verify-account dialog
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (!open) {
+      queryClient.removeQueries({ queryKey: ["signupData"] });
+    }
+  }, [open]);
 
   const form = useForm<z.infer<typeof SignupFormSchema>>({
     resolver: zodResolver(SignupFormSchema),
@@ -157,11 +165,14 @@ export const SignupForm = () => {
   };
 
   function onSubmit(data: z.infer<typeof SignupFormSchema>) {
-    mutation.mutate(data, {
-      onSuccess: (data) => {
-        setOpen(true);
-      },
-    });
+    queryClient.setQueryData(["signupData"], data);
+    setOpen(true);
+    // mutation.mutate(data, {
+    //   onSuccess: (data) => {
+    //     queryClient.setQueryData(["signupData"], data);
+    //     setOpen(true);
+    //   },
+    // });
 
     // toast(
     //       <div className="flex items-start gap-3 font-sans">
@@ -642,11 +653,7 @@ export const SignupForm = () => {
         </form>
       </Form>
 
-      <VerifyAccountDialog
-        email={form.getValues("email")}
-        open={open}
-        setOpen={setOpen}
-      />
+      <VerifyAccountDialog open={open} setOpen={setOpen} />
     </>
   );
 };

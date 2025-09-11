@@ -1,27 +1,28 @@
+"use client";
+
 import { useState, useEffect } from "react";
 
 import { z } from "zod";
 
 import { cn } from "@/lib/utils";
 
-import { useMutation } from "@tanstack/react-query";
-import { VerifyAccountFormSchema } from "@/lib/validation/intern";
-import { axiosAuthInstance } from "@/lib/axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { SignupFormSchema } from "@/lib/validation/intern";
+
+import { register } from "@/lib/api/intern";
 
 interface ResendOTPButtonProps {
   className?: string;
 }
 
 export const ResendOTPButton = ({ className }: ResendOTPButtonProps) => {
+  const queryClient = useQueryClient();
+
   const [timer, setTimer] = useState(30);
   const [isDisabled, setIsDisabled] = useState(true);
 
   const mutation = useMutation({
-    mutationFn: async (newUser: z.infer<typeof VerifyAccountFormSchema>) => {
-      const response = await axiosAuthInstance.post("/resend", newUser);
-
-      return response.data;
-    },
+    mutationFn: register,
   });
 
   useEffect(() => {
@@ -47,10 +48,15 @@ export const ResendOTPButton = ({ className }: ResendOTPButtonProps) => {
     setTimer(30);
     setIsDisabled(true);
 
-    // mutation.mutate(data, {
-    //   onSuccess: (data) => {
-    //   },
-    // });
+    const signupData = queryClient.getQueryData<
+      z.infer<typeof SignupFormSchema>
+    >(["signupData"]);
+
+    if (signupData) {
+      mutation.mutate(signupData, {
+        onSuccess: (data) => {},
+      });
+    }
   };
 
   return (
