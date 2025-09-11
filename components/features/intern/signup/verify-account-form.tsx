@@ -110,6 +110,7 @@ export const VerifyAccountForm = ({
 
         <Button
           type="submit"
+          disabled={mutation.isPending}
           className="w-full text-foreground font-medium rounded-3xl cursor-pointer"
         >
           Verify my account
