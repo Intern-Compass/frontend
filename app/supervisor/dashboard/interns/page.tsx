@@ -20,7 +20,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Rating, RatingButton } from '@/components/ui/shadcn-io/rating';
 
-import { RatingFormSchema } from "@/lib/zod";
+import { RatingFormSchema } from "@/lib/validation/supervisor";
 
 export default function InternsPage() {
 
