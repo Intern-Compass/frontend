@@ -34,13 +34,12 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { Upload as UploadIcon } from "lucide-react";
 
 import { Calendar } from "@/components/ui/calendar";
 
-
 import { cn } from "@/lib/utils";
 import { CreateProjectFormSchema } from "@/lib/zod";
-
 
 export const CreateProjectForm = () => {
   const form = useForm<z.infer<typeof CreateProjectFormSchema>>({
@@ -58,15 +57,24 @@ export const CreateProjectForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-auto space-y-7 mx-8"
+      >
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel className=" text-[#000000] text-center font-semibold">
+                Add Project
+              </FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input
+                  className="w-full text-[#000000] font-normal"
+                  placeholder="Project Title"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -77,9 +85,15 @@ export const CreateProjectForm = () => {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel className="text-[#000000] font-semibold">
+                Project Description
+              </FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input
+                  className="w-full text-[#000000] font-normal"
+                  placeholder="Project description"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,27 +104,66 @@ export const CreateProjectForm = () => {
           name="resources"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Resources & materials</FormLabel>
+              <FormLabel className="text-[#000000] font-semibold">
+                Add Resources & Materials
+              </FormLabel>
               <FormControl>
-                <Input
-                  type="file"
-                  onChange={(e) => field.onChange(e.target.files)}
-                />
+                <div>
+                  <Input
+                    id="resources-upload"
+                    type="file"
+                    multiple
+                    className="hidden"
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.files ? Array.from(e.target.files) : []
+                      )
+                    }
+                  />
+
+                  <label
+                    htmlFor="resources-upload"
+                    className="flex flex-col items-center justify-center cursor-pointer p-10 font-normal border border-[#E0E0E0] w-full"
+                  >
+                    {field.value && field.value.length > 0 ? (
+                      <ul className="w-full list-disc list-inside text-[#333] space-y-1 text-sm">
+                        {field.value.map((file: File, index: number) => (
+                          <li key={index} className="break-words whitespace-normal">
+                            {file.name}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <>
+                        <UploadIcon className="w-5 h-5 text-[#BFBFBF]" />
+                        <span className="text-[#BFBFBF] font-normal text-center">
+                          Upload resource(s)
+                        </span>
+                      </>
+                    )}
+                  </label>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="interns"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Interns</FormLabel>
+              <FormLabel className="text-[#000000] font-semibold">
+                Interns
+              </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
+                <FormControl className="w-full">
+                  <SelectTrigger className="w-full">
+                    <SelectValue
+                      className="text-[#C1C1C1] font-normal w-full"
+                      placeholder="Select Intern(s)"
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -128,7 +181,9 @@ export const CreateProjectForm = () => {
           name="due_date"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Due date</FormLabel>
+              <FormLabel className="text-[#000000] font-semibold">
+                Due date
+              </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -136,13 +191,14 @@ export const CreateProjectForm = () => {
                       variant={"outline"}
                       className={cn(
                         "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
+                        !field.value && "text-muted-foreground",
+                        "hover:bg-transparent hover:text-inherit"
                       )}
                     >
                       {field.value ? (
                         format(field.value, "PPP")
                       ) : (
-                        <span>Pick a date</span>
+                        <span className="font-normal">Enter Due Date</span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
@@ -172,11 +228,14 @@ export const CreateProjectForm = () => {
           name="comments"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Comments</FormLabel>
+              <FormLabel className="text-[#000000] font-semibold">
+                Add Comments{" "}
+                <span className="text-[#929292] font-medium">(Optional)</span>
+              </FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Tell us a little bit about yourself"
-                  className="resize-none"
+                  placeholder="If you enounter any issue, do reach out to me. All the best."
+                  className="resize-none w-full text-[#000000] font-normal"
                   {...field}
                 />
               </FormControl>
@@ -184,7 +243,11 @@ export const CreateProjectForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Create Project</Button>
+        <div className="flex justify-center">
+          <button className="py-2 px-8 w-full rounded-full text-[#000000] bg-[#F9C600] font-medium">
+            Create Project
+          </button>
+        </div>
       </form>
     </Form>
   );
