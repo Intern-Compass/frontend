@@ -23,7 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { CircleAlert } from "lucide-react";
 
-import { CreateTodoFormSchema } from "@/lib/zod";
+import { CreateTodoFormSchema } from "@/lib/validation/intern";
 import { cn } from "@/lib/utils";
 
 import { axiosAuthInstance } from "@/lib/axios";

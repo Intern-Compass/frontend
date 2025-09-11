@@ -5,7 +5,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 
 import { useMutation } from "@tanstack/react-query";
-import { VerifyAccountFormSchema } from "@/lib/zod";
+import { VerifyAccountFormSchema } from "@/lib/validation/intern";
 import { axiosAuthInstance } from "@/lib/axios";
 
 interface ResendOTPButtonProps {

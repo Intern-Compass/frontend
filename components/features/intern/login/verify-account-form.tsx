@@ -25,7 +25,7 @@ import {
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 import { ResendOTPButton } from "./resend-otp-button";
-import { VerifyAccountFormSchema } from "@/lib/zod";
+import { VerifyAccountFormSchema } from "@/lib/validation/intern";
 import { axiosAuthInstance } from "@/lib/axios";
 import { CircleAlert } from "lucide-react";
 
@@ -134,6 +134,7 @@ export const VerifyAccountForm = ({
 
         <Button
           type="submit"
+          disabled={mutation.isPending}
           className="w-full text-foreground font-medium rounded-3xl cursor-pointer"
         >
           Verify my account

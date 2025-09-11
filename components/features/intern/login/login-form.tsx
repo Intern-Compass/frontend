@@ -25,32 +25,20 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { CircleAlert, EyeIcon, EyeOffIcon } from "lucide-react";
 
-import { LoginFormSchema } from "@/lib/zod";
+import { LoginFormSchema } from "@/lib/validation/intern";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 import { axiosAuthInstance } from "@/lib/axios";
 import { isAxiosError } from "axios";
 import { ForgotPasswordDialog } from "@/components/features/intern/login/forgot-password-dialog";
+import { login } from "@/lib/api/intern";
 
 export const LoginForm = () => {
   const router = useRouter();
 
   const mutation = useMutation({
-    mutationFn: async (user: z.infer<typeof LoginFormSchema>) => {
-      const params = new URLSearchParams();
-      params.append("username", user.email);
-      params.append("password", user.password);
-      params.append("rememberMe", user.rememberMe.toString());
-
-      const response = await axiosAuthInstance.post("/token", params, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
-
-      return response.data;
-    },
+    mutationFn: login,
   });
 
   const [showPassword, setShowPassword] = useState(false);

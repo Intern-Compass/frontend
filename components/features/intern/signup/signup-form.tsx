@@ -35,13 +35,14 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-import { SignupFormSchema } from "@/lib/zod";
+import { SignupFormSchema } from "@/lib/validation/intern";
 
 import { EyeIcon, EyeOffIcon, CircleAlert } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { axiosAuthInstance } from "@/lib/axios";
 import { VerifyAccountDialog } from "@/components/features/intern/signup/verify-account-dialog";
+import { register } from "@/lib/api/intern";
 
 interface SkillOptionType {
   value: string;
@@ -103,14 +104,7 @@ export const SignupForm = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: async (newUser: z.infer<typeof SignupFormSchema>) => {
-      const response = await axiosAuthInstance.post(
-        "/register-intern",
-        newUser
-      );
-
-      return response.data;
-    },
+    mutationFn: register,
     //   onSuccess: () => {
     //     // redirect("/login");
     //   },

@@ -25,7 +25,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { CircleAlert, EyeIcon, EyeOffIcon } from "lucide-react";
 
-import { LoginFormSchema } from "@/lib/zod";
+import { LoginFormSchema } from "@/lib/validation/intern";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
