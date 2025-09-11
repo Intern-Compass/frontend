@@ -74,6 +74,7 @@ export const ForgotPasswordForm = ({
         />
         <Button
           type="submit"
+          disabled={mutation.isPending}
           className="w-full cursor-pointer rounded-3xl text-foreground font-medium"
         >
           Continue

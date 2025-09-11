@@ -226,6 +226,7 @@ export const ResetPasswordForm = ({
         />
         <Button
           type="submit"
+          disabled={mutation.isPending}
           className="w-full rounded-3xl text-foreground cursor-pointer font-medium"
         >
           Reset Password
