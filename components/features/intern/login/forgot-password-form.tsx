@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,8 +18,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { ForgotPasswordFormSchema } from "@/lib/zod";
+import { ForgotPasswordFormSchema } from "@/lib/validation/intern";
 import { axiosAuthInstance } from "@/lib/axios";
+import { forgotPassword } from "@/lib/api/intern";
 
 interface ForgotPasswordFormProps {
   saveEmail: (email: string) => void;
@@ -30,6 +31,8 @@ export const ForgotPasswordForm = ({
   saveEmail,
   incrementCurrentStep,
 }: ForgotPasswordFormProps) => {
+  const queryClient = useQueryClient();
+
   const form = useForm<z.infer<typeof ForgotPasswordFormSchema>>({
     resolver: zodResolver(ForgotPasswordFormSchema),
     defaultValues: {
@@ -38,17 +41,14 @@ export const ForgotPasswordForm = ({
   });
 
   const mutation = useMutation({
-    mutationFn: async (data: z.infer<typeof ForgotPasswordFormSchema>) => {
-      const response = await axiosAuthInstance.post("/forgot-password", data);
-
-      return response.data;
-    },
+    mutationFn: forgotPassword,
   });
 
   function onSubmit(formData: z.infer<typeof ForgotPasswordFormSchema>) {
     mutation.mutate(formData, {
-      onSuccess: (data) => {
+      onSuccess: (data, variables) => {
         saveEmail(formData.email);
+        queryClient.setQueryData(["forgotPasswordData"], variables);
         incrementCurrentStep();
       },
     });

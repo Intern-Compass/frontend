@@ -34,7 +34,7 @@ import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { ResetPasswordFormSchema } from "@/lib/zod";
+import { ResetPasswordFormSchema } from "@/lib/validation/intern";
 import { axiosAuthInstance } from "@/lib/axios";
 
 interface ResetPasswordFormProps {
