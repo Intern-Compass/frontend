@@ -39,7 +39,7 @@ import { Calendar } from "@/components/ui/calendar";
 
 
 import { cn } from "@/lib/utils";
-import { CreateProjectFormSchema } from "@/lib/zod";
+import { CreateProjectFormSchema } from "@/lib/validation/intern";
 
 
 export const CreateProjectForm = () => {
