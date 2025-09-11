@@ -164,15 +164,13 @@ export const SignupForm = () => {
     }
   };
 
-  function onSubmit(data: z.infer<typeof SignupFormSchema>) {
-    queryClient.setQueryData(["signupData"], data);
-    setOpen(true);
-    // mutation.mutate(data, {
-    //   onSuccess: (data) => {
-    //     queryClient.setQueryData(["signupData"], data);
-    //     setOpen(true);
-    //   },
-    // });
+  function onSubmit(formData: z.infer<typeof SignupFormSchema>) {
+    mutation.mutate(formData, {
+      onSuccess: (data) => {
+        queryClient.setQueryData(["signupData"], data);
+        setOpen(true);
+      },
+    });
 
     // toast(
     //       <div className="flex items-start gap-3 font-sans">
