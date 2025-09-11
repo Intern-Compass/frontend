@@ -254,3 +254,38 @@ export const CreateTodoFormSchema = z
       .default(format(new Date(), "yyyy-MM-dd'T'HH:mm:ss")),
   })
   .required();
+
+export const CreateProjectFormSchema = z
+  .object({
+    title: z
+      .string()
+      .min(1, {
+        error: "Please provide a valid title.",
+      })
+      .trim(),
+    description: z
+      .string()
+      .min(1, {
+        error: "Please provide a valid description.",
+      })
+      .trim(),
+    resources: z
+      .any()
+      .refine((files) => files?.length === 1, "File is required.")
+      .refine(
+        (files) => files?.[0]?.size <= 5 * 1024 * 1024,
+        "File must be less than 5MB."
+      ),
+    interns: z
+      .string()
+      .min(1, {
+        error: "Please provide an intern.",
+      })
+      .trim(),
+    due_date: z.iso.datetime({
+      local: true,
+      error: "Please provide a valid due date.",
+    }),
+    comments: z.string().trim(),
+  })
+  .required();
