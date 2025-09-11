@@ -11,12 +11,12 @@ import { Separator } from "@/components/ui/separator";
 import { Bell, CircleQuestionMark, Moon } from "lucide-react";
 
 const pathPrefixes: Record<string, string> = {
-    "/dashboard/account": "Account",
-    "/dashboard/milestones": "Milestones",
-    "/dashboard/projects": "Projects",
-    "/dashboard/community": "Community",
+    "/supervisor/dashboard/profile": "Profile",
+    "/supervisor/dashboard/interns": "My Interns",
+    "/supervisor/dashboard/projects": "Projects",
+    "/supervisor/dashboard/community": "Community",
     // Order is important here: dashboard has to be last
-    "/dashboard": "Dashboard",
+    "/supervisor/dashboard": "Dashboard",
 };
 
 const getPageTitle = (pathname: string) => {
