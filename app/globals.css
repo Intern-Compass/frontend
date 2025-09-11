@@ -74,6 +74,8 @@
   --color-card: rgba(252, 252, 252, 1);
   --color-border: rgba(224, 224, 224, 1);
   --color-link: rgba(148, 115, 0, 1);
+  --color-warning-base: rgba(255, 132, 71, 1);
+  --color-warning-lighter: rgba(255, 241, 235, 1);
 
   --color-sidebar-foreground: rgba(32, 32, 32, 1);
   --color-sidebar-background: rgba(249, 249, 249, 1);
