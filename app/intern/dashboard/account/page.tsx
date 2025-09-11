@@ -21,7 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { UsersRound } from "lucide-react";
 
-import { ProfileFormSchema } from "@/lib/zod";
+import { ProfileFormSchema } from "@/lib/validation/intern";
 
 export default function AccountPage() {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
