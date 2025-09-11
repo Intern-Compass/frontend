@@ -21,7 +21,7 @@ export const CreateProjectDialog = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New Project</DialogTitle>
+          <DialogTitle className="text-center py-1 w-full">Add New Project</DialogTitle>
         </DialogHeader>
         <ScrollArea className="max-h-[70vh]">
           <CreateProjectForm />
