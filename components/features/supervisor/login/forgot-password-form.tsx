@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { ForgotPasswordFormSchema } from "@/lib/zod";
+import { ForgotPasswordFormSchema } from "@/lib/validation/intern";
 import { axiosAuthInstance } from "@/lib/axios";
 
 interface ForgotPasswordFormProps {
@@ -74,6 +74,7 @@ export const ForgotPasswordForm = ({
         />
         <Button
           type="submit"
+          disabled={mutation.isPending}
           className="w-full cursor-pointer rounded-3xl text-foreground font-medium"
         >
           Continue
