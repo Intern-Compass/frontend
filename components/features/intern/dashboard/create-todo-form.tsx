@@ -118,7 +118,7 @@ export const CreateTodoForm = () => {
               <FormControl>
                 <Textarea
                   placeholder="Type your message here."
-                  className="placeholder:text-gray-400 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                  className="resize-none h-25 placeholder:text-gray-400 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                   {...field}
                 />
               </FormControl>
