@@ -12,15 +12,13 @@ export const Community = () => {
         <h2 className="text-lg leading-7">Community</h2>
 
         <Button asChild variant="link" className="font-medium text-link">
-          <Link href="/intern/dashboard/community">
-          View all
-          </Link>
+          <Link href="/intern/dashboard/community">View all</Link>
         </Button>
       </header>
 
       <article className="border border-border rounded-[0.625rem] py-4.5 px-3">
         <div className="flex gap-x-2.5">
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2">
             <Avatar className="w-10 h-10">
               <AvatarImage src="https://gihub.com/shadcn.png" />
               <AvatarFallback className="text-base-color bg-secondary">
@@ -29,7 +27,7 @@ export const Community = () => {
             </Avatar>
             <div>
               <div className="gap-y-1 mb-7.75">
-                <div className="flex items-center gap-7.5">
+                <div className="flex flex-col items-center gap-7.5">
                   <h3 className="text-xl leading-6">Opemipo Ashiru</h3>
                   <div className="flex items-center gap-1.25">
                     <Clock3 className="size-4 text-black/38" />
@@ -52,8 +50,10 @@ export const Community = () => {
                     design, this will help you gain knowledge in creating
                     user-centric designs. Please read up and let me know your
                     thoughts.
-                    <br />
-                    Link: <a href="#">https://medium.incluslivityforall.com</a>
+                    {/* Link:{" "}
+                    <a href="#" className="truncate w-10">
+                      https://medium.incluslivityforall.com
+                    </a> */}
                   </p>
                 </div>
               </div>

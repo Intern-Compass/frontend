@@ -2,73 +2,74 @@ import Image from "next/image";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+const supervisor = true;
+
 export const Supervisor = () => {
   return (
-    <>
-      {/* <section className="flex flex-col items-center text-center border border-border bg-card rounded-[0.625rem] p-6">
-        <h2 className="text-2xl font-medium leading-8 mb-6">My Supervisor</h2>
+    <section>
+      {supervisor ? (
+        <div className="flex flex-col text-center border border-border bg-card rounded-[0.625rem] p-6">
+          <h2 className="text-2xl font-medium leading-8">My Supervisor</h2>
 
-        <figure className="flex flex-col gap-8">
-        <Image
-          src="/assets/icons/hourglass.svg"
-          alt="Hourglass icon"
-          width={100}
-          height={100}
-          priority
-          />
-          <figcaption className="text-xl font-medium leading-7 mb-2">Awaiting</figcaption>
+          <Avatar className="w-20 h-20 my-6 self-center">
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback className="text-base-color bg-secondary">
+              OD
+            </AvatarFallback>
+          </Avatar>
+
+          <dl className="space-y-3.5">
+            <div className="flex flex-col justify-between items-center gap-4 sm:flex-row">
+              <dt className="font-medium text-muted-foreground text-sm leading-5">
+                Name:
+              </dt>
+              <dd className="leading-6">Chike Opara</dd>
+            </div>
+            <div className="flex flex-col justify-between items-center gap-4 sm:flex-row">
+              <dt className="font-medium text-muted-foreground text-sm leading-5">
+                Email
+              </dt>
+              <dd className="leading-6">Chike.opara@mtn.ng</dd>
+            </div>
+            <div className="flex flex-col justify-between items-center gap-4 sm:flex-row">
+              <dt className="font-medium text-muted-foreground text-sm leading-5">
+                Phone no:
+              </dt>
+              <dd className="leading-6">09114064513</dd>
+            </div>
+            <div className="flex flex-col justify-between items-center gap-4 sm:flex-row">
+              <dt className="font-medium text-muted-foreground text-sm leading-5">
+                Division:
+              </dt>
+              <dd className="leading-6">IT Department</dd>
+            </div>
+            <div className="flex flex-col justify-between items-center gap-4 sm:flex-row">
+              <dt className="font-medium text-muted-foreground text-sm leading-5">
+                Team:
+              </dt>
+              <dd className="leading-6">UI/UX Design</dd>
+            </div>
+          </dl>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center text-center border border-border bg-card rounded-[0.625rem] p-6">
+          <h2 className="text-2xl font-medium leading-8 mb-6">My Supervisor</h2>
+
+          <figure className="flex flex-col gap-8">
+            <Image
+              src="/assets/icons/hourglass.svg"
+              alt="Hourglass icon"
+              width={100}
+              height={100}
+              priority
+            />
+            <figcaption className="text-xl font-medium leading-7 mb-2">
+              Awaiting
+            </figcaption>
           </figure>
           <p className="leading-6">You are yet to be assigned a supervisor.</p>
-
-        <h2 className="text-2xl font-medium leading-8">My Supervisor</h2>
-
-      </section> */}
-      <section className="flex flex-col text-center border border-border bg-card rounded-[0.625rem] p-6">
-        {/* <h2 className="text-2xl font-medium leading-8 mb-6">My Supervisor</h2> */}
-
-
-        <h2 className="text-2xl font-medium leading-8">My Supervisor</h2>
-
-        <Avatar className="w-20 h-20 my-6 self-center">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback className="text-base-color bg-secondary">
-            OD
-          </AvatarFallback>
-        </Avatar>
-
-        <dl className="space-y-3.5">
-          <div className="flex justify-between items-center gap-4">
-            <dt className="font-medium text-muted-foreground text-sm leading-5">
-              Name:
-            </dt>
-            <dd className="leading-6">Chike Opara</dd>
-          </div>
-          <div className="flex justify-between items-center gap-4">
-            <dt className="font-medium text-muted-foreground text-sm leading-5">
-              Email
-            </dt>
-            <dd className="leading-6">Chike.opara@mtn.ng</dd>
-          </div>
-          <div className="flex justify-between items-center gap-4">
-            <dt className="font-medium text-muted-foreground text-sm leading-5">
-              Phone no:
-            </dt>
-            <dd className="leading-6">09114064513</dd>
-          </div>
-          <div className="flex justify-between items-center gap-4">
-            <dt className="font-medium text-muted-foreground text-sm leading-5">
-              Division:
-            </dt>
-            <dd className="leading-6">IT Department</dd>
-          </div>
-          <div className="flex justify-between items-center gap-4">
-            <dt className="font-medium text-muted-foreground text-sm leading-5">
-              Team:
-            </dt>
-            <dd className="leading-6">UI/UX Design</dd>
-          </div>
-        </dl>
-      </section>
-    </>
+        </div>
+      )}
+    </section>
   );
 };
