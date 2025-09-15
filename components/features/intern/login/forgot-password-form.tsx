@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,20 +19,15 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { ForgotPasswordFormSchema } from "@/lib/validation/intern";
-import { axiosAuthInstance } from "@/lib/axios";
 import { forgotPassword } from "@/lib/api/intern";
 
 interface ForgotPasswordFormProps {
-  saveEmail: (email: string) => void;
-  incrementCurrentStep: () => void;
+  closeDialog: () => void;
 }
 
 export const ForgotPasswordForm = ({
-  saveEmail,
-  incrementCurrentStep,
+  closeDialog,
 }: ForgotPasswordFormProps) => {
-  const queryClient = useQueryClient();
-
   const form = useForm<z.infer<typeof ForgotPasswordFormSchema>>({
     resolver: zodResolver(ForgotPasswordFormSchema),
     defaultValues: {
@@ -46,10 +41,11 @@ export const ForgotPasswordForm = ({
 
   function onSubmit(formData: z.infer<typeof ForgotPasswordFormSchema>) {
     mutation.mutate(formData, {
-      onSuccess: (data, variables) => {
-        saveEmail(formData.email);
-        queryClient.setQueryData(["forgotPasswordData"], variables);
-        incrementCurrentStep();
+      onSuccess: (data) => {
+        toast.success(
+          "If that email address is in our database, we will send you an email to reset your password."
+        );
+        closeDialog();
       },
     });
   }

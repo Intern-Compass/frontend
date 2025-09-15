@@ -1,12 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { toast } from "sonner";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -19,15 +20,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-
-import { REGEXP_ONLY_DIGITS } from "input-otp";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -38,27 +30,19 @@ import { ResetPasswordFormSchema } from "@/lib/validation/intern";
 import { axiosAuthInstance } from "@/lib/axios";
 import { resetPassword } from "@/lib/api/intern";
 
-interface ResetPasswordFormProps {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  resetCurrentStep: () => void;
-}
+export const ResetPasswordForm = () => {
+  const router = useRouter();
 
-interface ResetPasswordFormType {
-  code: string;
-  password: string;
-}
+  const searchParams = useSearchParams();
+  const resetLink = searchParams.get("reset_link") ?? "";
 
-export const ResetPasswordForm = ({
-  setOpen,
-  resetCurrentStep,
-}: ResetPasswordFormProps) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<z.infer<typeof ResetPasswordFormSchema>>({
     resolver: zodResolver(ResetPasswordFormSchema),
     defaultValues: {
-      code: "",
+      code: resetLink,
       newPassword: "",
       confirmPassword: "",
     },
@@ -76,12 +60,12 @@ export const ResetPasswordForm = ({
 
     mutation.mutate(formValues, {
       onSuccess: (data) => {
-        console.log("Success");
+        toast.success(
+          "If that email address is in our database, we will send you an email to reset your password."
+        );
+
+        router.replace("/intern/login");
       },
-      // onSettled: (data) => {
-      //    setOpen(false);
-      //    resetCurrentStep();
-      //  }
     });
   }
 
@@ -92,41 +76,6 @@ export const ResetPasswordForm = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8"
       >
-        <FormField
-          control={form.control}
-          name="code"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-muted-foreground font-medium">
-                OTP code
-              </FormLabel>
-              <FormControl>
-                <InputOTP
-                  autoFocus
-                  maxLength={6}
-                  pattern={REGEXP_ONLY_DIGITS}
-                  {...field}
-                >
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="newPassword"

@@ -1,6 +1,8 @@
 "use client";
 
-import { JSX, useEffect, useState } from "react";
+import Image from "next/image";
+
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -14,77 +16,13 @@ import {
 } from "@/components/ui/dialog";
 
 import { ForgotPasswordForm } from "@/components/features/intern/login/forgot-password-form";
-import { VerifyAccountForm } from "@/components/features/intern/login/verify-account-form";
-import { ResetPasswordForm } from "@/components/features/intern/login/reset-password-form";
-
-import Image from "next/image";
-import { maskEmail } from "@/lib/utils";
-
-const title = [
-  "Reset your password",
-  "Enter verification code",
-  "Create new password",
-];
-
-const images = [
-  "/assets/images/https_.png",
-  "/assets/images/verification.png",
-  "/assets/images/https_.png",
-];
 
 export const ForgotPasswordDialog = () => {
-  const [email, setEmail] = useState("");
-  const [otpCode, setOtpCode] = useState("");
   const [open, setOpen] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
 
-  const description = [
-    "Enter the email you used for registration and we'll send you a one time code to reset your password.",
-    `We have just sent a verification code to ${maskEmail(email)}`,
-    "Enter your new password below",
-  ];
-
-  const incrementCurrentStep = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
-  };
-
-  const resetCurrentStep = () => {
-    setCurrentStep(0);
-  };
-
-  const saveEmail = (email: string) => {
-    setEmail(email);
-  };
-
-  const saveOtpCode = (code: string) => {
-    setOtpCode(code);
-  };
-
-  // reset the dialog form state to the initial value when the dialog is closed
-  useEffect(() => {
-    if (!open) {
-      resetCurrentStep();
-    }
-  }, [open]);
-
-  const form: Record<number, JSX.Element> = [
-    <ForgotPasswordForm
-      key={0}
-      saveEmail={saveEmail}
-      incrementCurrentStep={incrementCurrentStep}
-    />,
-    // <VerifyAccountForm
-    //   key={1}
-    //   email={email}
-    //   incrementCurrentStep={incrementCurrentStep}
-    //   saveOtpCode={saveOtpCode}
-    // />,
-    <ResetPasswordForm
-      key={1}
-      setOpen={setOpen}
-      resetCurrentStep={resetCurrentStep}
-    />,
-  ];
+  const closeDialog = () => {
+    setOpen(false);
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -99,14 +37,20 @@ export const ForgotPasswordDialog = () => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex flex-col items-center gap-2 mb-2">
-            <Image src={images[currentStep]} alt="" width={116} height={116} />
-            {title[currentStep]}
+            <Image
+              src="/assets/images/https_.png"
+              alt=""
+              width={116}
+              height={116}
+            />
+            Reset your password
           </DialogTitle>
           <DialogDescription className="flex flex-col items-center text-center gap-2 mb-6">
-            {description[currentStep]}
+            Enter the email you used for registration and we'll send you a one
+            time code to reset your password.
           </DialogDescription>
         </DialogHeader>
-        {form[currentStep]}
+        <ForgotPasswordForm closeDialog={closeDialog} />
       </DialogContent>
     </Dialog>
   );
