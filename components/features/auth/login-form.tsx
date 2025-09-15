@@ -25,14 +25,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { CircleAlert, EyeIcon, EyeOffIcon } from "lucide-react";
 
-import { LoginFormSchema } from "@/lib/validation/intern";
+import { LoginFormSchema } from "@/lib/validation/auth";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-import { axiosAuthInstance } from "@/lib/axios";
+import { axiosAuthInstance, axiosInternInstance, axiosSkillsInstance } from "@/lib/axios";
 import { isAxiosError } from "axios";
-import { ForgotPasswordDialog } from "@/components/features/intern/login/forgot-password-dialog";
-import { login } from "@/lib/api/intern";
+import { ForgotPasswordDialog } from "@/components/features/auth/forgot-password-dialog";
+import { login } from "@/lib/api/auth";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -56,10 +56,17 @@ export const LoginForm = () => {
     setShowPassword((prevState) => !prevState);
   };
 
-  function onSubmit(data: z.infer<typeof LoginFormSchema>) {
-    mutation.mutate(data, {
-      onSuccess: () => {
+  function onSubmit(formData: z.infer<typeof LoginFormSchema>) {
+    mutation.mutate(formData, {
+      onSuccess: (data) => {
         router.push("/intern/dashboard");
+
+        axiosInternInstance.defaults.headers.common[
+          "Authorization"
+        ] = `${data.token_type} ${data.access_token}`;
+        axiosSkillsInstance.defaults.headers.common[
+          "Authorization"
+        ] = `${data.token_type} ${data.access_token}`;
       },
       onError: (error) => {
         console.log(error);

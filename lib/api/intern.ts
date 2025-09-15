@@ -1,48 +1,50 @@
 import { z } from "zod";
 
-import { axiosAuthInstance } from "@/lib/axios";
+import { axiosInternInstance, axiosSkillsInstance } from "@/lib/axios";
+import { CreateTodoFormSchema } from "@/lib/validation/intern";
 
-import {
-  LoginFormSchema,
-  SignupFormSchema,
-  ForgotPasswordFormSchema,
-  ResetPasswordFormSchema,
-} from "@/lib/validation/intern";
-
-export const login = async (user: z.infer<typeof LoginFormSchema>) => {
-  const params = new URLSearchParams();
-  params.append("username", user.email);
-  params.append("password", user.password);
-  params.append("rememberMe", user.rememberMe.toString());
-
-  const response = await axiosAuthInstance.post("/token", params, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
+export const getTasks = async () => {
+  const response = await axiosInternInstance.get("/tasks");
 
   return response.data;
 };
 
-export const register = async (newUser: z.infer<typeof SignupFormSchema>) => {
-  const response = await axiosAuthInstance.post("/register-intern", newUser);
-
-  return response.data;
-};
-
-export const forgotPassword = async (
-  data: z.infer<typeof ForgotPasswordFormSchema>
+export const createTodo = async (
+  data: z.infer<typeof CreateTodoFormSchema>
 ) => {
-  const response = await axiosAuthInstance.post("/forgot-password", data);
+  const response = await axiosInternInstance.post("/todos", data);
 
   return response.data;
 };
 
-export const resetPassword = async (data: {
-  code: string;
-  password: string;
-}) => {
-  const response = await axiosAuthInstance.post("/reset-password", data);
+export const toggleTodoCompleted = async (data: { id: string }) => {
+  const response = await axiosInternInstance.patch(
+    `/todos/${data.id}/complete`
+  );
+
+  return response.data;
+};
+
+export const getAllSkills = async () => {
+  const response = await axiosSkillsInstance.get("/");
+
+  return response.data;
+};
+
+export const getUserSkills = async () => {
+  const response = await axiosSkillsInstance.get("/get-user-skills");
+
+  return response.data;
+};
+
+export const attachNewSkills = async (data: { name: string }[]) => {
+  const response = await axiosSkillsInstance.post("/", data);
+
+  return response.data;
+};
+
+export const getProjects = async () => {
+  const response = await axiosInternInstance.get("/projects");
 
   return response.data;
 };

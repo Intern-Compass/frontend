@@ -5,8 +5,57 @@ export const axiosAuthInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  //   headers: {
-  //     Accept: "application/vnd.GitHub.v3+json",
-  //     //'Authorization': 'token <your-token-here> -- https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token'
-  //   },
+});
+
+export const axiosInternInstance = axios.create({
+  baseURL: "https://intern-compass-1.onrender.com/intern",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+axiosInternInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      if (typeof window !== "undefined") {
+        if (window.location.pathname.startsWith("/intern")) {
+          window.location.href = "/intern/login";
+        } else if (window.location.pathname.startsWith("/supervisor")) {
+          window.location.href = "/supervisor/login";
+        } else {
+          window.location.href = "/";
+        }
+      }
+
+      return Promise.reject(error);
+    }
+  }
+);
+
+export const axiosSupervisorInstance = axios.create({
+  baseURL: "https://intern-compass-1.onrender.com/supervisor",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+axiosSupervisorInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
+
+      return Promise.reject(error);
+    }
+  }
+);
+
+export const axiosSkillsInstance = axios.create({
+  baseURL: "https://intern-compass-1.onrender.com/skills",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });

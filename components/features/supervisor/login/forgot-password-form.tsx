@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { ForgotPasswordFormSchema } from "@/lib/validation/intern";
+import { ForgotPasswordFormSchema } from "@/lib/validation/auth";
 import { axiosAuthInstance } from "@/lib/axios";
 
 interface ForgotPasswordFormProps {

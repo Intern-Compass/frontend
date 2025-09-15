@@ -2,7 +2,7 @@
 
 import { useRouter, redirect } from "next/navigation";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -26,19 +26,21 @@ import { CircleAlert } from "lucide-react";
 import { CreateTodoFormSchema } from "@/lib/validation/intern";
 import { cn } from "@/lib/utils";
 
-import { axiosAuthInstance } from "@/lib/axios";
+import { axiosInternInstance } from "@/lib/axios";
 import { format } from "date-fns";
 
-export const CreateTodoForm = () => {
+interface CreateTodoFormProps {
+  closeDialog: () => void;
+}
+
+export const CreateTodoForm = ({ closeDialog }: CreateTodoFormProps) => {
   const router = useRouter();
 
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
-    mutationFn: async (newTodo: {
-      title: string;
-      description: string;
-      date: string;
-    }) => {
-      const response = await axiosAuthInstance.post("/token", newTodo);
+    mutationFn: async (newTodo: { title: string; description: string }) => {
+      const response = await axiosInternInstance.post("/todos", newTodo);
 
       console.log(response.data);
       return response.data;
@@ -57,7 +59,9 @@ export const CreateTodoForm = () => {
     console.log(data);
     mutation.mutate(data, {
       onSuccess: () => {
-        // router.push("/intern/dashboard");
+        closeDialog();
+
+        queryClient.invalidateQueries({ queryKey: ["todos"] });
       },
       onError: (error) => {
         // console.log(error);

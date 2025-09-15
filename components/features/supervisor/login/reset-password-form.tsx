@@ -33,8 +33,7 @@ import { Input } from "@/components/ui/input";
 
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { ResetPasswordFormSchema } from "@/lib/validation/intern";
+import { ResetPasswordFormSchema } from "@/lib/validation/auth";
 import { axiosAuthInstance } from "@/lib/axios";
 
 interface ResetPasswordFormProps {
@@ -57,7 +56,7 @@ export const ResetPasswordForm = ({
   const form = useForm<z.infer<typeof ResetPasswordFormSchema>>({
     resolver: zodResolver(ResetPasswordFormSchema),
     defaultValues: {
-      code: "",
+      token: "",
       newPassword: "",
       confirmPassword: "",
     },
@@ -73,7 +72,7 @@ export const ResetPasswordForm = ({
 
   async function onSubmit(formData: z.infer<typeof ResetPasswordFormSchema>) {
     const formValues = {
-      code: formData.code,
+      code: formData.token,
       password: formData.newPassword,
     };
 
@@ -97,7 +96,7 @@ export const ResetPasswordForm = ({
       >
         <FormField
           control={form.control}
-          name="code"
+          name="token"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-muted-foreground font-medium">

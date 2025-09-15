@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,10 +10,17 @@ import {
 } from "@/components/ui/dialog";
 
 import { CreateTodoForm } from "./create-todo-form";
+import { useState } from "react";
 
 export const CreateTodoDialog = () => {
+  const [open, setOpen] = useState(false);
+
+  const closeDialog = () => {
+    setOpen(false);
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="link" className="font-medium text-link">
           Create
@@ -23,7 +32,7 @@ export const CreateTodoDialog = () => {
             Create To-Do List
           </DialogTitle>
         </DialogHeader>
-        <CreateTodoForm />
+        <CreateTodoForm closeDialog={closeDialog} />
       </DialogContent>
     </Dialog>
   );

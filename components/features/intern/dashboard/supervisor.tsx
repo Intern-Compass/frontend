@@ -1,10 +1,52 @@
+"use client";
+
 import Image from "next/image";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useQuery } from "@tanstack/react-query";
+import { axiosInternInstance } from "@/lib/axios";
 
-const supervisor = true;
+const NoSupervisor = () => {
+  return (
+    <div className="flex flex-col items-center text-center border border-border bg-card rounded-[0.625rem] p-6">
+      <h2 className="text-2xl font-medium leading-8 mb-6">My Supervisor</h2>
+
+      <figure className="flex flex-col gap-8">
+        <Image
+          src="/assets/icons/hourglass.svg"
+          alt="Hourglass icon"
+          width={100}
+          height={100}
+          priority
+        />
+        <figcaption className="text-xl font-medium leading-7 mb-2">
+          Awaiting
+        </figcaption>
+      </figure>
+      <p className="leading-6">You are yet to be assigned a supervisor.</p>
+    </div>
+  );
+};
 
 export const Supervisor = () => {
+  const {
+    isPending,
+    isError,
+    data: supervisor,
+    error,
+  } = useQuery({
+    queryKey: ["get-intern-supervisor"],
+    queryFn: async () => {
+      const response = await axiosInternInstance.get("/supervisor");
+
+      return response.data;
+    },
+  });
+
+  if (isPending) {
+    return <NoSupervisor />;
+  }
+
   return (
     <section>
       {supervisor ? (
@@ -52,23 +94,7 @@ export const Supervisor = () => {
           </dl>
         </div>
       ) : (
-        <div className="flex flex-col items-center text-center border border-border bg-card rounded-[0.625rem] p-6">
-          <h2 className="text-2xl font-medium leading-8 mb-6">My Supervisor</h2>
-
-          <figure className="flex flex-col gap-8">
-            <Image
-              src="/assets/icons/hourglass.svg"
-              alt="Hourglass icon"
-              width={100}
-              height={100}
-              priority
-            />
-            <figcaption className="text-xl font-medium leading-7 mb-2">
-              Awaiting
-            </figcaption>
-          </figure>
-          <p className="leading-6">You are yet to be assigned a supervisor.</p>
-        </div>
+        <NoSupervisor />
       )}
     </section>
   );

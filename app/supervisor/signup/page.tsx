@@ -1,11 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 
 import { Separator } from "@/components/ui/separator";
 
-import { LoginForm } from "@/components/features/supervisor/login/login-form";
+import { SignupForm } from "@/components/features/supervisor/signup/signup-form";
 
-export default function LoginPage() {
+export default function SignupPage() {
   return (
     <div className="py-6 px-8 h-screen min-h-screen">
       <div className="mb-8">
@@ -23,21 +23,22 @@ export default function LoginPage() {
           <header>
             <h1 className="font-medium text-4xl leading-10 mb-1">{"Y'ello"}</h1>
             <h2 className="md:text-xl leading-7">
-              Welcome to the Intern-Supervisor Matching Platform
+              Create an account to get started
             </h2>
           </header>
-          <main className="flex-1 mb-10">
-            <div className="md:max-w-full">
-              <LoginForm />
+          <main className="flex-1">
+            <div className="md:max-w-full mb-4.75">
+              <SignupForm />
               <p className="text-muted-foreground text-center text-sm">
-                {"Don't"} have an account?{" "}
+                Already have an account?{" "}
                 <Link
-                  href="/intern/signup"
+                  href="/login"
                   className="underline leading-5 text-sm text-foreground"
                 >
-                  Sign Up
+                  Login
                 </Link>
               </p>
+              
             </div>
           </main>
           <footer className="flex flex-wrap justify-center items-center gap-x-3 gap-y-6 text-sm md:flex-row">
@@ -65,7 +66,7 @@ export default function LoginPage() {
             width={461}
             height={609}
             priority
-            className="w-full max-h-[500px] mx-auto object-[50%_12.5%]"
+            className="w-full max-h-[609px] mx-auto object-[50%_12.5%]"
           />
           <figcaption className="bg-black px-10 py-[2.3125rem]">
             <p className="text-white text-4xl font-medium leading-10 mb-3">
