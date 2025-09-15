@@ -46,7 +46,7 @@ export const ForgotPasswordDialog = () => {
             Reset your password
           </DialogTitle>
           <DialogDescription className="flex flex-col items-center text-center gap-2 mb-6">
-            Enter the email you used for registration and we'll send you a one
+            Enter the email you used for registration and {"we'll"} send you a one
             time code to reset your password.
           </DialogDescription>
         </DialogHeader>
