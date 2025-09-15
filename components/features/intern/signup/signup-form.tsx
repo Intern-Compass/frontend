@@ -168,6 +168,9 @@ export const SignupForm = () => {
     mutation.mutate(formData, {
       onSuccess: (data) => {
         queryClient.setQueryData(["signupData"], data);
+        toast.success(
+          "A link to activate your account has been emailed to the address provided."
+        );
         setOpen(true);
       },
     });
