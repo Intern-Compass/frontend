@@ -32,7 +32,7 @@ export const ResetPasswordForm = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
-  const resetLink = searchParams.get("reset_link") ?? "";
+  const token = searchParams.get("reset_link") ?? "";
 
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -40,7 +40,7 @@ export const ResetPasswordForm = () => {
   const form = useForm<z.infer<typeof ResetPasswordFormSchema>>({
     resolver: zodResolver(ResetPasswordFormSchema),
     defaultValues: {
-      code: resetLink,
+      token,
       newPassword: "",
       confirmPassword: "",
     },
@@ -52,7 +52,7 @@ export const ResetPasswordForm = () => {
 
   async function onSubmit(formData: z.infer<typeof ResetPasswordFormSchema>) {
     const formValues = {
-      code: formData.code,
+      token: formData.token,
       password: formData.newPassword,
     };
 

@@ -256,8 +256,8 @@ export const ForgotPasswordFormSchema = z
 
 export const ResetPasswordFormSchema = z
   .object({
-    code: z.string().min(6, {
-      error: "Your verification code must be 6 digits long.",
+    token: z.string().min(1, {
+      error: "Please provide a valid token.",
     }),
     newPassword: z
       .string()
@@ -308,7 +308,7 @@ export const ResetPasswordFormSchema = z
 
 export const ResetPasswordApiSchema = ResetPasswordFormSchema.transform(
   (data) => ({
-    code: data.code,
+    token: data.token,
     password: data.newPassword,
   })
 );
