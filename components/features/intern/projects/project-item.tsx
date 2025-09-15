@@ -10,6 +10,7 @@ export interface ProjectItemProps {
   date: string;
   assigner: string;
   status: string;
+  onClick?: () => void
 }
 
 export const ProjectItem = ({
@@ -18,9 +19,10 @@ export const ProjectItem = ({
   date,
   assigner,
   status,
+  onClick,
 }: ProjectItemProps) => {
   return (
-    <li className="flex justify-between items-center gap-4 my-3.25 py-5 px-4.5 border border-border bg-card rounded-[0.625rem]">
+    <li onClick={onClick} className="flex justify-between items-center gap-4 my-3.25 py-5 px-4.5 border border-border bg-card rounded-[0.625rem] cursor-pointer">
       <div className="space-y-2">
         <h3 className="text-foreground font-medium leading-5">{name}</h3>
         <p className="text-secondary-foreground text-xs leading-4">
