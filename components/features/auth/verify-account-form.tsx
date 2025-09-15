@@ -23,8 +23,8 @@ import {
 import { useMutation } from "@tanstack/react-query";
 
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { ResendOTPButton } from "./resend-otp-button";
-import { VerifyAccountFormSchema } from "@/lib/validation/intern";
+import { ResendOTPButton } from "@/components/features/auth/resend-otp-button";
+import { VerifyAccountFormSchema } from "@/lib/validation/auth";
 
 import { axiosAuthInstance } from "@/lib/axios";
 import { useRouter } from "next/navigation";
@@ -50,7 +50,7 @@ export const VerifyAccountForm = ({
       onSuccess: (data) => {
         setOpen(false);
 
-        router.push("/intern/login");
+        router.push("/login");
       },
     });
   }

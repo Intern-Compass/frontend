@@ -1,9 +1,9 @@
 import Image from "next/image";
-import Link from "next/link";
 
 import { Separator } from "@/components/ui/separator";
 
-import { LoginForm } from "@/components/features/intern/login/login-form";
+import { LoginForm } from "@/components/features/auth/login-form";
+import { RegisterDialog } from "@/components/features/auth/register-dialog";
 
 export default function LoginPage() {
   return (
@@ -29,14 +29,9 @@ export default function LoginPage() {
           <main className="flex-1 mb-10">
             <div className="md:max-w-full">
               <LoginForm />
+
               <p className="text-muted-foreground text-center text-sm">
-                {"Don't"} have an account?{" "}
-                <Link
-                  href="/intern/signup"
-                  className="underline leading-5 text-sm text-foreground"
-                >
-                  Sign Up
-                </Link>
+                {"Don't"} have an account? <RegisterDialog />
               </p>
             </div>
           </main>

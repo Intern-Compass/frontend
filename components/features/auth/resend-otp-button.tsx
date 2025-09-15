@@ -7,9 +7,9 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { SignupFormSchema } from "@/lib/validation/intern";
+import { RegisterInternFormSchema } from "@/lib/validation/auth";
 
-import { register } from "@/lib/api/intern";
+import { registerIntern } from "@/lib/api/auth";
 
 interface ResendOTPButtonProps {
   className?: string;
@@ -22,7 +22,7 @@ export const ResendOTPButton = ({ className }: ResendOTPButtonProps) => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const mutation = useMutation({
-    mutationFn: register,
+    mutationFn: registerIntern,
   });
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export const ResendOTPButton = ({ className }: ResendOTPButtonProps) => {
     setIsDisabled(true);
 
     const signupData = queryClient.getQueryData<
-      z.infer<typeof SignupFormSchema>
+      z.infer<typeof RegisterInternFormSchema>
     >(["signupData"]);
 
     if (signupData) {

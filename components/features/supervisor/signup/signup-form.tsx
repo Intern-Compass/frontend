@@ -35,14 +35,14 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-import { RegisterInternFormSchema } from "@/lib/validation/auth";
+import { RegisterSupervisorFormSchema } from "@/lib/validation/auth";
 
 import { EyeIcon, EyeOffIcon, CircleAlert } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-
+import { axiosAuthInstance } from "@/lib/axios";
 import { VerifyAccountDialog } from "@/components/features/auth/verify-account-dialog";
-import { registerIntern } from "@/lib/api/auth";
+import { registerSupervisor } from "@/lib/api/auth";
 
 interface SkillOptionType {
   value: string;
@@ -97,22 +97,22 @@ export const SignupForm = () => {
     }
   }, [open]);
 
-  const form = useForm<z.infer<typeof RegisterInternFormSchema>>({
-    resolver: zodResolver(RegisterInternFormSchema),
+  const form = useForm<z.infer<typeof RegisterSupervisorFormSchema>>({
+    resolver: zodResolver(RegisterSupervisorFormSchema),
     defaultValues: {
       firstname: "",
       lastname: "",
       phone_number: "",
       email: "",
       password: "",
-      school: "",
+      position: "",
       work_location: "",
     },
     mode: currentStep === 0 ? "onChange" : "onSubmit",
   });
 
   const mutation = useMutation({
-    mutationFn: registerIntern,
+    mutationFn: registerSupervisor,
     //   onSuccess: () => {
     //     // redirect("/login");
     //   },
@@ -164,7 +164,7 @@ export const SignupForm = () => {
     }
   };
 
-  function onSubmit(formData: z.infer<typeof RegisterInternFormSchema>) {
+  function onSubmit(formData: z.infer<typeof RegisterSupervisorFormSchema>) {
     mutation.mutate(formData, {
       onSuccess: (data) => {
         queryClient.setQueryData(["signupData"], data);
@@ -174,36 +174,6 @@ export const SignupForm = () => {
         setOpen(true);
       },
     });
-
-    // toast(
-    //       <div className="flex items-start gap-3 font-sans">
-    //         <CircleAlert className="text-error-base" />
-
-    //         <div className="flex flex-col gap-2.5 text-sm leading-5">
-    //           <span className="text-foreground font-medium">
-    //             Invalid Email or Password.
-    //           </span>
-    //           <span className="text-foreground/75 font-normal">
-    //             Please check your credentials and try again.
-    //           </span>
-    //         </div>
-    //       </div>,
-    //       {
-    //         classNames: {
-    //           toast: "!bg-error-light",
-    //         },
-    //         position: "top-center",
-    //       }
-    //     )
-
-    // router.push("/intern/login");
-    // toast("You submitted the following values", {
-    //   description: (
-    //     <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
   }
 
   return (
@@ -362,19 +332,19 @@ export const SignupForm = () => {
 
             {currentStep === 1 && (
               <>
-                {/* School */}
+                {/* Position */}
                 <FormField
                   control={form.control}
-                  name="school"
+                  name="position"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
-                        School
+                        Position
                       </FormLabel>
                       <FormControl>
                         <Input
                           className="text-foreground border border-input p-3 leading-6 placeholder:text-muted-foreground-50"
-                          placeholder="Enter your school"
+                          placeholder="Enter your position"
                           {...field}
                         />
                       </FormControl>
@@ -461,104 +431,6 @@ export const SignupForm = () => {
                           ref={field.ref}
                         />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* Start Date */}
-                <FormField
-                  control={form.control}
-                  name="internship_start_date"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
-                        Internship start date
-                      </FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={
-                              field.value ? new Date(field.value) : undefined
-                            }
-                            onSelect={(date) => {
-                              if (date) {
-                                field.onChange(new Date().toISOString());
-                              } else {
-                                field.onChange(null);
-                              }
-                            }}
-                            captionLayout="dropdown"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* End Date */}
-                <FormField
-                  control={form.control}
-                  name="internship_end_date"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
-                        Internship end date
-                      </FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={
-                              field.value ? new Date(field.value) : undefined
-                            }
-                            onSelect={(date) => {
-                              if (date) {
-                                field.onChange(new Date().toISOString());
-                              } else {
-                                field.onChange(null);
-                              }
-                            }}
-                            captionLayout="dropdown"
-                          />
-                        </PopoverContent>
-                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}

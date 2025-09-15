@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { ForgotPasswordFormSchema } from "@/lib/validation/intern";
-import { forgotPassword } from "@/lib/api/intern";
+import { ForgotPasswordFormSchema } from "@/lib/validation/auth";
+import { forgotPassword } from "@/lib/api/auth";
 
 interface ForgotPasswordFormProps {
   closeDialog: () => void;

@@ -32,7 +32,7 @@ export default function SignupPage() {
               <p className="text-muted-foreground text-center text-sm">
                 Already have an account?{" "}
                 <Link
-                  href="/intern/login"
+                  href="/login"
                   className="underline leading-5 text-sm text-foreground"
                 >
                   Login

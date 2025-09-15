@@ -1,6 +1,12 @@
+"use client";
+
 import Link from "next/link";
 
+import { useQuery } from "@tanstack/react-query";
+
 import { Button } from "@/components/ui/button";
+
+import { axiosInternInstance } from "@/lib/axios";
 
 import { ProjectList } from "@/components/features/intern/dashboard/project-list";
 
@@ -11,28 +17,56 @@ export interface ProjectItemProps {
   date: string;
 }
 
-const projects = [
-  {
-    id: "1",
-    title: "Design Database Schema",
-    description: "Create compressive database for application",
-    date: "2025-09-10",
-  },
-  {
-    id: "2",
-    title: "Design Database Schema",
-    description: "Create compressive database for application",
-    date: "2025-09-10",
-  },
-  {
-    id: "3",
-    title: "Design Database Schema",
-    description: "Create compressive database for application",
-    date: "2025-09-10",
-  },
-];
+// const projects = [
+//   {
+//     id: "1",
+//     title: "Design Database Schema",
+//     description: "Create compressive database for application",
+//     date: "2025-09-10",
+//   },
+//   {
+//     id: "2",
+//     title: "Design Database Schema",
+//     description: "Create compressive database for application",
+//     date: "2025-09-10",
+//   },
+//   {
+//     id: "3",
+//     title: "Design Database Schema",
+//     description: "Create compressive database for application",
+//     date: "2025-09-10",
+//   },
+// ];
+
+const NoProjects = () => {
+  return (
+    <div className="rounded-[0.625rem] p-5 border border-border bg-card h-[132px] flex items-center justify-center">
+      <p className="text-muted-foreground leading-5 font-medium text-center">
+        No assigned project
+      </p>
+    </div>
+  );
+};
 
 export const Projects = () => {
+  const {
+    isPending,
+    isError,
+    data: projects,
+    error,
+  } = useQuery({
+    queryKey: ["projects"],
+    queryFn: async () => {
+      const response = await axiosInternInstance.get("/projects");
+
+      return response.data;
+    },
+  });
+
+  if (isPending) {
+    return <NoProjects />
+  }
+
   return (
     <section className="mb-6">
       <header className="mb-4.5 flex justify-between items-center gap-4">
@@ -46,11 +80,7 @@ export const Projects = () => {
       {projects.length > 0 ? (
         <ProjectList projects={projects} />
       ) : (
-        <div className="rounded-[0.625rem] p-5 border border-border bg-card h-[132px] flex items-center justify-center">
-          <p className="text-muted-foreground leading-5 font-medium text-center">
-            No assigned project
-          </p>
-        </div>
+        <NoProjects />
       )}
     </section>
   );

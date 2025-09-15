@@ -25,10 +25,8 @@ import { Input } from "@/components/ui/input";
 
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { ResetPasswordFormSchema } from "@/lib/validation/intern";
-import { axiosAuthInstance } from "@/lib/axios";
-import { resetPassword } from "@/lib/api/intern";
+import { ResetPasswordFormSchema } from "@/lib/validation/auth";
+import { resetPassword } from "@/lib/api/auth";
 
 export const ResetPasswordForm = () => {
   const router = useRouter();

@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { ForgotPasswordForm } from "@/components/features/intern/login/forgot-password-form";
+import { ForgotPasswordForm } from "@/components/features/auth/forgot-password-form";
 
 export const ForgotPasswordDialog = () => {
   const [open, setOpen] = useState(false);
