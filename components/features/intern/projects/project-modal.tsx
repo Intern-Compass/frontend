@@ -94,7 +94,7 @@ export const ProjectModal = ({ project }: ProjectModalProps) => {
       <div className="mb-16">
         <h2 className="text-xl font-bold text-foreground mb-3">Project Description</h2>
         <p className="text-muted-foreground leading-relaxed">
-          Learn how to integrate with RESTful APIs and implement comprehensive testing strategies. You'll work with real APIs, 
+          Learn how to integrate with RESTful APIs and implement comprehensive testing strategies. {"You'll"} work with real APIs, 
           handle authentication, error handling, and write unit and integration tests.
         </p>
       </div>
