@@ -25,7 +25,7 @@ import {
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 import { ResendOTPButton } from "./resend-otp-button";
-import { VerifyAccountFormSchema } from "@/lib/validation/intern";
+import { VerifyAccountFormSchema } from "@/lib/validation/auth";
 import { axiosAuthInstance } from "@/lib/axios";
 import { CircleAlert } from "lucide-react";
 

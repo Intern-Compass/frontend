@@ -8,7 +8,6 @@ import { useMutation } from "@tanstack/react-query";
 
 import { axiosAuthInstance } from "@/lib/axios";
 
-import { ForgotPasswordFormSchema } from "@/lib/validation/auth";
 
 import { cn } from "@/lib/utils";
 
