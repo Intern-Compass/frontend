@@ -20,14 +20,16 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { ResendOTPButton } from "@/components/features/auth/resend-otp-button";
-import { VerifyAccountFormSchema } from "@/lib/validation/auth";
+import { RegisterInternFormSchema, VerifyAccountFormSchema } from "@/lib/validation/auth";
 
 import { axiosAuthInstance } from "@/lib/axios";
 import { useRouter } from "next/navigation";
+
+import { matchInternToSupervisor } from "@/lib/api/supervisor";
 
 type VerifyAccountFormProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,7 +38,23 @@ type VerifyAccountFormProps = {
 export const VerifyAccountForm = ({
   setOpen,
 }: VerifyAccountFormProps) => {
+
+   const queryClient = useQueryClient();
+
+   const signupData = queryClient.getQueryData<
+         z.infer<typeof RegisterInternFormSchema>
+       >(["signupData"]);
+   
+  
+
   const router = useRouter();
+
+   const { isInitialLoading, isError, data, error, refetch, isFetching } =
+      useQuery({
+        queryKey: ["matchIntern"],
+        queryFn: matchInternToSupervisor,
+        enabled: !!signupData,
+      });
 
   const form = useForm<z.infer<typeof VerifyAccountFormSchema>>({
     resolver: zodResolver(VerifyAccountFormSchema),

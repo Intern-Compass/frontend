@@ -29,7 +29,12 @@ import { LoginFormSchema } from "@/lib/validation/auth";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-import { axiosAuthInstance, axiosInternInstance, axiosSkillsInstance } from "@/lib/axios";
+import {
+  axiosAuthInstance,
+  axiosInternInstance,
+  axiosSkillsInstance,
+  axiosSupervisorInstance,
+} from "@/lib/axios";
 import { isAxiosError } from "axios";
 import { ForgotPasswordDialog } from "@/components/features/auth/forgot-password-dialog";
 import { login } from "@/lib/api/auth";
@@ -59,14 +64,23 @@ export const LoginForm = () => {
   function onSubmit(formData: z.infer<typeof LoginFormSchema>) {
     mutation.mutate(formData, {
       onSuccess: (data) => {
-        router.push("/intern/dashboard");
+        if (data.user_type === "intern") {
+          router.push("/intern/dashboard");
 
-        axiosInternInstance.defaults.headers.common[
-          "Authorization"
-        ] = `${data.token_type} ${data.access_token}`;
-        axiosSkillsInstance.defaults.headers.common[
-          "Authorization"
-        ] = `${data.token_type} ${data.access_token}`;
+          axiosInternInstance.defaults.headers.common[
+            "Authorization"
+          ] = `${data.token_type} ${data.access_token}`;
+
+          axiosSkillsInstance.defaults.headers.common[
+            "Authorization"
+          ] = `${data.token_type} ${data.access_token}`;
+        } else if (data.user_type === "supervisor") {
+          router.push("/supervisor/dashboard");
+
+          axiosSupervisorInstance.defaults.headers.common[
+            "Authorization"
+          ] = `${data.token_type} ${data.access_token}`;
+        }
       },
       onError: (error) => {
         console.log(error);

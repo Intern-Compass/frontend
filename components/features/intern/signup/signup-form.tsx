@@ -62,7 +62,7 @@ const skillsOptions: SkillOptionType[] = [
   { value: "UI / UX", label: "UI/UX" },
 ];
 
-const departments: DepartmentOptionType[] = [
+export const departments: DepartmentOptionType[] = [
   { value: 0, label: "Chief Executive Officer Office" },
   { value: 1, label: "Chief Operating Officer Office" },
   { value: 2, label: "Company Secretariat" },

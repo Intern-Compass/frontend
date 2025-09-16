@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 import { LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -13,19 +11,31 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+
 export const Footer = () => {
+
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+    const logout = () => {
+      queryClient.clear();
+
+      router.push("/login");
+    };
+
+
   return (
     <SidebarFooter>
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton
-            asChild
-            className="py-5 px-2 hover:rounded-[9999px]"
+            onClick={logout}
+            className="py-5 px-2 hover:rounded-[9999px] flex items-center gap-3"
           >
-            <Link href="/intern/login" className="flex items-center gap-3">
-              <LogOut className="text-sidebar-foreground-70" />
-              <span className="text-foreground">Log out</span>
-            </Link>
+            <LogOut className="text-sidebar-foreground-70" />
+            <span className="text-foreground">Log out</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>

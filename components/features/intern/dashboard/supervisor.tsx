@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInternInstance } from "@/lib/axios";
+import { matchInternToSupervisor } from "@/lib/api/supervisor";
 
 const NoSupervisor = () => {
   return (
@@ -43,6 +44,13 @@ export const Supervisor = () => {
     },
   });
 
+  //  const response =
+  //    useQuery({
+  //      queryKey: ["matchIntern"],
+  //      queryFn: matchInternToSupervisor,
+  //     //  enabled: false,
+  //    });
+
   if (isPending) {
     return <NoSupervisor />;
   }
@@ -65,19 +73,19 @@ export const Supervisor = () => {
               <dt className="font-medium text-muted-foreground text-sm leading-5">
                 Name:
               </dt>
-              <dd className="leading-6">Chike Opara</dd>
+              <dd className="leading-6">{supervisor.name}</dd>
             </div>
             <div className="flex flex-col justify-between items-center gap-4 sm:flex-row">
               <dt className="font-medium text-muted-foreground text-sm leading-5">
                 Email
               </dt>
-              <dd className="leading-6">Chike.opara@mtn.ng</dd>
+              <dd className="leading-6">{supervisor.email}</dd>
             </div>
             <div className="flex flex-col justify-between items-center gap-4 sm:flex-row">
               <dt className="font-medium text-muted-foreground text-sm leading-5">
                 Phone no:
               </dt>
-              <dd className="leading-6">09114064513</dd>
+              <dd className="leading-6">{supervisor.phone_number}</dd>
             </div>
             <div className="flex flex-col justify-between items-center gap-4 sm:flex-row">
               <dt className="font-medium text-muted-foreground text-sm leading-5">

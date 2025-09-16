@@ -1,4 +1,4 @@
-import { ResetPasswordForm } from "@/components/features/intern/reset-password/reset-password-form";
+import { ResetPasswordForm } from "@/components/features/auth/reset-password-form";
 
 import Image from "next/image";
 
