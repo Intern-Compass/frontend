@@ -56,9 +56,9 @@ export const Profile = () => {
         <h2 className="text-2xl font-medium ml-2">My Interns</h2>
       </div>
       {/* Intern Details */}
-      {interns.map((intern: Intern) => {
+      {interns.map((intern: Intern, i: number) => {
         return (
-          <div className="flex justify-center items-start flex-col md:flex-row gap-8">
+          <div key={i} className="flex justify-center items-start flex-col md:flex-row gap-8">
             <div className=" rounded-full bg-primary">
               <Image
                 src="/assets/images/ellipse.png"
