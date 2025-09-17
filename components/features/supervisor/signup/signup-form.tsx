@@ -410,7 +410,9 @@ export const SignupForm = () => {
                   name="department"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Department</FormLabel>
+                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
+                        Department
+                      </FormLabel>
                       <FormControl>
                         <ReactSelect<DepartmentOptionType, false>
                           className="basic-single"
