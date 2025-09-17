@@ -23,7 +23,7 @@ export default function LoginPage() {
           <header>
             <h1 className="font-medium text-4xl leading-10 mb-1">{"Y'ello"}</h1>
             <h2 className="md:text-xl leading-7">
-              Welcome to the Intern-Supervisor Matching Platform
+              Welcome to the Intern Compass
             </h2>
           </header>
           <main className="flex-1 mb-10">
