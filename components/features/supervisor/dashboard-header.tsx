@@ -44,7 +44,7 @@ export const DashboardHeader = () => {
         <Moon className="w-5 h-5" />
 
         <Avatar className="h-10 w-10 rounded-full">
-          <AvatarImage src="htt://github.com/shadcn.png" />
+          <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback className="bg-secondary text-secondary-foreground leading-6">
             OD
           </AvatarFallback>

@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const axiosAuthInstance = axios.create({
   baseURL: "https://intern-compass-1.onrender.com/auth",
+  // withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -9,6 +10,7 @@ export const axiosAuthInstance = axios.create({
 
 export const axiosInternInstance = axios.create({
   baseURL: "https://intern-compass-1.onrender.com/intern",
+  // withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -35,6 +37,7 @@ axiosInternInstance.interceptors.response.use(
 
 export const axiosSupervisorInstance = axios.create({
   baseURL: "https://intern-compass-1.onrender.com/supervisor",
+  // withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -55,6 +58,7 @@ axiosSupervisorInstance.interceptors.response.use(
 
 export const axiosSkillsInstance = axios.create({
   baseURL: "https://intern-compass-1.onrender.com/skills",
+  // withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },

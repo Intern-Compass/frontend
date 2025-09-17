@@ -43,6 +43,7 @@ import { cn } from "@/lib/utils";
 
 import { VerifyAccountDialog } from "@/components/features/auth/verify-account-dialog";
 import { registerIntern } from "@/lib/api/auth";
+import { isAxiosError } from "axios";
 
 interface SkillOptionType {
   value: string;
@@ -113,33 +114,37 @@ export const SignupForm = () => {
 
   const mutation = useMutation({
     mutationFn: registerIntern,
-    //   onSuccess: () => {
-    //     // redirect("/login");
-    //   },
-    //   onError: (error) => {
-    //     console.log(error)
+    onSuccess: () => {
+      // redirect("/login");
+    },
+    onError: (error) => {
+      console.log(error);
 
-    //     // toast(
-    //     //   <div className="flex items-start gap-3 font-sans">
-    //     //     <CircleAlert className="text-error-base" />
+      if (isAxiosError(error)) {
+        if (error.status === 409) {
+          toast(
+            <div className="flex items-start gap-3 font-sans">
+              <CircleAlert className="text-error-base" />
 
-    //     //     <div className="flex flex-col gap-2.5 text-sm leading-5">
-    //     //       <span className="text-foreground font-medium">
-    //     //         Invalid Email or Password.
-    //     //       </span>
-    //     //       <span className="text-foreground/75 font-normal">
-    //     //         Please check your credentials and try again.
-    //     //       </span>
-    //     //     </div>
-    //     //   </div>,
-    //     //   {
-    //     //     classNames: {
-    //     //       toast: "!bg-error-light",
-    //     //     },
-    //     //     position: "top-center",
-    //     //   }
-    //     // );
-    //   }
+              <div className="flex flex-col gap-2.5 text-sm leading-5">
+                <span className="text-foreground font-medium">
+                  User already exists.
+                </span>
+                <span className="text-foreground/75 font-normal">
+                  Please log in with your registered email or phone number.
+                </span>
+              </div>
+            </div>,
+            {
+              classNames: {
+                toast: "!bg-error-light",
+              },
+              position: "top-center",
+            }
+          );
+        }
+      }
+    },
   });
 
   const togglePasswordVisibility = () => {
@@ -166,8 +171,9 @@ export const SignupForm = () => {
 
   function onSubmit(formData: z.infer<typeof RegisterInternFormSchema>) {
     mutation.mutate(formData, {
-      onSuccess: (data) => {
-        queryClient.setQueryData(["signupData"], data);
+      onSuccess: (_, variables) => {
+        queryClient.setQueryData(["signupData"], variables);
+        
         toast.success(
           "A link to activate your account has been emailed to the address provided."
         );
