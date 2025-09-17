@@ -32,7 +32,7 @@ export const ResetPasswordForm = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
-  const token = searchParams.get("reset_link") ?? "";
+  const token = searchParams.get("token") ?? "";
 
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
