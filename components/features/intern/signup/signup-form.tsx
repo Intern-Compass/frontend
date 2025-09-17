@@ -212,7 +212,7 @@ export const SignupForm = () => {
         <form
           method="POST"
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full"
+          className="w-full max-w-120"
         >
           <div className="space-y-6 my-8">
             {currentStep === 0 && (

@@ -179,7 +179,7 @@ export const LoginForm = () => {
           method="POST"
           encType="application/x-www-form-urlencoded"
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full my-8 mb-16"
+          className="w-full my-8 mb-16 max-w-120"
         >
           <FormField
             control={form.control}
