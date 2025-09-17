@@ -62,7 +62,7 @@ export const ResetPasswordForm = () => {
           "If that email address is in our database, we will send you an email to reset your password."
         );
 
-        router.replace("/intern/login");
+        router.replace("/login");
       },
     });
   }

@@ -196,7 +196,7 @@ export const SignupForm = () => {
     //       }
     //     )
 
-    // router.push("/intern/login");
+    // router.push("/login");
     // toast("You submitted the following values", {
     //   description: (
     //     <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
