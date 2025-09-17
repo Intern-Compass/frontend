@@ -12,23 +12,11 @@ export const LoginFormSchema = z
       .toLowerCase(),
     password: z
       .string()
-      .min(8, {
-        error: "Password must contain at least 8 characters.",
+      .min(1, {
+        error: "Please input your password.",
       })
       .max(64, {
         error: "Password cannot exceed 64 characters.",
-      })
-      .regex(/[a-z]/, {
-        error: "Password must contain at least one lowercase letter.",
-      })
-      .regex(/[A-Z]/, {
-        error: "Password must contain at least one uppercase letter.",
-      })
-      .regex(/\d/, {
-        error: "Password must contain at least one digit.",
-      })
-      .regex(/[^A-Za-z0-9]/, {
-        error: "Password must contain at least one special character.",
       }),
     rememberMe: z.boolean(),
   })
