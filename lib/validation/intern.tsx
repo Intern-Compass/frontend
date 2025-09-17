@@ -54,7 +54,7 @@ export const CreateProjectFormSchema = z
         error: "Please provide an intern.",
       })
       .trim(),
-    due_date: z.iso.datetime({
+    due_date: z.iso.date({
       error: "Please provide a valid due date.",
     }),
     comments: z.string().trim(),

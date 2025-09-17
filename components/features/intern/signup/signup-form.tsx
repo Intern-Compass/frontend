@@ -420,7 +420,7 @@ export const SignupForm = () => {
                             }
                             onSelect={(date) => {
                               if (date) {
-                                field.onChange(new Date().toISOString());
+                                field.onChange(format(date, "yyyy-MM-dd"));
                               } else {
                                 field.onChange(null);
                               }
@@ -503,7 +503,7 @@ export const SignupForm = () => {
                             }
                             onSelect={(date) => {
                               if (date) {
-                                field.onChange(new Date().toISOString());
+                                field.onChange(format(date, "yyyy-MM-dd"));
                               } else {
                                 field.onChange(null);
                               }
@@ -552,7 +552,7 @@ export const SignupForm = () => {
                             }
                             onSelect={(date) => {
                               if (date) {
-                                field.onChange(new Date().toISOString());
+                                field.onChange(format(date, "yyyy-MM-dd"));
                               } else {
                                 field.onChange(null);
                               }

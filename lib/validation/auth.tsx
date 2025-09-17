@@ -87,7 +87,7 @@ export const RegisterInternFormSchema = z
         error: "Password must contain at least one special character.",
       }),
     school: z.string().min(1, { error: "Please provide a valid school." }),
-    date_of_birth: z.iso.datetime({
+    date_of_birth: z.iso.date({
       error: "Please provide a valid date.",
     }),
     department: z
@@ -100,10 +100,10 @@ export const RegisterInternFormSchema = z
       .max(17, {
         error: "Please select a valid department.",
       }),
-    internship_start_date: z.iso.datetime({
+    internship_start_date: z.iso.date({
       error: "Please provide a valid date.",
     }),
-    internship_end_date: z.iso.datetime({
+    internship_end_date: z.iso.date({
       error: "Please provide a valid date.",
     }),
     skills: z
@@ -194,7 +194,7 @@ export const RegisterSupervisorFormSchema = z
         error: "Password must contain at least one special character.",
       }),
     position: z.string().min(1, { error: "Please provide a valid position." }),
-    date_of_birth: z.iso.datetime({
+    date_of_birth: z.iso.date({
       error: "Please provide a valid date.",
     }),
     department: z

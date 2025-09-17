@@ -214,7 +214,7 @@ export const CreateProjectForm = () => {
                     selected={field.value ? new Date(field.value) : undefined}
                     onSelect={(date) => {
                       if (date) {
-                        field.onChange(new Date().toISOString());
+                        field.onChange(format(date, "yyyy-MM-dd"));
                       } else {
                         field.onChange(null);
                       }
