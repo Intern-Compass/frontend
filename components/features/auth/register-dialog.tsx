@@ -38,7 +38,7 @@ export const RegisterDialog = () => {
               <User className="size-12.5" />
               <span className="text-lg">Are you an intern or supervisor?</span>
             </span>
-            <span className="flex justify-between">
+            <span className="flex flex-col items-center gap-4 md:flex-row">
               <Button
                 asChild
                 className="text-black rounded-[9999px] py-2 px-4 w-full max-w-55"
