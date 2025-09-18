@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const axiosAuthInstance = axios.create({
   baseURL: "https://intern-compass-1.onrender.com/auth",
-  // withCredentials: true,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -10,7 +10,7 @@ export const axiosAuthInstance = axios.create({
 
 export const axiosInternInstance = axios.create({
   baseURL: "https://intern-compass-1.onrender.com/intern",
-  // withCredentials: true,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -21,13 +21,7 @@ axiosInternInstance.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       if (typeof window !== "undefined") {
-        if (window.location.pathname.startsWith("/intern")) {
-          window.location.href = "/intern/login";
-        } else if (window.location.pathname.startsWith("/supervisor")) {
-          window.location.href = "/supervisor/login";
-        } else {
-          window.location.href = "/";
-        }
+        window.location.href = "/login";
       }
 
       return Promise.reject(error);
@@ -37,7 +31,7 @@ axiosInternInstance.interceptors.response.use(
 
 export const axiosSupervisorInstance = axios.create({
   baseURL: "https://intern-compass-1.onrender.com/supervisor",
-  // withCredentials: true,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -58,7 +52,7 @@ axiosSupervisorInstance.interceptors.response.use(
 
 export const axiosSkillsInstance = axios.create({
   baseURL: "https://intern-compass-1.onrender.com/skills",
-  // withCredentials: true,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
