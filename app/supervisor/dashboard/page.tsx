@@ -11,7 +11,7 @@ export default function DashboardPage() {
       <h2 className="mx-8 pt-7 font-medium">Welcome, Benita</h2>
       <h3 className="mx-8 font-normal ">What are you doing today?</h3>
       <p className="mx-8 font-normal pt-5">Overview</p>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mx-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mx-8 ">
         <div className="flex flex-col border-1 my-4 w-full h-auto rounded-lg">
           <span className="text-black font-bold pt-6 ml-4">256</span>
           <span className="text-gray-600 font-normal pb-6 ml-4">
