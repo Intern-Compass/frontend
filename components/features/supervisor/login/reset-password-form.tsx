@@ -34,7 +34,8 @@ import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 import { ResetPasswordFormSchema } from "@/lib/validation/auth";
-import { axiosAuthInstance } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
+import { resetPassword } from "@/lib/api/auth";
 
 interface ResetPasswordFormProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -63,16 +64,12 @@ export const ResetPasswordForm = ({
   });
 
   const mutation = useMutation({
-    mutationFn: async (data: ResetPasswordFormType) => {
-      const response = await axiosAuthInstance.post("/reset-password", data);
-
-      return response.data;
-    },
+    mutationFn: resetPassword
   });
 
   async function onSubmit(formData: z.infer<typeof ResetPasswordFormSchema>) {
     const formValues = {
-      code: formData.token,
+      token: formData.token,
       password: formData.newPassword,
     };
 

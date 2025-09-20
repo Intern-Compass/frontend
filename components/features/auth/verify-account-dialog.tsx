@@ -15,7 +15,7 @@ import {
 import { VerifyAccountForm } from "./verify-account-form";
 import { maskEmail } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
-import { RegisterInternFormSchema } from "@/lib/validation/auth";
+import { RegisterInternApiSchema, RegisterInternFormSchema } from "@/lib/validation/auth";
 
 type VerifyAccountDialogProps = {
   open: boolean;
@@ -28,7 +28,7 @@ export const VerifyAccountDialog = ({
 }: VerifyAccountDialogProps) => {
   const queryClient = useQueryClient();
 
-  const signupData = queryClient.getQueryData<z.infer<typeof RegisterInternFormSchema>>(
+  const signupData = queryClient.getQueryData<z.infer<typeof RegisterInternApiSchema>>(
     ["signupData"]
   );
   // console.log(signupData)

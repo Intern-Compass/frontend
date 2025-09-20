@@ -20,7 +20,7 @@ const departments = [
   "Fixed BroadBand",
   "Human Resources",
   "Information Technology",
-  "Internal Audit and Forensic Services",
+  "supervisoral Audit and Forensic Services",
   "Marketing",
   "Network",
   "Risk and Compliance",
@@ -32,7 +32,7 @@ export const AccountProfile = () => {
   const {
     isPending,
     isError,
-    data: intern,
+    data: supervisor,
     error,
   } = useQuery({
     queryKey: ["user"],
@@ -48,9 +48,9 @@ export const AccountProfile = () => {
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="p-4">
           <h3 className="text-foreground font-medium mb-2">Name</h3>
-          {intern ? (
-            <p className="text-muted-foreground text-sm">
-              {intern.firstname} {intern.lastname}
+          {supervisor ? (
+            <p className="text-muted-foreground text-sm truncate">
+              {supervisor.firstname} {supervisor.lastname}
             </p>
           ) : (
             <Skeleton className="h-5 w-30" />
@@ -58,41 +58,29 @@ export const AccountProfile = () => {
         </div>
         <div className="p-4">
           <h3 className="text-foreground font-medium mb-2">Email</h3>
-          {intern ? (
-            <p className="text-muted-foreground text-sm">{intern.email}</p>
-          ) : (
-            <Skeleton className="h-5 w-30" />
-          )}
-        </div>
-        <div className="p-4">
-          <h3 className="text-foreground font-medium mb-2">
-            Internship Duration
-          </h3>
-          {intern ? (
-            <p className="text-muted-foreground text-sm">
-              {differenceInMonths(
-                intern.internship_end_date,
-                intern.internship_start_date
-              )}{" "}
-              months
+          {supervisor ? (
+            <p className="text-muted-foreground text-sm truncate">
+              {supervisor.email}
             </p>
           ) : (
             <Skeleton className="h-5 w-30" />
           )}
         </div>
         <div className="p-4">
-          <h3 className="text-foreground font-medium mb-2">School</h3>
-          {intern ? (
-            <p className="text-muted-foreground text-sm">{intern.school}</p>
+          <h3 className="text-foreground font-medium mb-2">Phone no</h3>
+          {supervisor ? (
+            <p className="text-muted-foreground text-sm truncate">
+              {supervisor.phone_number}
+            </p>
           ) : (
             <Skeleton className="h-5 w-30" />
           )}
         </div>
         <div className="p-4">
-          <h3 className="text-foreground font-medium mb-2">Phone no</h3>
-          {intern ? (
-            <p className="text-muted-foreground text-sm">
-              {intern.phone_number}
+          <h3 className="text-foreground font-medium mb-2">Position</h3>
+          {supervisor ? (
+            <p className="text-muted-foreground text-sm truncate">
+              {supervisor.position}
             </p>
           ) : (
             <Skeleton className="h-5 w-30" />
@@ -100,9 +88,19 @@ export const AccountProfile = () => {
         </div>
         <div className="p-4">
           <h3 className="text-foreground font-medium mb-2">Department</h3>
-          {intern ? (
-            <p className="text-muted-foreground text-sm">
-              {departments[intern.department]}
+          {supervisor ? (
+            <p className="text-muted-foreground text-sm truncate">
+              {departments[supervisor.department]}
+            </p>
+          ) : (
+            <Skeleton className="h-5 w-30" />
+          )}
+        </div>
+        <div className="p-4">
+          <h3 className="text-foreground font-medium mb-2">Work location</h3>
+          {supervisor ? (
+            <p className="text-muted-foreground text-sm truncate">
+              {supervisor.work_location}
             </p>
           ) : (
             <Skeleton className="h-5 w-30" />

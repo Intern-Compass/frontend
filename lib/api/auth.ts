@@ -1,14 +1,16 @@
 import { z } from "zod";
 
-import { axiosAuthInstance } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
 
 import {
   LoginFormSchema,
   RegisterInternFormSchema,
   RegisterSupervisorFormSchema,
   ForgotPasswordFormSchema,
-  ResetPasswordFormSchema,
   ResetPasswordApiSchema,
+  VerifyAccountFormSchema,
+  RegisterInternApiSchema,
+  RegisterSupervisorApiSchema,
 } from "@/lib/validation/auth";
 
 export const login = async (user: z.infer<typeof LoginFormSchema>) => {
@@ -17,7 +19,7 @@ export const login = async (user: z.infer<typeof LoginFormSchema>) => {
   params.append("password", user.password);
   params.append("rememberMe", user.rememberMe.toString());
 
-  const response = await axiosAuthInstance.post("/token", params, {
+  const response = await axiosInstance.post("/auth/token", params, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
@@ -27,20 +29,28 @@ export const login = async (user: z.infer<typeof LoginFormSchema>) => {
 };
 
 export const registerIntern = async (
-  newIntern: z.infer<typeof RegisterInternFormSchema>
+  newIntern: z.infer<typeof RegisterInternApiSchema>
 ) => {
-  const response = await axiosAuthInstance.post("/register-intern", newIntern);
+  const response = await axiosInstance.post("/auth/register-intern", newIntern);
 
   return response.data;
 };
 
 export const registerSupervisor = async (
-  newSupervisor: z.infer<typeof RegisterSupervisorFormSchema>
+  newSupervisor: z.infer<typeof RegisterSupervisorApiSchema>
 ) => {
-  const response = await axiosAuthInstance.post(
-    "/register-supervisor",
+  const response = await axiosInstance.post(
+    "/auth/register-supervisor",
     newSupervisor
   );
+
+  return response.data;
+};
+
+export const verifyAccount = async (
+  newUser: z.infer<typeof VerifyAccountFormSchema>
+) => {
+  const response = await axiosInstance.post("/auth/verify-code", newUser);
 
   return response.data;
 };
@@ -48,7 +58,7 @@ export const registerSupervisor = async (
 export const forgotPassword = async (
   data: z.infer<typeof ForgotPasswordFormSchema>
 ) => {
-  const response = await axiosAuthInstance.post("/forgot-password", data);
+  const response = await axiosInstance.post("/auth/forgot-password", data);
 
   return response.data;
 };
@@ -56,7 +66,19 @@ export const forgotPassword = async (
 export const resetPassword = async (
   data: z.infer<typeof ResetPasswordApiSchema>
 ) => {
-  const response = await axiosAuthInstance.post("/reset-password", data);
+  const response = await axiosInstance.post("/auth/reset-password", data);
+
+  return response.data;
+};
+
+export const getUserDetails = async () => {
+  const response = await axiosInstance.get("/auth/get-user");
+
+  return response.data;
+};
+
+export const refreshToken = async () => {
+  const response = await axiosInstance.post("/auth/refresh");
 
   return response.data;
 };

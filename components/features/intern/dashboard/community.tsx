@@ -20,7 +20,7 @@ export const Community = () => {
         <div className="flex gap-x-2.5">
           <div className="flex flex-col gap-2">
             <Avatar className="w-10 h-10">
-              <AvatarImage src="https://gihub.com/shadcn.png" />
+              <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback className="text-base-color bg-secondary">
                 OD
               </AvatarFallback>

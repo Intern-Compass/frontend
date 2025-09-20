@@ -26,8 +26,9 @@ import { CircleAlert } from "lucide-react";
 import { CreateTodoFormSchema } from "@/lib/validation/intern";
 import { cn } from "@/lib/utils";
 
-import { axiosInternInstance } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
 import { format } from "date-fns";
+import { createTodo } from "@/lib/api/intern";
 
 interface CreateTodoFormProps {
   closeDialog: () => void;
@@ -39,12 +40,7 @@ export const CreateTodoForm = ({ closeDialog }: CreateTodoFormProps) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (newTodo: { title: string; description: string }) => {
-      const response = await axiosInternInstance.post("/todos", newTodo);
-
-      console.log(response.data);
-      return response.data;
-    },
+    mutationFn: createTodo
   });
 
   const form = useForm<z.infer<typeof CreateTodoFormSchema>>({

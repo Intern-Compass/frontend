@@ -13,7 +13,6 @@ import { UsersRound } from "lucide-react";
 
 import { ProfileFormSchema } from "@/lib/validation/intern";
 
-import { axiosSkillsInstance } from "@/lib/axios";
 import { attachNewSkills, getAllSkills } from "@/lib/api/intern";
 import { AccountForm } from "@/components/features/intern/account/account-form";
 import { AccountProfile } from "@/components/features/intern/account/account-profile";

@@ -6,9 +6,10 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
 
-import { axiosInternInstance } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
 
 import { ProjectList } from "@/components/features/intern/dashboard/project-list";
+import { getProjects } from "@/lib/api/intern";
 
 export interface ProjectItemProps {
   id: string;
@@ -56,15 +57,11 @@ export const Projects = () => {
     error,
   } = useQuery({
     queryKey: ["projects"],
-    queryFn: async () => {
-      const response = await axiosInternInstance.get("/projects");
-
-      return response.data;
-    },
+    queryFn: getProjects,
   });
 
   if (isPending) {
-    return <NoProjects />
+    return <NoProjects />;
   }
 
   return (

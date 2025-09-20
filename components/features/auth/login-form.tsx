@@ -29,12 +29,7 @@ import { LoginFormSchema } from "@/lib/validation/auth";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-import {
-  axiosAuthInstance,
-  axiosInternInstance,
-  axiosSkillsInstance,
-  axiosSupervisorInstance,
-} from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
 import { isAxiosError } from "axios";
 import { ForgotPasswordDialog } from "@/components/features/auth/forgot-password-dialog";
 import { login } from "@/lib/api/auth";
@@ -64,22 +59,16 @@ export const LoginForm = () => {
   function onSubmit(formData: z.infer<typeof LoginFormSchema>) {
     mutation.mutate(formData, {
       onSuccess: (data) => {
+        axiosInstance.defaults.headers.common[
+          "Authorization"
+        ] = `${data.token_type} ${data.access_token}`;
+
         if (data.user_type === "intern") {
+
           router.push("/intern/dashboard");
-
-          axiosInternInstance.defaults.headers.common[
-            "Authorization"
-          ] = `${data.token_type} ${data.access_token}`;
-
-          axiosSkillsInstance.defaults.headers.common[
-            "Authorization"
-          ] = `${data.token_type} ${data.access_token}`;
         } else if (data.user_type === "supervisor") {
-          router.push("/supervisor/dashboard");
 
-          axiosSupervisorInstance.defaults.headers.common[
-            "Authorization"
-          ] = `${data.token_type} ${data.access_token}`;
+          router.push("/supervisor/dashboard");
         }
       },
       onError: (error) => {
@@ -97,6 +86,27 @@ export const LoginForm = () => {
                   </span>
                   <span className="text-foreground/75 font-normal">
                     Please check your credentials and try again.
+                  </span>
+                </div>
+              </div>,
+              {
+                classNames: {
+                  toast: "!bg-error-light",
+                },
+                position: "top-center",
+              }
+            );
+          } else {
+            toast(
+              <div className="flex items-start gap-3 font-sans">
+                <CircleAlert className="text-error-base" />
+
+                <div className="flex flex-col gap-2.5 text-sm leading-5">
+                  <span className="text-foreground font-medium">
+                    Something went wrong.
+                  </span>
+                  <span className="text-foreground/75 font-normal">
+                    Please try again later.
                   </span>
                 </div>
               </div>,

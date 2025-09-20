@@ -4,8 +4,9 @@ import Image from "next/image";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
-import { axiosInternInstance } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
 import { matchInternToSupervisor } from "@/lib/api/supervisor";
+import { getInternSupervisor } from "@/lib/api/intern";
 
 const NoSupervisor = () => {
   return (
@@ -37,11 +38,7 @@ export const Supervisor = () => {
     error,
   } = useQuery({
     queryKey: ["get-intern-supervisor"],
-    queryFn: async () => {
-      const response = await axiosInternInstance.get("/supervisor");
-
-      return response.data;
-    },
+    queryFn: getInternSupervisor,
   });
 
   //  const response =

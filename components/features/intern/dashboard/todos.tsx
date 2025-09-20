@@ -5,7 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { CreateTodoDialog } from "@/components/features/intern/dashboard/create-todo-dialog";
 
 import { TodoList } from "@/components/features/intern/dashboard/todo-list";
-import { axiosInternInstance } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
+import { getTodos } from "@/lib/api/intern";
 
 export interface TodoItemProps {
   id: string;
@@ -54,11 +55,7 @@ export const Todos = () => {
     error,
   } = useQuery({
     queryKey: ["todos"],
-    queryFn: async () => {
-      const response = await axiosInternInstance.get("/todos");
-
-      return response.data;
-    },
+    queryFn: getTodos
   });
 
   if (isPending) {

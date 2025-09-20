@@ -40,7 +40,7 @@ import { RegisterSupervisorFormSchema } from "@/lib/validation/auth";
 import { EyeIcon, EyeOffIcon, CircleAlert } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { axiosAuthInstance } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
 import { VerifyAccountDialog } from "@/components/features/auth/verify-account-dialog";
 import { registerSupervisor } from "@/lib/api/auth";
 import { isAxiosError } from "axios";
@@ -61,6 +61,79 @@ const skillsOptions: SkillOptionType[] = [
   { value: "Frontend", label: "Front-end" },
   { value: "Backend", label: "Back-end" },
   { value: "UI / UX", label: "UI/UX" },
+];
+
+export const programmingLanguages = [
+  { value: "JavaScript", label: "JavaScript" },
+  { value: "TypeScript", label: "TypeScript" },
+  { value: "Python", label: "Python" },
+  { value: "Java", label: "Java" },
+  { value: "C#", label: "C#" },
+  { value: "C / C++", label: "C / C++" },
+  { value: "Go", label: "Go" },
+  { value: "Rust", label: "Rust" },
+  { value: "PHP", label: "PHP" },
+  { value: "Ruby", label: "Ruby" },
+  { value: "Swift", label: "Swift" },
+  { value: "Kotlin", label: "Kotlin" },
+  { value: "Dart", label: "Dart" },
+  { value: "Scala", label: "Scala" },
+  { value: "SQL / PL/SQL", label: "SQL / PL/SQL" },
+  { value: "Bash / Shell scripting", label: "Bash / Shell scripting" },
+];
+
+export const technicalPathways = [
+  { value: "Frontend Web Development", label: "Frontend Web Development" },
+  { value: "Backend / API Development", label: "Backend / API Development" },
+  { value: "Fullstack Development", label: "Fullstack Development" },
+  { value: "Mobile App Development", label: "Mobile App Development" },
+  { value: "Cloud Computing / DevOps", label: "Cloud Computing / DevOps" },
+  {
+    value: "Data Science / Machine Learning",
+    label: "Data Science / Machine Learning",
+  },
+  {
+    value: "Cybersecurity / Ethical Hacking",
+    label: "Cybersecurity / Ethical Hacking",
+  },
+  { value: "Embedded Systems / IoT", label: "Embedded Systems / IoT" },
+  { value: "Game Development", label: "Game Development" },
+  { value: "Blockchain / Web3", label: "Blockchain / Web3" },
+  { value: "Software Testing / QA", label: "Software Testing / QA" },
+  { value: "AI / NLP / Computer Vision", label: "AI / NLP / Computer Vision" },
+  {
+    value: "Database Administration / Big Data",
+    label: "Database Administration / Big Data",
+  },
+];
+
+export const softSkills = [
+  { value: "Communication", label: "Communication" },
+  { value: "Presentation Skills", label: "Presentation Skills" },
+  { value: "Active Listening", label: "Active Listening" },
+  { value: "Negotiation", label: "Negotiation" },
+  { value: "Leadership", label: "Leadership" },
+  { value: "Team Management", label: "Team Management" },
+  { value: "Project Management", label: "Project Management" },
+  { value: "Strategic Planning", label: "Strategic Planning" },
+  { value: "Decision Making", label: "Decision Making" },
+  { value: "Problem Solving", label: "Problem Solving" },
+  { value: "Critical Thinking", label: "Critical Thinking" },
+  { value: "Conflict Resolution", label: "Conflict Resolution" },
+  { value: "Time Management", label: "Time Management" },
+  { value: "Organization", label: "Organization" },
+  { value: "Adaptability / Flexibility", label: "Adaptability / Flexibility" },
+  { value: "Collaboration / Teamwork", label: "Collaboration / Teamwork" },
+  {
+    value: "Empathy / Emotional Intelligence",
+    label: "Empathy / Emotional Intelligence",
+  },
+  { value: "Customer Focus", label: "Customer Focus" },
+  { value: "Business Acumen", label: "Business Acumen" },
+  { value: "Innovation / Creativity", label: "Innovation / Creativity" },
+  { value: "Stakeholder Management", label: "Stakeholder Management" },
+  { value: "Change Management", label: "Change Management" },
+  { value: "Other", label: "Other" },
 ];
 
 const departments: DepartmentOptionType[] = [
@@ -107,6 +180,9 @@ export const SignupForm = () => {
       email: "",
       password: "",
       position: "",
+      technical_pathways: [],
+      programming_languages: [],
+      soft_skills: [],
       work_location: "",
     },
     mode: currentStep === 0 ? "onChange" : "onSubmit",
@@ -170,13 +246,75 @@ export const SignupForm = () => {
   };
 
   function onSubmit(formData: z.infer<typeof RegisterSupervisorFormSchema>) {
-    mutation.mutate(formData, {
+
+    const {
+      technical_pathways,
+      programming_languages,
+      soft_skills,
+      ...fields
+    } = formData;
+
+    const modifiedFormData = {
+      ...fields,
+      skills: [...technical_pathways, ...programming_languages, ...soft_skills],
+    };
+
+    mutation.mutate(modifiedFormData, {
       onSuccess: (_, variables) => {
         queryClient.setQueryData(["signupData"], variables);
         toast.success(
           "A link to activate your account has been emailed to the address provided."
         );
         setOpen(true);
+      },
+      onError: (error) => {
+        console.log(error);
+
+        if (isAxiosError(error)) {
+          if (error.status === 409) {
+            toast(
+              <div className="flex items-start gap-3 font-sans">
+                <CircleAlert className="text-error-base" />
+
+                <div className="flex flex-col gap-2.5 text-sm leading-5">
+                  <span className="text-foreground font-medium">
+                    User already exists.
+                  </span>
+                  <span className="text-foreground/75 font-normal">
+                    Please log in with your registered email or phone number.
+                  </span>
+                </div>
+              </div>,
+              {
+                classNames: {
+                  toast: "!bg-error-light",
+                },
+                position: "top-center",
+              }
+            );
+          } else {
+            toast(
+              <div className="flex items-start gap-3 font-sans">
+                <CircleAlert className="text-error-base" />
+
+                <div className="flex flex-col gap-2.5 text-sm leading-5">
+                  <span className="text-foreground font-medium">
+                    Something went wrong.
+                  </span>
+                  <span className="text-foreground/75 font-normal">
+                    Please try again later.
+                  </span>
+                </div>
+              </div>,
+              {
+                classNames: {
+                  toast: "!bg-error-light",
+                },
+                position: "top-center",
+              }
+            );
+          }
+        }
       },
     });
   }
@@ -445,17 +583,91 @@ export const SignupForm = () => {
                 {/* Skills */}
                 <FormField
                   control={form.control}
-                  name="skills"
+                  name="technical_pathways"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
-                        Skills
+                        Technical pathway
                       </FormLabel>
                       <FormControl>
                         <CreatableReactSelect<SkillOptionType, true>
                           isMulti
                           isClearable
-                          options={skillsOptions}
+                          options={technicalPathways}
+                          classNamePrefix="select"
+                          className="basic-multi-select w-full text-foreground border-muted-foreground-50 rounded-md text-sm placeholder:text-muted-foreground-50"
+                          placeholder="Type or select at least three skills"
+                          value={
+                            field.value?.map((val) => ({
+                              value: val.name,
+                              label: val.name,
+                            })) ?? []
+                          }
+                          onChange={(selected) =>
+                            field.onChange(
+                              selected.map((option) => ({ name: option.value }))
+                            )
+                          }
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          ref={field.ref}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {/* Skills */}
+                <FormField
+                  control={form.control}
+                  name="programming_languages"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
+                        Programming languages (if applicable)
+                      </FormLabel>
+                      <FormControl>
+                        <CreatableReactSelect<SkillOptionType, true>
+                          isMulti
+                          isClearable
+                          options={programmingLanguages}
+                          classNamePrefix="select"
+                          className="basic-multi-select w-full text-foreground border-muted-foreground-50 rounded-md text-sm placeholder:text-muted-foreground-50"
+                          placeholder="Type or select at least three skills"
+                          value={
+                            field.value?.map((val) => ({
+                              value: val.name,
+                              label: val.name,
+                            })) ?? []
+                          }
+                          onChange={(selected) =>
+                            field.onChange(
+                              selected.map((option) => ({ name: option.value }))
+                            )
+                          }
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          ref={field.ref}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {/* Skills */}
+                <FormField
+                  control={form.control}
+                  name="soft_skills"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-medium text-sm leading-5 text-muted-foreground">
+                        Soft skills
+                      </FormLabel>
+                      <FormControl>
+                        <CreatableReactSelect<SkillOptionType, true>
+                          isMulti
+                          isClearable
+                          options={softSkills}
                           classNamePrefix="select"
                           className="basic-multi-select w-full text-foreground border-muted-foreground-50 rounded-md text-sm placeholder:text-muted-foreground-50"
                           placeholder="Type or select at least three skills"

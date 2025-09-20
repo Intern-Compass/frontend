@@ -7,7 +7,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { RegisterInternFormSchema } from "@/lib/validation/auth";
+import { RegisterInternApiSchema, RegisterInternFormSchema } from "@/lib/validation/auth";
 
 import { registerIntern } from "@/lib/api/auth";
 
@@ -49,7 +49,7 @@ export const ResendOTPButton = ({ className }: ResendOTPButtonProps) => {
     setIsDisabled(true);
 
     const signupData = queryClient.getQueryData<
-      z.infer<typeof RegisterInternFormSchema>
+      z.infer<typeof RegisterInternApiSchema>
     >(["signupData"]);
 
     if (signupData) {

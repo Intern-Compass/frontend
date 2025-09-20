@@ -12,19 +12,28 @@ import {
 } from "@/components/ui/sidebar";
 
 import { useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getUserDetails } from "@/lib/api/auth";
 
 export const Footer = () => {
-
   const router = useRouter();
   const queryClient = useQueryClient();
 
-    const logout = () => {
-      queryClient.clear();
+  const {
+    isPending,
+    isError,
+    data: intern,
+    error,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUserDetails,
+  });
 
-      router.push("/login");
-    };
+  const logout = () => {
+    queryClient.clear();
 
+    router.push("/login");
+  };
 
   return (
     <SidebarFooter>
@@ -41,14 +50,14 @@ export const Footer = () => {
       </SidebarMenu>
       <div className="flex items-center gap-4">
         <Avatar className="h-10 w-10 rounded-full">
-          <AvatarImage src="htt://github.com/shadcn.png" />
+          <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback className="bg-info-light text-info-dark">
             OD
           </AvatarFallback>
         </Avatar>
         <div className="grid flex-1 text-left text-sm leading-tight text-sidebar-foreground">
           <span className="truncate font-medium text-sm leading-5">
-            Oluwafikunayomi
+            {intern?.firstname ?? ""}
           </span>
           <span className="truncate text-xs leading-4">Intern</span>
         </div>

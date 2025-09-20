@@ -6,10 +6,10 @@ import { z } from "zod";
 
 import { useMutation } from "@tanstack/react-query";
 
-import { axiosAuthInstance } from "@/lib/axios";
-
+import axiosInstance from "@/lib/axios";
 
 import { cn } from "@/lib/utils";
+import { forgotPassword } from "@/lib/api/auth";
 
 interface ResendOTPButtonProps {
   email: string;
@@ -25,13 +25,7 @@ export const ResendOTPButton = ({ email, className }: ResendOTPButtonProps) => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const mutation = useMutation({
-    mutationFn: async (data: ResendOTPFormType) => {
-      const response = await axiosAuthInstance.post("/forgot-password", {
-        email,
-      });
-
-      return response.data;
-    },
+    mutationFn: forgotPassword,
   });
 
   const handleResend = () => {
@@ -40,16 +34,15 @@ export const ResendOTPButton = ({ email, className }: ResendOTPButtonProps) => {
 
     const formValues = { email };
 
-     mutation.mutate(formValues, {
-       onSuccess: (data) => {
-         console.log("Success");
-       },
+    mutation.mutate(formValues, {
+      onSuccess: (data) => {
+        console.log("Success");
+      },
       //  onSettled: (data) => {
-       //    setOpen(false);
-       //    resetCurrentStep();
-       //  }
-     });
-     
+      //    setOpen(false);
+      //    resetCurrentStep();
+      //  }
+    });
   };
 
   useEffect(() => {

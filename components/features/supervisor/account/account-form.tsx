@@ -61,7 +61,7 @@ export const AccountForm = ({ hideForm }: AccountFormProps) => {
     error,
   } = useQuery({
     queryKey: ["allSkills"],
-    queryFn: getAllSkills,
+    queryFn: getAllSkills
   });
 
   const labelledSkills = (allSkills ?? []).map((skill: Skill) => ({

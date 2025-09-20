@@ -19,7 +19,8 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { ForgotPasswordFormSchema } from "@/lib/validation/auth";
-import { axiosAuthInstance } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
+import { forgotPassword } from "@/lib/api/auth";
 
 interface ForgotPasswordFormProps {
   saveEmail: (email: string) => void;
@@ -38,11 +39,7 @@ export const ForgotPasswordForm = ({
   });
 
   const mutation = useMutation({
-    mutationFn: async (data: z.infer<typeof ForgotPasswordFormSchema>) => {
-      const response = await axiosAuthInstance.post("/forgot-password", data);
-
-      return response.data;
-    },
+    mutationFn: forgotPassword,
   });
 
   function onSubmit(formData: z.infer<typeof ForgotPasswordFormSchema>) {

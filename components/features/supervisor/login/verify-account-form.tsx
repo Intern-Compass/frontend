@@ -26,8 +26,9 @@ import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 import { ResendOTPButton } from "./resend-otp-button";
 import { VerifyAccountFormSchema } from "@/lib/validation/auth";
-import { axiosAuthInstance } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
 import { CircleAlert } from "lucide-react";
+import { verifyAccount } from "@/lib/api/auth";
 
 interface VerifyAccountFormProps {
   email: string;
@@ -48,11 +49,7 @@ export const VerifyAccountForm = ({
   });
 
   const mutation = useMutation({
-    mutationFn: async (data: z.infer<typeof VerifyAccountFormSchema>) => {
-      const response = await axiosAuthInstance.post("/verify-code", data);
-
-      return response.data;
-    },
+    mutationFn: verifyAccount
   });
 
   function onSubmit(formData: z.infer<typeof VerifyAccountFormSchema>) {

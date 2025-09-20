@@ -24,37 +24,39 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { ResendOTPButton } from "@/components/features/auth/resend-otp-button";
-import { RegisterInternFormSchema, VerifyAccountFormSchema } from "@/lib/validation/auth";
+import {
+  RegisterInternApiSchema,
+  RegisterInternFormSchema,
+  VerifyAccountFormSchema,
+} from "@/lib/validation/auth";
 
-import { axiosAuthInstance } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
 import { useRouter } from "next/navigation";
 
 import { matchInternToSupervisor } from "@/lib/api/supervisor";
+import { CircleAlert } from "lucide-react";
+import { isAxiosError } from "axios";
+import { verifyAccount } from "@/lib/api/auth";
 
 type VerifyAccountFormProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const VerifyAccountForm = ({
-  setOpen,
-}: VerifyAccountFormProps) => {
+export const VerifyAccountForm = ({ setOpen }: VerifyAccountFormProps) => {
+  const queryClient = useQueryClient();
 
-   const queryClient = useQueryClient();
-
-   const signupData = queryClient.getQueryData<
-         z.infer<typeof RegisterInternFormSchema>
-       >(["signupData"]);
-   
-  
+  const signupData = queryClient.getQueryData<
+    z.infer<typeof RegisterInternApiSchema>
+  >(["signupData"]);
 
   const router = useRouter();
 
-   const { isInitialLoading, isError, data, error, refetch, isFetching } =
-      useQuery({
-        queryKey: ["matchIntern"],
-        queryFn: matchInternToSupervisor,
-        enabled: !!signupData,
-      });
+  // const { isInitialLoading, isError, data, error, refetch, isFetching } =
+  //   useQuery({
+  //     queryKey: ["matchIntern"],
+  //     queryFn: matchInternToSupervisor,
+  //     enabled: !!signupData,
+  //   });
 
   const form = useForm<z.infer<typeof VerifyAccountFormSchema>>({
     resolver: zodResolver(VerifyAccountFormSchema),
@@ -70,15 +72,60 @@ export const VerifyAccountForm = ({
 
         router.push("/login");
       },
+      onError: (error) => {
+        console.log(error);
+
+        if (isAxiosError(error)) {
+          if (error.status === 401) {
+            toast(
+              <div className="flex items-start gap-3 font-sans">
+                <CircleAlert className="text-error-base" />
+
+                <div className="flex flex-col gap-2.5 text-sm leading-5">
+                  <span className="text-foreground font-medium">
+                    Invalid Email or Password.
+                  </span>
+                  <span className="text-foreground/75 font-normal">
+                    Please check your credentials and try again.
+                  </span>
+                </div>
+              </div>,
+              {
+                classNames: {
+                  toast: "!bg-error-light",
+                },
+                position: "top-center",
+              }
+            );
+          } else {
+            toast(
+              <div className="flex items-start gap-3 font-sans">
+                <CircleAlert className="text-error-base" />
+
+                <div className="flex flex-col gap-2.5 text-sm leading-5">
+                  <span className="text-foreground font-medium">
+                    Something went wrong.
+                  </span>
+                  <span className="text-foreground/75 font-normal">
+                    Please try again later.
+                  </span>
+                </div>
+              </div>,
+              {
+                classNames: {
+                  toast: "!bg-error-light",
+                },
+                position: "top-center",
+              }
+            );
+          }
+        }
+      },
     });
   }
 
   const mutation = useMutation({
-    mutationFn: async (newUser: z.infer<typeof VerifyAccountFormSchema>) => {
-      const response = await axiosAuthInstance.post("/verify-code", newUser);
-
-      return response.data;
-    },
+    mutationFn: verifyAccount,
   });
 
   return (

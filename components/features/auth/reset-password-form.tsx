@@ -23,10 +23,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { CircleAlert, EyeIcon, EyeOffIcon } from "lucide-react";
 
 import { ResetPasswordFormSchema } from "@/lib/validation/auth";
 import { resetPassword } from "@/lib/api/auth";
+import { isAxiosError } from "axios";
 
 export const ResetPasswordForm = () => {
   const router = useRouter();
@@ -58,11 +59,37 @@ export const ResetPasswordForm = () => {
 
     mutation.mutate(formValues, {
       onSuccess: (data) => {
-        toast.success(
-          "If that email address is in our database, we will send you an email to reset your password."
-        );
+         toast.success(
+           "Your password has been reset successfully, please proceed to log in."
+         );
 
         router.replace("/login");
+      },
+      onError: (error) => {
+        console.log(error);
+
+        if (isAxiosError(error)) {
+          toast(
+            <div className="flex items-start gap-3 font-sans">
+              <CircleAlert className="text-error-base" />
+
+              <div className="flex flex-col gap-2.5 text-sm leading-5">
+                <span className="text-foreground font-medium">
+                  Something went wrong.
+                </span>
+                <span className="text-foreground/75 font-normal">
+                  Please try again later.
+                </span>
+              </div>
+            </div>,
+            {
+              classNames: {
+                toast: "!bg-error-light",
+              },
+              position: "top-center",
+            }
+          );
+        }
       },
     });
   }

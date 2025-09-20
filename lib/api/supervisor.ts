@@ -1,13 +1,13 @@
-import { axiosSupervisorInstance } from "@/lib/axios";
+import axiosInstance from "@/lib/axios";
 
 export const matchInternToSupervisor = async () => {
-  const response = await axiosSupervisorInstance.post("/perform-matching");
+  const response = await axiosInstance.post("/supervisor/perform-matching");
 
   return response.data;
 };
 
 export const getMyInterns = async () => {
-  const response = await axiosSupervisorInstance.get("/my-interns");
-  
+  const response = await axiosInstance.get("/supervisor/my-interns");
+
   return response.data;
-}
+};
