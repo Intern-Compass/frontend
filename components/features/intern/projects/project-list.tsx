@@ -45,7 +45,7 @@ const handleProjectClick = (projectId: string) => {
           <div className="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-3/4 overflow-y-auto">
             <ProjectModal project={selectedProject} />
               <X size={24} onClick={handleCloseModal}
-              className="absolute top-22 right-36 text-gray-500 hover:text-gray-700"/>
+              className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"/>
           </div>
         </div>
       )}
