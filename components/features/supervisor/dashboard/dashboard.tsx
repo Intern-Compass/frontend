@@ -36,7 +36,7 @@ export const Dashboard = () => {
       </h2>
       <h3 className="mx-8 font-normal ">What are you doing today?</h3>
       <p className="mx-8 font-normal pt-5">Overview</p>
-      <div className="flex flex-row gap-4 mx-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mx-8">
         <div className="flex flex-col border-1 my-4 w-full h-auto rounded-lg">
           <span className="text-black font-bold pt-6 ml-4">256</span>
           <span className="text-gray-600 font-normal pb-6 ml-4">
@@ -60,8 +60,8 @@ export const Dashboard = () => {
           </span>
         </div>
       </div>
-      <div className="flex flex-col min-h-screen">
-        <div className="flex gap-6 p-6">
+      <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row gap-6 p-6">
           <div className="flex-1 bg-white rounded-2xl shadow p-4 border-1 border-gray-200">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold mb-4">Community</h2>
@@ -135,7 +135,7 @@ export const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className="w-1/3 bg-white rounded-2xl shadow p-4 border border-gray-200">
+          <div className="w-full md:w-1/3 bg-white rounded-2xl shadow p-4 border border-gray-200">
             <h2 className="text-lg font-semibold mb-4">Supervisors Inbox</h2>
 
             <div className="mb-4 border-b pb-3">
