@@ -38,13 +38,13 @@ export const getAllSkills = async () => {
 };
 
 export const getUserSkills = async () => {
-  const response = await axiosInstance.get("/intern/get-user-skills");
+  const response = await axiosInstance.get("/skills/get-user-skills");
 
   return response.data;
 };
 
 export const attachNewSkills = async (data: { name: string }[]) => {
-  const response = await axiosInstance.post("/intern", data);
+  const response = await axiosInstance.post("/skills", data);
 
   return response.data;
 };
