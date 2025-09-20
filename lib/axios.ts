@@ -25,7 +25,7 @@ function onTokenRefreshed(token: string) {
 }
 
 // ---- Notify queued requests that refresh failed ----
-function onTokenRefreshFailed(err: any) {
+function onTokenRefreshFailed() {
   refreshSubscribers.forEach((callback) => callback("")); // empty string = reject
   refreshSubscribers = [];
 }
