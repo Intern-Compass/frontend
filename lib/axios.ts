@@ -42,14 +42,23 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     // Only handle 401 once per request
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url?.includes("/auth/token") &&
+      !originalRequest.url?.includes("/auth/refresh")
+    ) {
       originalRequest._retry = true;
 
       // If no refresh in progress, start it immediately
       if (!refreshPromise) {
         refreshPromise = new Promise((resolve, reject) => {
           axios
-            .post("/auth/refresh", {}, { baseURL: API_ROOT, withCredentials: true })
+            .post(
+              "/auth/refresh",
+              {},
+              { baseURL: API_ROOT, withCredentials: true }
+            )
             .then((res) => {
               const token = res.data.access_token;
               setAuthHeader(token);
@@ -58,7 +67,10 @@ api.interceptors.response.use(
             })
             .catch((err) => {
               onTokenRefreshFailed(err);
-              if (err.response?.status === 401 && typeof window !== "undefined") {
+              if (
+                err.response?.status === 401 &&
+                typeof window !== "undefined"
+              ) {
                 window.location.href = "/login";
               }
               reject(err);
@@ -89,7 +101,6 @@ api.interceptors.response.use(
 );
 
 export default api;
-
 
 // ---- Usage helper functions ----
 // export const axiosInstance = (path: string, config?: any) =>

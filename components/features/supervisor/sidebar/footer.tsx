@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/sidebar";
 
 import { useRouter } from "next/navigation";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUserDetails } from "@/lib/api/auth";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getUserDetails, logout } from "@/lib/api/auth";
 
 export const Footer = () => {
   const queryClient = useQueryClient();
@@ -29,10 +29,18 @@ export const Footer = () => {
     queryFn: getUserDetails,
   });
 
-  const logout = () => {
+  const mutation = useMutation({
+    mutationFn: logout,
+  });
+
+  const logoutUser = () => {
     queryClient.clear();
 
-    router.push("/login");
+    mutation.mutate(undefined, {
+      onSuccess: () => {
+        router.push("/login");
+      },
+    });
   };
 
   return (
@@ -40,7 +48,7 @@ export const Footer = () => {
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton
-            onClick={logout}
+            onClick={logoutUser}
             className="py-5 px-2 hover:rounded-[9999px] flex items-center gap-3"
           >
             <LogOut className="text-sidebar-foreground-70" />
