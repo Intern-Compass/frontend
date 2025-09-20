@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const API_ROOT = "https://intern-compass-1.onrender.com";
 
@@ -25,7 +25,7 @@ function onTokenRefreshed(token: string) {
 }
 
 // ---- Notify queued requests that refresh failed ----
-function onTokenRefreshFailed() {
+function onTokenRefreshFailed(err: AxiosError) {
   refreshSubscribers.forEach((callback) => callback("")); // empty string = reject
   refreshSubscribers = [];
 }
