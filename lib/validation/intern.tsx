@@ -2,14 +2,7 @@ import { format } from "date-fns";
 import { z } from "zod";
 
 export const ProfileFormSchema = z.object({
-  skills: z
-    .array(z.object({ name: z.string() }), {
-      // handles empty input case
-      error: "Please select at least three skills.",
-    })
-    .min(3, {
-      error: "Please select at least three skills.",
-    }),
+  skills: z.array(z.object({ name: z.string() })).optional(),
   experience: z.string().optional(),
   interests: z.string().optional(),
   expectations: z.string().optional(),

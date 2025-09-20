@@ -59,9 +59,8 @@ export const Supervisor = () => {
           <h2 className="text-2xl font-medium leading-8">My Supervisor</h2>
 
           <Avatar className="w-20 h-20 my-6 self-center">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback className="text-base-color bg-secondary">
-              OD
+            <AvatarFallback className="capitalize bg-secondary text-3xl text-secondary-foreground">
+              {supervisor.name[0]}
             </AvatarFallback>
           </Avatar>
 

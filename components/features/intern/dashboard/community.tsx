@@ -1,11 +1,27 @@
+"use client";
+
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Clock3, Reply, ThumbsUp } from "lucide-react";
+import { getUserInitials } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useQuery } from "@tanstack/react-query";
+import { getUserDetails } from "@/lib/api/auth";
 
 export const Community = () => {
+  const {
+    isPending,
+    isError,
+    data: user,
+    error,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUserDetails,
+  });
+
   return (
     <section>
       <header className="mb-4.5 flex justify-between items-center gap-4">
@@ -19,12 +35,15 @@ export const Community = () => {
       <article className="border border-border rounded-[0.625rem] py-4.5 px-3">
         <div className="flex gap-x-2.5">
           <div className="flex flex-col gap-2">
-            <Avatar className="w-10 h-10">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback className="text-base-color bg-secondary">
-                OD
-              </AvatarFallback>
-            </Avatar>
+            {user ? (
+              <Avatar className="h-10 w-10 rounded-full">
+                <AvatarFallback className="capitalize bg-secondary text-secondary-foreground leading-6">
+                  {getUserInitials(user.firstname, user.lastname)}
+                </AvatarFallback>
+              </Avatar>
+            ) : (
+              <Skeleton className="h-10 w-10 rounded-full" />
+            )}
             <div>
               <div className="gap-y-1 mb-7.75">
                 <div className="flex flex-col items-center gap-7.5">

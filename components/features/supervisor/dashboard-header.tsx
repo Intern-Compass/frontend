@@ -9,14 +9,18 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
 import { Bell, CircleQuestionMark, Moon } from "lucide-react";
+import { getUserInitials } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useQuery } from "@tanstack/react-query";
+import { getUserDetails } from "@/lib/api/auth";
 
 const pathPrefixes: Record<string, string> = {
-    "/supervisor/dashboard/profile": "Profile",
-    "/supervisor/dashboard/interns": "My Interns",
-    "/supervisor/dashboard/projects": "Projects",
-    "/supervisor/dashboard/community": "Community",
-    // Order is important here: dashboard has to be last
-    "/supervisor/dashboard": "Dashboard",
+  "/supervisor/dashboard/profile": "Profile",
+  "/supervisor/dashboard/interns": "My Interns",
+  "/supervisor/dashboard/projects": "Projects",
+  "/supervisor/dashboard/community": "Community",
+  // Order is important here: dashboard has to be last
+  "/supervisor/dashboard": "Dashboard",
 };
 
 const getPageTitle = (pathname: string) => {
@@ -29,6 +33,16 @@ const getPageTitle = (pathname: string) => {
 
 export const DashboardHeader = () => {
   const pathname = usePathname();
+
+  const {
+    isPending,
+    isError,
+    data: user,
+    error,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUserDetails,
+  });
 
   return (
     <header className="flex justify-between border-b border-border py-2 px-3 items-center gap-4">
@@ -43,12 +57,15 @@ export const DashboardHeader = () => {
         <Bell className="w-5 h-5" />
         <Moon className="w-5 h-5" />
 
-        <Avatar className="h-10 w-10 rounded-full">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback className="bg-secondary text-secondary-foreground leading-6">
-            OD
-          </AvatarFallback>
-        </Avatar>
+        {user ? (
+          <Avatar className="h-10 w-10 rounded-full">
+            <AvatarFallback className="capitalize bg-secondary text-secondary-foreground leading-6">
+              {getUserInitials(user.firstname, user.lastname)}
+            </AvatarFallback>
+          </Avatar>
+        ) : (
+          <Skeleton className="h-10 w-10 rounded-full" />
+        )}
       </div>
     </header>
   );

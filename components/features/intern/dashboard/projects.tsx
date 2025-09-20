@@ -60,12 +60,8 @@ export const Projects = () => {
     queryFn: getProjects,
   });
 
-  if (isPending) {
-    return <NoProjects />;
-  }
-
   return (
-    <section className="mb-6">
+    <section className="my-6">
       <header className="mb-4.5 flex justify-between items-center gap-4">
         <h2 className="text-lg leading-7">Projects</h2>
 
@@ -74,7 +70,7 @@ export const Projects = () => {
         </Button>
       </header>
 
-      {projects.length > 0 ? (
+      {projects && projects.length > 0 ? (
         <ProjectList projects={projects} />
       ) : (
         <NoProjects />

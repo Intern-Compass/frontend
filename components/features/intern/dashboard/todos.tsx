@@ -55,22 +55,18 @@ export const Todos = () => {
     error,
   } = useQuery({
     queryKey: ["todos"],
-    queryFn: getTodos
+    queryFn: getTodos,
   });
 
-  if (isPending) {
-    return <NoTodos />;
-  }
-
   return (
-    <section className="mb-6">
+    <section className="my-6">
       <header className="mb-4.5 flex justify-between items-center gap-4">
         <h2 className="text-lg leading-7">{"Daily To-do's"}</h2>
 
         <CreateTodoDialog />
       </header>
 
-      {todos.length > 0 ? <TodoList todos={todos} /> : <NoTodos />}
+      {todos && todos.length > 0 ? <TodoList todos={todos} /> : <NoTodos />}
     </section>
   );
 };

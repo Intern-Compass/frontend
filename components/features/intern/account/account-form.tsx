@@ -80,13 +80,17 @@ export const AccountForm = ({ hideForm }: AccountFormProps) => {
   });
 
   function onSubmit(formData: z.infer<typeof ProfileFormSchema>) {
-    mutation.mutate(formData.skills, {
-      onSuccess: () => {
-        hideForm();
+    if (formData.skills && formData.skills.length > 0) {
+      mutation.mutate(formData.skills, {
+        onSuccess: () => {
+          hideForm();
 
-        queryClient.invalidateQueries({ queryKey: ["userSkills"] });
-      },
-    });
+          queryClient.invalidateQueries({ queryKey: ["userSkills"] });
+        },
+      });
+    } else {
+      hideForm();
+    }
   }
 
   return (
