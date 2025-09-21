@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator";
 
 import { LoginForm } from "@/components/features/auth/login-form";
 import { RegisterDialog } from "@/components/features/auth/register-dialog";
-import { MatchTable } from "@/components/features/supervisor/match/match-table";
 
 export default function LoginPage() {
   return (
@@ -74,8 +73,6 @@ export default function LoginPage() {
           </figcaption>
         </figure>
       </div>
-
-      <MatchTable />
     </div>
   );
 }

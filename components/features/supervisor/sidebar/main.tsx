@@ -10,6 +10,7 @@ import {
   Clock1,
   FileCheck,
   Users,
+  Workflow,
 } from "lucide-react";
 
 import {
@@ -43,6 +44,11 @@ const items: Item[] = [
     title: "My Interns",
     url: "/supervisor/dashboard/interns",
     icon: Clock1,
+  },
+  {
+    title: "Match Interns",
+    url: "/supervisor/dashboard/match-interns",
+    icon: Workflow,
   },
   {
     title: "Projects",

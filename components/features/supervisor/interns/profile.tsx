@@ -52,46 +52,6 @@ export const Profile = () => {
     queryFn: getMyInterns,
   });
 
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: matchInternToSupervisor,
-  });
-
-  const performMatching = () => {
-    mutation.mutate(undefined, {
-      onSuccess: () => {
-        toast.success("Interns matched successfully.");
-
-        queryClient.invalidateQueries({ queryKey: ["getInterns"] });
-      },
-      onError: () => {
-        if (isAxiosError(error)) {
-          toast(
-            <div className="flex items-start gap-3 font-sans">
-              <CircleAlert className="text-error-base" />
-
-              <div className="flex flex-col gap-2.5 text-sm leading-5">
-                <span className="text-foreground font-medium">
-                  Something went wrong.
-                </span>
-                <span className="text-foreground/75 font-normal">
-                  Please try again later.
-                </span>
-              </div>
-            </div>,
-            {
-              classNames: {
-                toast: "!bg-error-light",
-              },
-              position: "top-center",
-            }
-          );
-        }
-      },
-    });
-  };
-
   if (isPending) {
     return <p>Loading...</p>;
   }
@@ -103,7 +63,6 @@ export const Profile = () => {
           <Users />
           <h2 className="text-2xl font-medium ml-2">My Interns</h2>
         </div>
-        <Button onClick={performMatching}>Match interns</Button>
       </div>
 
       {/* Intern Details */}
@@ -129,7 +88,9 @@ export const Profile = () => {
               </div>
               <div className="p-4">
                 <h3 className="text-foreground font-medium mb-2">Email</h3>
-                <p className="text-muted-foreground text-sm truncate">{intern.email}</p>
+                <p className="text-muted-foreground text-sm truncate">
+                  {intern.email}
+                </p>
               </div>
               <div className="p-4">
                 <h3 className="text-foreground font-medium mb-2">
@@ -145,7 +106,9 @@ export const Profile = () => {
               </div>
               <div className="p-4">
                 <h3 className="text-foreground font-medium mb-2">School</h3>
-                <p className="text-muted-foreground text-sm truncate">{intern.school}</p>
+                <p className="text-muted-foreground text-sm truncate">
+                  {intern.school}
+                </p>
               </div>
               <div className="p-4">
                 <h3 className="text-foreground font-medium mb-2">Phone no</h3>

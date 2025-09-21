@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 import { matchInternToSupervisor } from "@/lib/api/supervisor";
 import { getInternSupervisor } from "@/lib/api/intern";
+import { getUserInitials } from "@/lib/utils";
 
 const NoSupervisor = () => {
   return (
@@ -60,7 +61,7 @@ export const Supervisor = () => {
 
           <Avatar className="w-20 h-20 my-6 self-center">
             <AvatarFallback className="capitalize bg-secondary text-3xl text-secondary-foreground">
-              {supervisor.name[0]}
+              {getUserInitials(supervisor.firstname, supervisor.lastname)}
             </AvatarFallback>
           </Avatar>
 
