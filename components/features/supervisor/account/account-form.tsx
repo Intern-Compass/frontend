@@ -61,7 +61,7 @@ export const AccountForm = ({ hideForm }: AccountFormProps) => {
     error,
   } = useQuery({
     queryKey: ["allSkills"],
-    queryFn: getAllSkills
+    queryFn: getAllSkills,
   });
 
   const labelledSkills = (allSkills ?? []).map((skill: Skill) => ({
@@ -80,13 +80,15 @@ export const AccountForm = ({ hideForm }: AccountFormProps) => {
   });
 
   function onSubmit(formData: z.infer<typeof ProfileFormSchema>) {
-    mutation.mutate(formData.skills, {
-      onSuccess: () => {
-        hideForm();
+    if (formData.skills && formData.skills.length > 0) {
+      mutation.mutate(formData.skills, {
+        onSuccess: () => {
+          hideForm();
 
-        queryClient.invalidateQueries({ queryKey: ["userSkills"] });
-      },
-    });
+          queryClient.invalidateQueries({ queryKey: ["userSkills"] });
+        },
+      });
+    }
   }
 
   return (
