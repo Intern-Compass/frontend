@@ -232,8 +232,11 @@ export const MatchTable = () => {
                               </TableCell>
                               <TableCell className="text-muted-foreground">
                                 <div className="space-x-2">
-                                  {skillsArray.map((skill) => (
-                                    <Badge className="bg-gray-100 text-gray-800">
+                                  {skillsArray.map((skill, i) => (
+                                    <Badge
+                                      key={i}
+                                      className="bg-gray-100 text-gray-800"
+                                    >
                                       {skill}
                                     </Badge>
                                   ))}
