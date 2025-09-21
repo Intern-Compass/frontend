@@ -39,13 +39,18 @@ import { RegisterInternFormSchema } from "@/lib/validation/auth";
 
 import { EyeIcon, EyeOffIcon, CircleAlert } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn, getDepartmentOptions, getReactSelectOptions } from "@/lib/utils";
 
 import { VerifyAccountDialog } from "@/components/features/auth/verify-account-dialog";
 import { registerIntern } from "@/lib/api/auth";
 import { isAxiosError } from "axios";
+import {
+  programmingLanguages,
+  softSkills,
+  technicalPathways,
+} from "@/lib/constants";
 
-interface SkillOptionType {
+interface OptionType {
   value: string;
   label: string;
 }
@@ -55,106 +60,11 @@ interface DepartmentOptionType {
   label: string;
 }
 
-const skillsOptions: SkillOptionType[] = [
-  { value: "Cybersecurity", label: "Cybersecurity" },
-  { value: "Developer", label: "Developer" },
-  { value: "Frontend", label: "Front-end" },
-  { value: "Backend", label: "Back-end" },
-  { value: "UI / UX", label: "UI/UX" },
-];
+const programmingLanguageOptions = getReactSelectOptions(programmingLanguages);
+const technicalPathwayOptions = getReactSelectOptions(technicalPathways);
+const softSkillOptions = getReactSelectOptions(softSkills);
 
-export const programmingLanguages = [
-  { value: "JavaScript", label: "JavaScript" },
-  { value: "TypeScript", label: "TypeScript" },
-  { value: "Python", label: "Python" },
-  { value: "Java", label: "Java" },
-  { value: "C#", label: "C#" },
-  { value: "C / C++", label: "C / C++" },
-  { value: "Go", label: "Go" },
-  { value: "Rust", label: "Rust" },
-  { value: "PHP", label: "PHP" },
-  { value: "Ruby", label: "Ruby" },
-  { value: "Swift", label: "Swift" },
-  { value: "Kotlin", label: "Kotlin" },
-  { value: "Dart", label: "Dart" },
-  { value: "Scala", label: "Scala" },
-  { value: "SQL / PL/SQL", label: "SQL / PL/SQL" },
-  { value: "Bash / Shell scripting", label: "Bash / Shell scripting" },
-];
-
-export const technicalPathways = [
-  { value: "Frontend Web Development", label: "Frontend Web Development" },
-  { value: "Backend / API Development", label: "Backend / API Development" },
-  { value: "Fullstack Development", label: "Fullstack Development" },
-  { value: "Mobile App Development", label: "Mobile App Development" },
-  { value: "Cloud Computing / DevOps", label: "Cloud Computing / DevOps" },
-  {
-    value: "Data Science / Machine Learning",
-    label: "Data Science / Machine Learning",
-  },
-  {
-    value: "Cybersecurity / Ethical Hacking",
-    label: "Cybersecurity / Ethical Hacking",
-  },
-  { value: "Embedded Systems / IoT", label: "Embedded Systems / IoT" },
-  { value: "Game Development", label: "Game Development" },
-  { value: "Blockchain / Web3", label: "Blockchain / Web3" },
-  { value: "Software Testing / QA", label: "Software Testing / QA" },
-  { value: "AI / NLP / Computer Vision", label: "AI / NLP / Computer Vision" },
-  {
-    value: "Database Administration / Big Data",
-    label: "Database Administration / Big Data",
-  },
-];
-
-export const softSkills = [
-  { value: "Communication", label: "Communication" },
-  { value: "Presentation Skills", label: "Presentation Skills" },
-  { value: "Active Listening", label: "Active Listening" },
-  { value: "Negotiation", label: "Negotiation" },
-  { value: "Leadership", label: "Leadership" },
-  { value: "Team Management", label: "Team Management" },
-  { value: "Project Management", label: "Project Management" },
-  { value: "Strategic Planning", label: "Strategic Planning" },
-  { value: "Decision Making", label: "Decision Making" },
-  { value: "Problem Solving", label: "Problem Solving" },
-  { value: "Critical Thinking", label: "Critical Thinking" },
-  { value: "Conflict Resolution", label: "Conflict Resolution" },
-  { value: "Time Management", label: "Time Management" },
-  { value: "Organization", label: "Organization" },
-  { value: "Adaptability / Flexibility", label: "Adaptability / Flexibility" },
-  { value: "Collaboration / Teamwork", label: "Collaboration / Teamwork" },
-  {
-    value: "Empathy / Emotional Intelligence",
-    label: "Empathy / Emotional Intelligence",
-  },
-  { value: "Customer Focus", label: "Customer Focus" },
-  { value: "Business Acumen", label: "Business Acumen" },
-  { value: "Innovation / Creativity", label: "Innovation / Creativity" },
-  { value: "Stakeholder Management", label: "Stakeholder Management" },
-  { value: "Change Management", label: "Change Management" },
-  { value: "Other", label: "Other" },
-];
-
-export const departments: DepartmentOptionType[] = [
-  { value: 0, label: "Chief Executive Officer Office" },
-  { value: 1, label: "Chief Operating Officer Office" },
-  { value: 2, label: "Company Secretariat" },
-  { value: 3, label: "Corporate Services and Sustainability" },
-  { value: 4, label: "Customer Relations and Experience" },
-  { value: 5, label: "Digital Services" },
-  { value: 6, label: "Enterprise Business" },
-  { value: 7, label: "Finance" },
-  { value: 8, label: "Fixed BroadBand" },
-  { value: 9, label: "Human Resources" },
-  { value: 10, label: "Information Technology" },
-  { value: 11, label: "Internal Audit and Forensic Services" },
-  { value: 12, label: "Marketing" },
-  { value: 13, label: "Network" },
-  { value: 14, label: "Risk and Compliance" },
-  { value: 15, label: "Sales and Distribution" },
-  { value: 16, label: "Strategy and Innovation" },
-];
+const departmentOptions = getDepartmentOptions();
 
 export const SignupForm = () => {
   const queryClient = useQueryClient();
@@ -286,36 +196,6 @@ export const SignupForm = () => {
         }
       },
     });
-
-    // toast(
-    //       <div className="flex items-start gap-3 font-sans">
-    //         <CircleAlert className="text-error-base" />
-
-    //         <div className="flex flex-col gap-2.5 text-sm leading-5">
-    //           <span className="text-foreground font-medium">
-    //             Invalid Email or Password.
-    //           </span>
-    //           <span className="text-foreground/75 font-normal">
-    //             Please check your credentials and try again.
-    //           </span>
-    //         </div>
-    //       </div>,
-    //       {
-    //         classNames: {
-    //           toast: "!bg-error-light",
-    //         },
-    //         position: "top-center",
-    //       }
-    //     )
-
-    // router.push("/login");
-    // toast("You submitted the following values", {
-    //   description: (
-    //     <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
   }
 
   return (
@@ -561,9 +441,9 @@ export const SignupForm = () => {
                           classNamePrefix="select"
                           isClearable
                           isSearchable
-                          options={departments}
+                          options={departmentOptions}
                           value={
-                            departments.find(
+                            departmentOptions.find(
                               (option) => option.value === field.value
                             ) ?? null
                           }
@@ -687,10 +567,10 @@ export const SignupForm = () => {
                         Technical pathway
                       </FormLabel>
                       <FormControl>
-                        <CreatableReactSelect<SkillOptionType, true>
+                        <CreatableReactSelect<OptionType, true>
                           isMulti
                           isClearable
-                          options={technicalPathways}
+                          options={technicalPathwayOptions}
                           classNamePrefix="select"
                           className="basic-multi-select w-full text-foreground border-muted-foreground-50 rounded-md text-sm placeholder:text-muted-foreground-50"
                           placeholder="Type or select at least three skills"
@@ -724,10 +604,10 @@ export const SignupForm = () => {
                         Programming languages (if applicable)
                       </FormLabel>
                       <FormControl>
-                        <CreatableReactSelect<SkillOptionType, true>
+                        <CreatableReactSelect<OptionType, true>
                           isMulti
                           isClearable
-                          options={programmingLanguages}
+                          options={programmingLanguageOptions}
                           classNamePrefix="select"
                           className="basic-multi-select w-full text-foreground border-muted-foreground-50 rounded-md text-sm placeholder:text-muted-foreground-50"
                           placeholder="Type or select at least three skills"
@@ -761,10 +641,10 @@ export const SignupForm = () => {
                         Soft skills
                       </FormLabel>
                       <FormControl>
-                        <CreatableReactSelect<SkillOptionType, true>
+                        <CreatableReactSelect<OptionType, true>
                           isMulti
                           isClearable
-                          options={softSkills}
+                          options={softSkillOptions}
                           classNamePrefix="select"
                           className="basic-multi-select w-full text-foreground border-muted-foreground-50 rounded-md text-sm placeholder:text-muted-foreground-50"
                           placeholder="Type or select at least three skills"

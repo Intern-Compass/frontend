@@ -38,7 +38,7 @@ export const Supervisor = () => {
     data: supervisor,
     error,
   } = useQuery({
-    queryKey: ["get-intern-supervisor"],
+    queryKey: ["getInternSupervisor"],
     queryFn: getInternSupervisor,
   });
 

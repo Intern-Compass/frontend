@@ -17,26 +17,6 @@ import { isAxiosError } from "axios";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
-const departments = [
-  "Chief Executive Officer Office",
-  "Chief Operating Officer Office",
-  "Company Secretariat",
-  "Corporate Services and Sustainability",
-  "Customer Relations and Experience",
-  "Digital Services",
-  "Enterprise Business",
-  "Finance",
-  "Fixed BroadBand",
-  "Human Resources",
-  "Information Technology",
-  "Internal Audit and Forensic Services",
-  "Marketing",
-  "Network",
-  "Risk and Compliance",
-  "Sales and Distribution",
-  "Strategy and Innovation",
-];
-
 interface Intern {
   firstname: string;
   lastname: string;

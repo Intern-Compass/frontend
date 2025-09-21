@@ -3,30 +3,11 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { getUserDetails } from "@/lib/api/auth";
 import axiosInstance from "@/lib/axios";
+import { getDepartment } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { differenceInMonths } from "date-fns";
 
 import { UsersRound } from "lucide-react";
-
-const departments = [
-  "Chief Executive Officer Office",
-  "Chief Operating Officer Office",
-  "Company Secretariat",
-  "Corporate Services and Sustainability",
-  "Customer Relations and Experience",
-  "Digital Services",
-  "Enterprise Business",
-  "Finance",
-  "Fixed BroadBand",
-  "Human Resources",
-  "Information Technology",
-  "supervisoral Audit and Forensic Services",
-  "Marketing",
-  "Network",
-  "Risk and Compliance",
-  "Sales and Distribution",
-  "Strategy and Innovation",
-];
 
 export const AccountProfile = () => {
   const {
@@ -90,7 +71,7 @@ export const AccountProfile = () => {
           <h3 className="text-foreground font-medium mb-2">Department</h3>
           {supervisor ? (
             <p className="text-muted-foreground text-sm truncate">
-              {departments[supervisor.department]}
+              {getDepartment(supervisor.department)}
             </p>
           ) : (
             <Skeleton className="h-5 w-30" />

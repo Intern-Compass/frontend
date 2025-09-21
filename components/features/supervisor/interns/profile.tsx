@@ -9,26 +9,7 @@ import { Button } from "@/components/ui/button";
 import { differenceInMonths } from "date-fns";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
-
-const departments = [
-  "Chief Executive Officer Office",
-  "Chief Operating Officer Office",
-  "Company Secretariat",
-  "Corporate Services and Sustainability",
-  "Customer Relations and Experience",
-  "Digital Services",
-  "Enterprise Business",
-  "Finance",
-  "Fixed BroadBand",
-  "Human Resources",
-  "Information Technology",
-  "Internal Audit and Forensic Services",
-  "Marketing",
-  "Network",
-  "Risk and Compliance",
-  "Sales and Distribution",
-  "Strategy and Innovation",
-];
+import { getDepartment } from "@/lib/utils";
 
 interface Intern {
   firstname: string;
@@ -119,7 +100,7 @@ export const Profile = () => {
               <div className="p-4">
                 <h3 className="text-foreground font-medium mb-2">Department</h3>
                 <p className="text-muted-foreground text-sm truncate">
-                  {departments[intern.department]}
+                  {getDepartment(intern.department)}
                 </p>
               </div>
             </div>
