@@ -199,14 +199,14 @@ export const MatchTable = () => {
                 {match.interns.length} interns
               </AccordionTrigger>
               <AccordionContent className="flex flex-col gap-4 text-balance mb-4">
-                <div className="bg-white rounded-lg shadow-sm border border-card overflow-hidden">
+                <div className="overflow-hidden rounded-md border">
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Intern</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Phone number</TableHead>
-                        <TableHead>Skills</TableHead>
+                        <TableHead className="max-w-[200px] text-left">Intern</TableHead>
+                        <TableHead className="max-w-[200px] text-left">Email</TableHead>
+                        <TableHead className="max-w-[200px] text-left">Phone number</TableHead>
+                        <TableHead className="w-[200px] text-left">Skills</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -221,16 +221,16 @@ export const MatchTable = () => {
 
                           return (
                             <TableRow key={i}>
-                              <TableCell className="font-medium text-muted-foreground">
+                              <TableCell className="max-w-[200px] h-12 text-left">
                                 {firstname} {lastname}
                               </TableCell>
-                              <TableCell className="text-muted-foreground">
+                              <TableCell className="max-w-[200px] h-12 text-left">
                                 {email}
                               </TableCell>
-                              <TableCell className="text-muted-foreground">
+                              <TableCell className="max-w-[200px] h-12 text-left">
                                 {phone_number}
                               </TableCell>
-                              <TableCell className="text-muted-foreground">
+                              <TableCell className="w-[200px] h-12 text-left">
                                 <div className="space-x-2">
                                   {skillsArray.map((skill, i) => (
                                     <Badge
