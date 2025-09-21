@@ -16,6 +16,7 @@ import { displayMatches, matchInternToSupervisor } from "@/lib/api/supervisor";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { errorToast } from "@/lib/toast";
 
 interface Intern {
   firstname: string;
@@ -59,26 +60,7 @@ export const MatchTable = () => {
       },
       onError: (error) => {
         if (isAxiosError(error)) {
-          toast(
-            <div className="flex items-start gap-3 font-sans">
-              <CircleAlert className="text-error-base" />
-
-              <div className="flex flex-col gap-2.5 text-sm leading-5">
-                <span className="text-foreground font-medium">
-                  Something went wrong.
-                </span>
-                <span className="text-foreground/75 font-normal">
-                  Please try again later.
-                </span>
-              </div>
-            </div>,
-            {
-              classNames: {
-                toast: "!bg-error-light",
-              },
-              position: "top-center",
-            }
-          );
+          errorToast("Something went wrong.", "Please try again later.");
         }
       },
     });

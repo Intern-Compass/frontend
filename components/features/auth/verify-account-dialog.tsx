@@ -15,7 +15,7 @@ import {
 import { VerifyAccountForm } from "./verify-account-form";
 import { maskEmail } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
-import { RegisterInternApiSchema, RegisterInternFormSchema } from "@/lib/validation/auth";
+import { RegisterInternApiSchema } from "@/lib/validation/auth";
 
 type VerifyAccountDialogProps = {
   open: boolean;

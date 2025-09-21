@@ -49,6 +49,7 @@ import {
   softSkills,
   technicalPathways,
 } from "@/lib/constants";
+import { errorToast } from "@/lib/toast";
 
 interface OptionType {
   value: string;
@@ -151,47 +152,12 @@ export const SignupForm = () => {
 
         if (isAxiosError(error)) {
           if (error.status === 409) {
-            toast(
-              <div className="flex items-start gap-3 font-sans">
-                <CircleAlert className="text-error-base" />
-
-                <div className="flex flex-col gap-2.5 text-sm leading-5">
-                  <span className="text-foreground font-medium">
-                    User already exists.
-                  </span>
-                  <span className="text-foreground/75 font-normal">
-                    Please log in with your registered email or phone number.
-                  </span>
-                </div>
-              </div>,
-              {
-                classNames: {
-                  toast: "!bg-error-light",
-                },
-                position: "top-center",
-              }
+            errorToast(
+              "User already exists.",
+              "Please log in with your registered email or phone number."
             );
           } else {
-            toast(
-              <div className="flex items-start gap-3 font-sans">
-                <CircleAlert className="text-error-base" />
-
-                <div className="flex flex-col gap-2.5 text-sm leading-5">
-                  <span className="text-foreground font-medium">
-                    Something went wrong.
-                  </span>
-                  <span className="text-foreground/75 font-normal">
-                    Please try again later.
-                  </span>
-                </div>
-              </div>,
-              {
-                classNames: {
-                  toast: "!bg-error-light",
-                },
-                position: "top-center",
-              }
-            );
+            errorToast("Something went wrong.", "Please try again later.");
           }
         }
       },

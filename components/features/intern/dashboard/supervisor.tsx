@@ -70,7 +70,7 @@ export const Supervisor = () => {
               <dt className="font-medium text-muted-foreground text-sm leading-5">
                 Name:
               </dt>
-              <dd className="leading-6">{supervisor.name}</dd>
+              <dd className="leading-6">{supervisor.firstname} {supervisor.lastname}</dd>
             </div>
             <div className="flex flex-col justify-between items-center gap-4 sm:flex-row">
               <dt className="font-medium text-muted-foreground text-sm leading-5">

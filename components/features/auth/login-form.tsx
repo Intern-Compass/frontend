@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
@@ -8,7 +8,6 @@ import { useMutation } from "@tanstack/react-query";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -23,16 +22,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { CircleAlert, EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 import { LoginFormSchema } from "@/lib/validation/auth";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 import axiosInstance from "@/lib/axios";
 import { isAxiosError } from "axios";
 import { ForgotPasswordDialog } from "@/components/features/auth/forgot-password-dialog";
 import { login } from "@/lib/api/auth";
+import { errorToast } from "@/lib/toast";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -64,10 +63,8 @@ export const LoginForm = () => {
         ] = `${data.token_type} ${data.access_token}`;
 
         if (data.user_type === "intern") {
-
           router.push("/intern/dashboard");
         } else if (data.user_type === "supervisor") {
-
           router.push("/supervisor/dashboard");
         }
       },
@@ -76,110 +73,16 @@ export const LoginForm = () => {
 
         if (isAxiosError(error)) {
           if (error.status === 401) {
-            toast(
-              <div className="flex items-start gap-3 font-sans">
-                <CircleAlert className="text-error-base" />
-
-                <div className="flex flex-col gap-2.5 text-sm leading-5">
-                  <span className="text-foreground font-medium">
-                    Invalid Email or Password.
-                  </span>
-                  <span className="text-foreground/75 font-normal">
-                    Please check your credentials and try again.
-                  </span>
-                </div>
-              </div>,
-              {
-                classNames: {
-                  toast: "!bg-error-light",
-                },
-                position: "top-center",
-              }
+            errorToast(
+              "Invalid Email or Password.",
+              "Please check your credentials and try again."
             );
           } else {
-            toast(
-              <div className="flex items-start gap-3 font-sans">
-                <CircleAlert className="text-error-base" />
-
-                <div className="flex flex-col gap-2.5 text-sm leading-5">
-                  <span className="text-foreground font-medium">
-                    Something went wrong.
-                  </span>
-                  <span className="text-foreground/75 font-normal">
-                    Please try again later.
-                  </span>
-                </div>
-              </div>,
-              {
-                classNames: {
-                  toast: "!bg-error-light",
-                },
-                position: "top-center",
-              }
-            );
+            errorToast("Something went wrong.", "Please try again later.");
           }
         }
       },
     });
-
-    // toast(
-    //   <div className="flex items-start gap-3 font-sans">
-    //     <CircleAlert className="text-error-base" />
-
-    //     <div className="flex flex-col gap-2.5 text-sm leading-5">
-    //       <span className="text-foreground font-medium">
-    //         Email already registered.
-    //       </span>
-    //       <span className="text-foreground/75 font-normal">
-    //         Already have an account? [Log in instead]
-    //       </span>
-    //     </div>
-    //   </div>,
-    //   {
-    //     classNames: {
-    //       toast: "!bg-error-light",
-    //     },
-    //     position: "top-center",
-    //   }
-    // );
-    // toast(
-    //   <div className="flex items-start gap-3 font-sans">
-    //     <CircleAlert className="text-error-base" />
-
-    //     <div className="flex flex-col gap-2.5 text-sm leading-5">
-    //       <span className="text-foreground font-medium">
-    //         Invalid Email or Password.
-    //       </span>
-    //       <span className="text-foreground/75 font-normal">
-    //         Please check your credentials and try again.
-    //       </span>
-    //     </div>
-    //   </div>,
-    //   {
-    //     classNames: {
-    //       toast: "!bg-error-light",
-    //     },
-    //     position: "top-center",
-    //   }
-    // );
-    // toast(
-    //   <div className="flex items-start gap-3 font-sans">
-    //     <CircleAlert className="text-error-base" />
-
-    //     <div className="flex flex-col gap-2.5 text-sm leading-5">
-    //       <span className="text-foreground font-medium">User not found.</span>
-    //       <span className="text-foreground/75 font-normal">
-    //         Please register your account first.
-    //       </span>
-    //     </div>
-    //   </div>,
-    //   {
-    //     classNames: {
-    //       toast: "!bg-error-light",
-    //     },
-    //     position: "top-center",
-    //   }
-    // );
   }
 
   return (

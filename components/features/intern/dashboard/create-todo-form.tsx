@@ -21,12 +21,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-import { CircleAlert } from "lucide-react";
 
 import { CreateTodoFormSchema } from "@/lib/validation/intern";
 import { cn } from "@/lib/utils";
 
-import axiosInstance from "@/lib/axios";
 import { format } from "date-fns";
 import { createTodo } from "@/lib/api/intern";
 
@@ -61,25 +59,6 @@ export const CreateTodoForm = ({ closeDialog }: CreateTodoFormProps) => {
       },
       onError: (error) => {
         // console.log(error);
-        // toast(
-        //   <div className="flex items-start gap-3 font-sans">
-        //     <CircleAlert className="text-error-base" />
-        //     <div className="flex flex-col gap-2.5 text-sm leading-5">
-        //       <span className="text-foreground font-medium">
-        //         Invalid Email or Password.
-        //       </span>
-        //       <span className="text-foreground/75 font-normal">
-        //         Please check your credentials and try again.
-        //       </span>
-        //     </div>
-        //   </div>,
-        //   {
-        //     classNames: {
-        //       toast: "!bg-error-light",
-        //     },
-        //     position: "top-center",
-        //   }
-        // );
       },
     });
   }
