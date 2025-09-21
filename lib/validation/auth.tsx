@@ -94,7 +94,7 @@ export const RegisterInternFormSchema = z
       .number({
         error: "Please select a department.",
       })
-      .min(0, {
+      .min(1, {
         error: "Please select a valid department.",
       })
       .max(17, {
@@ -215,7 +215,7 @@ export const RegisterInternApiSchema = z
       .number({
         error: "Please select a department.",
       })
-      .min(0, {
+      .min(1, {
         error: "Please select a valid department.",
       })
       .max(17, {
@@ -317,7 +317,7 @@ export const RegisterSupervisorFormSchema = z
       .number({
         error: "Please select a department.",
       })
-      .min(0, {
+      .min(1, {
         error: "Please select a valid department.",
       })
       .max(17, {
@@ -423,7 +423,7 @@ export const RegisterSupervisorApiSchema = z
       .number({
         error: "Please select a department.",
       })
-      .min(0, {
+      .min(1, {
         error: "Please select a valid department.",
       })
       .max(17, {
