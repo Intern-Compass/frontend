@@ -51,7 +51,7 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-wrap items-center justify-between gap-4">
       <div className="flex flex-1 items-center gap-2">
         <Input
           placeholder="Filter interns..."
