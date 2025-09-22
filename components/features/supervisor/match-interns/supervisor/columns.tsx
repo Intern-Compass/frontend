@@ -54,6 +54,11 @@ export const columns: ColumnDef<Supervisor>[] = [
         </span>
       );
     },
+    filterFn: (row, columnId, filterValue) => {
+      const { firstname, lastname } = row.original;
+      const fullName = `${firstname} ${lastname}`.toLowerCase();
+      return fullName.includes(String(filterValue).toLowerCase());
+    },
   },
   {
     accessorKey: "department",

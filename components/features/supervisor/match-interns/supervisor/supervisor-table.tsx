@@ -8,34 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 import { DataTableSkeleton } from "../data-table-skeleton";
 import { getDepartment } from "@/lib/utils";
 
-const data = [
-  { id: "1", name: "Alice Johnson", interns: 3, department: "Finance" },
-  {
-    id: "2",
-    name: "Brian Smith",
-    interns: 5,
-    department: "Digital Services",
-  },
-  {
-    id: "3",
-    name: "Chinwe Okafor",
-    interns: 2,
-    department: "Customer Relations and Experience",
-  },
-  {
-    id: "4",
-    name: "David Lee",
-    interns: 4,
-    department: "Enterprise Business",
-  },
-  {
-    id: "5",
-    name: "Fatima Bello",
-    interns: 6,
-    department: "Corporate Services and Sustainability",
-  },
-];
-
 export const SupervisorTable = () => {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["allSupervisors"],

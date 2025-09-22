@@ -66,6 +66,11 @@ export const columns: ColumnDef<Intern>[] = [
         </span>
       );
     },
+    filterFn: (row, columnId, filterValue) => {
+      const { firstname, lastname } = row.original;
+      const fullName = `${firstname} ${lastname}`.toLowerCase();
+      return fullName.includes(String(filterValue).toLowerCase());
+    },
   },
   {
     accessorKey: "department",
@@ -98,7 +103,7 @@ export const columns: ColumnDef<Intern>[] = [
     enableSorting: false,
     filterFn: (row, columnId, filterValue: string[]) => {
       if (!filterValue?.length) return true; // no filter
-      
+
       return filterValue.includes(row.getValue(columnId));
     },
   },

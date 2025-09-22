@@ -88,7 +88,7 @@ export const ActionsCell = ({ supervisor_id }: { supervisor_id: string }) => {
     );
   };
 
-  const assignedInterns = unmatchedInterns.map((intern: Intern) => (
+  const assignedInterns = (unmatchedInterns ?? []).map((intern: Intern) => (
     <DropdownMenuItem
       key={intern.user_id}
       onClick={() => handleAssignSupervisor(supervisor_id, intern.intern_id)}
@@ -97,7 +97,7 @@ export const ActionsCell = ({ supervisor_id }: { supervisor_id: string }) => {
     </DropdownMenuItem>
   ));
 
-  const unassignedInterns = interns
+  const unassignedInterns = (interns ?? [])
     .filter((intern: Intern) => intern.supervisor === supervisor_id)
     .map((intern: Intern) => (
       <DropdownMenuItem
