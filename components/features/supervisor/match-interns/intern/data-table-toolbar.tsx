@@ -16,9 +16,6 @@ import {
 import { DataTableFacetedFilter } from "@/components/features/supervisor/match-interns/data-table-faceted-filter";
 import { performMatching } from "@/lib/api/admin";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { isAxiosError } from "axios";
-import { errorToast } from "@/lib/toast";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -32,21 +29,6 @@ export function DataTableToolbar<TData>({
   const mutation = useMutation({
     mutationFn: performMatching,
   });
-
-  const matchInternToSupervisor = () => {
-    mutation.mutate(undefined, {
-      onSuccess: () => {
-        toast.success("Interns matched successfully.");
-
-        queryClient.invalidateQueries({ queryKey: ["displayMatches"] });
-      },
-      onError: (error) => {
-        if (isAxiosError(error)) {
-          errorToast("Something went wrong.", "Please try again later.");
-        }
-      },
-    });
-  };
 
   const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -86,12 +68,8 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <div className="flex items-center gap-2">
-        <DataTableViewOptions table={table} />
-        {/* <Button size="sm" onClick={matchInternToSupervisor} className="cursor-pointer">
-          Approve matches
-        </Button> */}
-      </div>
+
+      <DataTableViewOptions table={table} />
     </div>
   );
 }

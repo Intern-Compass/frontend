@@ -29,18 +29,19 @@ import {
 import { toast } from "sonner";
 import { Intern } from "../intern/columns";
 
-export const ActionsCell = ({ supervisor_id }: {supervisor_id: string}) => {
+export const ActionsCell = ({ supervisor_id }: { supervisor_id: string }) => {
   const queryClient = useQueryClient();
-
 
   const { data: interns } = useQuery({
     queryKey: ["allInterns"],
     queryFn: getAllInterns,
+    initialData: [],
   });
 
   const { data: unmatchedInterns } = useQuery({
     queryKey: ["allMatchedInterns"],
     queryFn: getAllUnmatchedInterns,
+    initialData: [],
   });
 
   const assignSupervisorMutation = useMutation({
@@ -63,6 +64,7 @@ export const ActionsCell = ({ supervisor_id }: {supervisor_id: string}) => {
           });
           queryClient.invalidateQueries({ queryKey: ["allInterns"] });
           queryClient.invalidateQueries({ queryKey: ["allSupervisors"] });
+          queryClient.invalidateQueries({ queryKey: ["displayMatches"] });
         },
       }
     );
@@ -80,10 +82,31 @@ export const ActionsCell = ({ supervisor_id }: {supervisor_id: string}) => {
           });
           queryClient.invalidateQueries({ queryKey: ["allInterns"] });
           queryClient.invalidateQueries({ queryKey: ["allSupervisors"] });
+          queryClient.invalidateQueries({ queryKey: ["displayMatches"] });
         },
       }
     );
   };
+
+  const assignedInterns = unmatchedInterns.map((intern: Intern) => (
+    <DropdownMenuItem
+      key={intern.user_id}
+      onClick={() => handleAssignSupervisor(supervisor_id, intern.intern_id)}
+    >
+      {intern.firstname} {intern.lastname}
+    </DropdownMenuItem>
+  ));
+
+  const unassignedInterns = interns
+    .filter((intern: Intern) => intern.supervisor === supervisor_id)
+    .map((intern: Intern) => (
+      <DropdownMenuItem
+        key={intern.user_id}
+        onClick={() => handleUnassignSupervisor(intern.intern_id)}
+      >
+        {intern.firstname} {intern.lastname}
+      </DropdownMenuItem>
+    ));
 
   return (
     <DropdownMenu>
@@ -98,16 +121,13 @@ export const ActionsCell = ({ supervisor_id }: {supervisor_id: string}) => {
           <DropdownMenuSubTrigger>Assign interns</DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent className="max-h-64 overflow-y-auto">
-              {(unmatchedInterns ?? []).map((intern: Intern) => (
-                <DropdownMenuItem
-                  key={intern.user_id}
-                  onClick={() =>
-                    handleAssignSupervisor(supervisor_id, intern.intern_id)
-                  }
-                >
-                  {intern.firstname} {intern.lastname}
+              {assignedInterns.length > 0 ? (
+                assignedInterns
+              ) : (
+                <DropdownMenuItem disabled className="py-3 px-6">
+                  No unassigned interns.
                 </DropdownMenuItem>
-              ))}
+              )}
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>
@@ -115,16 +135,13 @@ export const ActionsCell = ({ supervisor_id }: {supervisor_id: string}) => {
           <DropdownMenuSubTrigger>Unassign interns</DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent className="max-h-64 overflow-y-auto">
-              {interns
-                .filter((intern: Intern) => intern.supervisor === supervisor_id)
-                .map((intern: Intern) => (
-                  <DropdownMenuItem
-                    key={intern.user_id}
-                    onClick={() => handleUnassignSupervisor(intern.intern_id)}
-                  >
-                    {intern.firstname} {intern.lastname}
-                  </DropdownMenuItem>
-                ))}
+              {unassignedInterns.length > 0 ? (
+                unassignedInterns
+              ) : (
+                <DropdownMenuItem disabled className="py-3 px-6">
+                  No unassigned interns.
+                </DropdownMenuItem>
+              )}
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>

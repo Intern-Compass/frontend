@@ -1,8 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { Search, Bell, Eye, Check, CircleAlert } from "lucide-react";
-
 import {
   Table,
   TableBody,
@@ -59,42 +56,45 @@ export const MatchTable = () => {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["displayMatches"],
     queryFn: displayMatches,
+    initialData: {},
   });
 
-  // if (isPending) {
-  //   return <p>Loading...</p>;
-  // }
+  const mutation = useMutation({
+    mutationFn: performMatching,
+  });
 
-  // const matchEntries = Object.entries(matches);
+  const matchInternToSupervisor = () => {
+    mutation.mutate(undefined, {
+      onSuccess: () => {
+        toast.success("Interns matched successfully.");
 
-  // const formattedMatchEntries: Match[] = matchEntries.map((entry) => {
-  //   const department = entry[0];
-  //   const mapping = entry[1] as [Supervisor, Intern[]][];
+        queryClient.invalidateQueries({ queryKey: ["displayMatches"] });
+      },
+      onError: (error) => {
+        if (isAxiosError(error)) {
+          errorToast("Something went wrong.", "Please try again later.");
+        }
+      },
+    });
+  };
 
-  //   const [supervisor, interns] = mapping[0];
-
-  //   return {
-  //     department,
-  //     interns: interns.map(({ firstname, lastname }) => ({
-  //       firstname,
-  //       lastname,
-  //     })),
-  //     supervisor: {
-  //       firstname: supervisor.firstname,
-  //       lastname: supervisor.lastname,
-  //     },
-  //   };
-  // });
-
-  const formattedData: [string, [Supervisor, Intern[]][]][] = Object.entries(
-    data ?? []
-  );
+  const formattedData: [string, [Supervisor, Intern[]][]][] =
+    Object.entries(data);
 
   return (
     <section>
-      <h2 className="font-medium text-2xl mb-4">
-        Supervisor-Intern Assignments
-      </h2>
+      {formattedData.length ? (
+        <header className="flex justify-between items-center gap-4">
+          <h2 className="font-medium text-2xl mb-4">Preview Matches</h2>
+          <Button
+            size="sm"
+            onClick={matchInternToSupervisor}
+            className="cursor-pointer"
+          >
+            Approve matches
+          </Button>
+        </header>
+      ) : null}
 
       {isPending ? (
         <MatchTableSkeleton />

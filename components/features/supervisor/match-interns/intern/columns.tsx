@@ -96,6 +96,10 @@ export const columns: ColumnDef<Intern>[] = [
       );
     },
     enableSorting: false,
-    filterFn: "arrIncludesSome",
+    filterFn: (row, columnId, filterValue: string[]) => {
+      if (!filterValue?.length) return true; // no filter
+      
+      return filterValue.includes(row.getValue(columnId));
+    },
   },
 ];
