@@ -4,7 +4,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { CircleAlert, Users } from "lucide-react";
 
-import { getMyInterns, matchInternToSupervisor } from "@/lib/api/supervisor";
+import { getMyInterns } from "@/lib/api/supervisor";
+
+import { performMatching } from "@/lib/api/admin";
 import { Button } from "@/components/ui/button";
 import { differenceInMonths } from "date-fns";
 import { toast } from "sonner";

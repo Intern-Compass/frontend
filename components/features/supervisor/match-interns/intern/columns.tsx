@@ -14,15 +14,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DataTableColumnHeader } from "@/components/features/supervisor/match-interns/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
-export type Match = {
+export type Intern = {
   id: string;
-  intern: string;
-  supervisor: string;
+  name: string;
   department: string;
+  status: string;
 };
 
-export const columns: ColumnDef<Match>[] = [
+export const columns: ColumnDef<Intern>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -48,15 +50,9 @@ export const columns: ColumnDef<Match>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "intern",
+    accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Intern" />
-    ),
-  },
-  {
-    accessorKey: "supervisor",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Supervisor" />
+      <DataTableColumnHeader column={column} title="Name" />
     ),
   },
   {
@@ -64,6 +60,31 @@ export const columns: ColumnDef<Match>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Department" />
     ),
+    filterFn: "arrIncludesSome",
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => {
+      const status = row.getValue<string>("status");
+
+      return (
+        <Badge
+          className={cn(
+            "capitalize font-medium text-xs leading-4 py-0.5 px-2.5 rounded-[9999px]",
+            status === "assigned"
+              ? "bg-success-light text-success-dark"
+              : "bg-error-light text-error-dark"
+          )}
+        >
+          {status}
+        </Badge>
+      );
+    },
+    enableSorting: false,
+    filterFn: "arrIncludesSome",
   },
   {
     id: "actions",

@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+/**
+ * name, department, assigned
+ * name, department, number of interns
+ */
+
 export const LoginFormSchema = z
   .object({
     email: z

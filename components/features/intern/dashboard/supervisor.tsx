@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
-import { matchInternToSupervisor } from "@/lib/api/supervisor";
+import { performMatching } from "@/lib/api/admin";
 import { getInternSupervisor } from "@/lib/api/intern";
 import { getUserInitials } from "@/lib/utils";
 
@@ -45,7 +45,7 @@ export const Supervisor = () => {
   //  const response =
   //    useQuery({
   //      queryKey: ["matchIntern"],
-  //      queryFn: matchInternToSupervisor,
+  //      queryFn: performMatching,
   //     //  enabled: false,
   //    });
 

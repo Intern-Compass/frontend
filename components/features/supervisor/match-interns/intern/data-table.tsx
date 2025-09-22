@@ -24,7 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/features/supervisor/match-interns/data-table-pagination";
-import { DataTableToolbar } from "@/components/features/supervisor/match-interns/data-table-toolbar";
+import { DataTableToolbar } from "@/components/features/supervisor/match-interns/intern/data-table-toolbar";
 import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {

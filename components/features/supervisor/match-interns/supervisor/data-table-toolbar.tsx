@@ -14,7 +14,7 @@ import {
 } from "@/components/features/supervisor/match-interns/data";
 
 import { DataTableFacetedFilter } from "@/components/features/supervisor/match-interns/data-table-faceted-filter";
-import { matchInternToSupervisor } from "@/lib/api/supervisor";
+import { performMatching } from "@/lib/api/admin";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
@@ -30,10 +30,10 @@ export function DataTableToolbar<TData>({
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: matchInternToSupervisor,
+    mutationFn: performMatching,
   });
 
-  const performMatching = () => {
+  const matchInternToSupervisor = () => {
     mutation.mutate(undefined, {
       onSuccess: () => {
         toast.success("Interns matched successfully.");
@@ -54,10 +54,10 @@ export function DataTableToolbar<TData>({
     <div className="flex flex-wrap items-center justify-between gap-4">
       <div className="flex flex-1 items-center gap-2">
         <Input
-          placeholder="Filter interns..."
-          value={(table.getColumn("intern")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter supervisors..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("intern")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
@@ -68,13 +68,7 @@ export function DataTableToolbar<TData>({
             options={departmentOptions}
           />
         )}
-        {/* {table.getColumn("priority") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("priority")}
-            title="Priority"
-            options={priorities}
-          />
-        )} */}
+
         {isFiltered && (
           <Button
             variant="ghost"
@@ -88,9 +82,9 @@ export function DataTableToolbar<TData>({
       </div>
       <div className="flex items-center gap-2">
         <DataTableViewOptions table={table} />
-        <Button size="sm" onClick={performMatching} className="cursor-pointer">
+        {/* <Button size="sm" onClick={matchInternToSupervisor} className="cursor-pointer">
           Approve matches
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
