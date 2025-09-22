@@ -1,10 +1,10 @@
 import axios, { AxiosError } from "axios";
 
-const API_ROOT = "https://intern-compass-1.onrender.com";
+const baseURL = "https://backend-979688563296.europe-west1.run.app/";
 
 // ---- Single Axios instance ----
 const api = axios.create({
-  baseURL: API_ROOT,
+  baseURL,
   withCredentials: true, // send HttpOnly refresh token automatically
   headers: { "Content-Type": "application/json" },
 });
@@ -54,11 +54,7 @@ api.interceptors.response.use(
       if (!refreshPromise) {
         refreshPromise = new Promise((resolve, reject) => {
           axios
-            .post(
-              "/auth/refresh",
-              {},
-              { baseURL: API_ROOT, withCredentials: true }
-            )
+            .post("/auth/refresh", {}, { baseURL, withCredentials: true })
             .then((res) => {
               const token = res.data.access_token;
               setAuthHeader(token);
