@@ -8,13 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DataTableSkeleton } from "../data-table-skeleton";
 import { getDepartment } from "@/lib/utils";
 
-interface Intern {
-  user_id: string;
-  firstname: string;
-  lastname: string;
-  department: number;
-  supervisor: string | null;
-}
+import type { Intern } from "@/components/features/supervisor/match-interns/intern/columns";
 
 export const InternTable = () => {
   const { isPending, isError, data, error } = useQuery({
@@ -40,7 +34,8 @@ export const InternTable = () => {
                 supervisor,
               }: Intern) => ({
                 id: user_id,
-                name: `${firstname} ${lastname}`,
+                firstname,
+                lastname,
                 department: getDepartment(department),
                 status: supervisor ? "assigned" : "unassigned",
               })

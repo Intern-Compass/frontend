@@ -1,6 +1,6 @@
 "use client";
 
-import { columns } from "@/components/features/supervisor/match-interns/supervisor/columns";
+import { columns, type Supervisor } from "@/components/features/supervisor/match-interns/supervisor/columns";
 
 import { DataTable } from "@/components/features/supervisor/match-interns/supervisor/data-table";
 import { getAllSupervisors } from "@/lib/api/admin";
@@ -36,14 +36,6 @@ const data = [
   },
 ];
 
-interface Supervisor {
-  user_id: string;
-  firstname: string;
-  lastname: string;
-  department: number;
-  interns: number;
-}
-
 export const SupervisorTable = () => {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["allSupervisors"],
@@ -62,15 +54,18 @@ export const SupervisorTable = () => {
             data={data.map(
               ({
                 user_id,
+                supervisor_id,
                 firstname,
                 lastname,
                 department,
-                interns,
+                intern_count,
               }: Supervisor) => ({
-                id: user_id,
-                name: `${firstname} ${lastname}`,
+                user_id,
+                supervisor_id,
+                firstname,
+                lastname,
                 department: getDepartment(department),
-                interns,
+                intern_count,
               })
             )}
           />

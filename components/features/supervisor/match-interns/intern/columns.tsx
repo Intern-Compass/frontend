@@ -17,12 +17,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-export type Intern = {
-  id: string;
-  name: string;
-  department: string;
+export interface Intern {
+  user_id: string;
+  intern_id: string;
+  firstname: string;
+  lastname: string;
+  department: number;
   status: string;
-};
+  supervisor: string | null;
+}
 
 export const columns: ColumnDef<Intern>[] = [
   {
@@ -54,6 +57,15 @@ export const columns: ColumnDef<Intern>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
+    cell: ({ row }) => {
+      const { firstname, lastname } = row.original;
+
+      return (
+        <span>
+          {firstname} {lastname}
+        </span>
+      );
+    },
   },
   {
     accessorKey: "department",
@@ -85,33 +97,5 @@ export const columns: ColumnDef<Intern>[] = [
     },
     enableSorting: false,
     filterFn: "arrIncludesSome",
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const payment = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
   },
 ];

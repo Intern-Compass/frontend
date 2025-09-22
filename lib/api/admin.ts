@@ -31,3 +31,20 @@ export const getAllSupervisors = async () => {
 
   return response.data;
 };
+
+export const assignSupervisor = async (data: {
+  supervisor_id: string;
+  intern_id: string;
+}) => {
+  const response = await axiosInstance.post(
+    `/matching/assign-supervisor?supervisor_id=${data.supervisor_id}&intern_id=${data.intern_id}`
+  );
+
+  return response.data;
+};
+
+export const unassignSupervisor = async (data: { intern_id: string }) => {
+  const response = await axiosInstance.delete(`/matching/unassign-supervisor?intern_id=${data.intern_id}`);
+
+  return response.data;
+};

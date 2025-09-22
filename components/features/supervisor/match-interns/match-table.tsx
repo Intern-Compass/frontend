@@ -34,7 +34,8 @@ interface Intern {
   lastname: string;
   email: string;
   phone_number: string;
-  skills: string;
+  similarity: string;
+  skills: string[];
 }
 
 interface Supervisor {
@@ -43,7 +44,7 @@ interface Supervisor {
   email: string;
   department: number;
   phone_number: string;
-  skills: string;
+  skills: string[];
 }
 
 interface Match {
@@ -109,10 +110,6 @@ export const MatchTable = () => {
 
               <Accordion type="single" collapsible className="w-full mb-5">
                 {mappings.map(([supervisor, interns]) => {
-                  const supervisorSkills = supervisor.skills
-                    .split(",")
-                    .map((skill) => skill.trim());
-
                   return (
                     <AccordionItem
                       key={`${supervisor.firstname} ${supervisor.lastname}`}
@@ -124,7 +121,7 @@ export const MatchTable = () => {
                             {supervisor.firstname} {supervisor.lastname}
                           </span>
                           <div className="w-full max-w-100 flex flex-wrap items-center gap-3.5">
-                            {supervisorSkills.map((skill) => (
+                            {supervisor.skills.map((skill) => (
                               <Badge
                                 key={skill}
                                 className="bg-gray-100 text-gray-800"
@@ -149,17 +146,16 @@ export const MatchTable = () => {
                                 <TableHead className="max-w-[200px] text-left">
                                   Phone number
                                 </TableHead>
-                                <TableHead className="w-[250px] text-left">
+                                <TableHead className="max-w-[200px] text-left">
+                                  Similarity
+                                </TableHead>
+                                <TableHead className="max-w-[200px] text-left">
                                   Skills
                                 </TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
                               {interns.map((intern, i) => {
-                                const internSkills = intern.skills
-                                  .split(",")
-                                  .map((skill) => skill.trim());
-
                                 return (
                                   <TableRow key={i}>
                                     <TableCell className="max-w-[200px] h-12 text-left truncate">
@@ -171,9 +167,12 @@ export const MatchTable = () => {
                                     <TableCell className="max-w-[200px] h-12 text-left truncate">
                                       {intern.phone_number}
                                     </TableCell>
-                                    <TableCell className="w-[250px] h-12 text-left">
+                                    <TableCell className="max-w-[200px] h-12 text-left truncate">
+                                      {intern.similarity}
+                                    </TableCell>
+                                    <TableCell className="max-w-[200px] h-12 text-left">
                                       <div className="space-x-2 flex flex-wrap gap-2">
-                                        {internSkills.map((skill, i) => (
+                                        {intern.skills.map((skill, i) => (
                                           <Badge
                                             key={i}
                                             className="bg-gray-100 text-gray-800"
