@@ -56,7 +56,6 @@ export const MatchTable = () => {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["displayMatches"],
     queryFn: displayMatches,
-    initialData: {},
   });
 
   const mutation = useMutation({
@@ -68,6 +67,11 @@ export const MatchTable = () => {
       onSuccess: () => {
         toast.success("Interns matched successfully.");
 
+        queryClient.invalidateQueries({
+          queryKey: ["allMatchedInterns"],
+        });
+        queryClient.invalidateQueries({ queryKey: ["allInterns"] });
+        queryClient.invalidateQueries({ queryKey: ["allSupervisors"] });
         queryClient.invalidateQueries({ queryKey: ["displayMatches"] });
       },
       onError: (error) => {
@@ -79,7 +83,7 @@ export const MatchTable = () => {
   };
 
   const formattedData: [string, [Supervisor, Intern[]][]][] =
-    Object.entries(data);
+    Object.entries(data ?? {});
 
   return (
     <section>

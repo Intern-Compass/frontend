@@ -35,13 +35,11 @@ export const ActionsCell = ({ supervisor_id }: { supervisor_id: string }) => {
   const { data: interns } = useQuery({
     queryKey: ["allInterns"],
     queryFn: getAllInterns,
-    initialData: [],
   });
 
   const { data: unmatchedInterns } = useQuery({
     queryKey: ["allMatchedInterns"],
     queryFn: getAllUnmatchedInterns,
-    initialData: [],
   });
 
   const assignSupervisorMutation = useMutation({
