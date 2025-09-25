@@ -22,8 +22,6 @@ export const Dashboard = () => {
     queryFn: refreshToken
   });
 
-  console.log(data);
-
   return (
     <div>
       <div className="flex items-center space-x-2 mx-8 pt-3">

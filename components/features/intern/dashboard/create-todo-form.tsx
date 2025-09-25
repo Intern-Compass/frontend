@@ -50,7 +50,6 @@ export const CreateTodoForm = ({ closeDialog }: CreateTodoFormProps) => {
   });
 
   function onSubmit(data: z.infer<typeof CreateTodoFormSchema>) {
-    console.log(data);
     mutation.mutate(data, {
       onSuccess: () => {
         closeDialog();

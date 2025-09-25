@@ -41,7 +41,7 @@ export const columns: ColumnDef<Supervisor>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Department" />
     ),
-    filterFn: "arrIncludes",
+    filterFn: "arrIncludesSome",
   },
   {
     accessorKey: "intern_count",

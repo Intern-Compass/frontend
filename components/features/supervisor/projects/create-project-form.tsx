@@ -53,7 +53,7 @@ export const CreateProjectForm = () => {
   });
 
   function onSubmit(data: z.infer<typeof CreateProjectFormSchema>) {
-    console.log(data);
+    // console.log(data);
   }
 
   return (

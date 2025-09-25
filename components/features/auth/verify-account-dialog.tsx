@@ -31,7 +31,6 @@ export const VerifyAccountDialog = ({
   const signupData = queryClient.getQueryData<z.infer<typeof RegisterInternApiSchema>>(
     ["signupData"]
   );
-  // console.log(signupData)
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

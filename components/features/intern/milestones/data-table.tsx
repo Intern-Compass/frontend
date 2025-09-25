@@ -88,7 +88,6 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  console.log(table.getColumn("status"));
   const column = table.getColumn("date");
   const dateFilterValue = column?.getFilterValue() as DateFilterValue;
 

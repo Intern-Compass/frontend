@@ -35,7 +35,6 @@ export default function InternsPage() {
   });
 
   function onSubmit(data: z.infer<typeof RatingFormSchema>) {
-    console.log(data);
     setIsSubmitted(true);
   }
 
