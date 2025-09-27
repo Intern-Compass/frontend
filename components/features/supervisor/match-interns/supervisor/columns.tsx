@@ -2,9 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/features/supervisor/match-interns/data-table-column-header";
-import { Checkbox } from "@/components/ui/checkbox";
 
 import { ActionsCell } from "./actions-cell";
+import { getDepartment } from "@/lib/utils";
 
 export interface Supervisor {
   user_id: string;
@@ -38,6 +38,7 @@ export const columns: ColumnDef<Supervisor>[] = [
   },
   {
     accessorKey: "department",
+    accessorFn: (row) => getDepartment(row.department),
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Department" />
     ),
@@ -52,7 +53,10 @@ export const columns: ColumnDef<Supervisor>[] = [
   {
     id: "actions",
     cell: ({ row }) => (
-      <ActionsCell supervisor_id={row.original.supervisor_id} />
+      <ActionsCell
+        supervisorDepartment={row.original.department}
+        supervisorId={row.original.supervisor_id}
+      />
     ),
   },
 ];

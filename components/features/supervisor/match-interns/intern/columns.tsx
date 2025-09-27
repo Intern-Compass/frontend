@@ -15,7 +15,7 @@ import {
 import { DataTableColumnHeader } from "@/components/features/supervisor/match-interns/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { cn, getDepartment } from "@/lib/utils";
 
 export interface Intern {
   user_id: string;
@@ -50,6 +50,7 @@ export const columns: ColumnDef<Intern>[] = [
   },
   {
     accessorKey: "department",
+    accessorFn: (row) => getDepartment(row.department),
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Department" />
     ),

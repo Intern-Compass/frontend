@@ -29,7 +29,15 @@ import {
 import { toast } from "sonner";
 import { Intern } from "../intern/columns";
 
-export const ActionsCell = ({ supervisor_id }: { supervisor_id: string }) => {
+interface ActionsCellProps {
+  supervisorId: string;
+  supervisorDepartment: number;
+}
+
+export const ActionsCell = ({
+  supervisorId,
+  supervisorDepartment,
+}: ActionsCellProps) => {
   const queryClient = useQueryClient();
 
   const { data: interns } = useQuery({
@@ -86,17 +94,19 @@ export const ActionsCell = ({ supervisor_id }: { supervisor_id: string }) => {
     );
   };
 
-  const assignedInterns = (unmatchedInterns ?? []).map((intern: Intern) => (
-    <DropdownMenuItem
-      key={intern.user_id}
-      onClick={() => handleAssignSupervisor(supervisor_id, intern.intern_id)}
-    >
-      {intern.firstname} {intern.lastname}
-    </DropdownMenuItem>
-  ));
+  const assignedInterns = (unmatchedInterns ?? [])
+    .filter((intern: Intern) => intern.department === supervisorDepartment)
+    .map((intern: Intern) => (
+      <DropdownMenuItem
+        key={intern.user_id}
+        onClick={() => handleAssignSupervisor(supervisorId, intern.intern_id)}
+      >
+        {intern.firstname} {intern.lastname}
+      </DropdownMenuItem>
+    ));
 
   const unassignedInterns = (interns ?? [])
-    .filter((intern: Intern) => intern.supervisor === supervisor_id)
+    .filter((intern: Intern) => intern.supervisor === supervisorId)
     .map((intern: Intern) => (
       <DropdownMenuItem
         key={intern.user_id}

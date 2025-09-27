@@ -36,7 +36,7 @@ export const SupervisorTable = () => {
                 supervisor_id,
                 firstname,
                 lastname,
-                department: getDepartment(department),
+                department,
                 intern_count,
               })
             )}

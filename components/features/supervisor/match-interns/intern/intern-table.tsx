@@ -36,7 +36,7 @@ export const InternTable = () => {
                 id: user_id,
                 firstname,
                 lastname,
-                department: getDepartment(department),
+                department,
                 status: supervisor ? "assigned" : "unassigned",
               })
             )}
