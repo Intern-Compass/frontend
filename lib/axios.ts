@@ -1,12 +1,8 @@
 import axios, { AxiosError } from "axios";
 
-// const baseURL = "https://backend-979688563296.europe-west1.run.app/";
-const baseURL = "https://intern-compass-1.onrender.com";
-
-// ---- Single Axios instance ----
 const api = axios.create({
-  baseURL,
-  withCredentials: true, // send HttpOnly refresh token automatically
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL,
+  withCredentials: true,
   headers: { "Content-Type": "application/json" },
 });
 
@@ -55,7 +51,7 @@ api.interceptors.response.use(
       if (!refreshPromise) {
         refreshPromise = new Promise((resolve, reject) => {
           axios
-            .post("/auth/refresh", {}, { baseURL, withCredentials: true })
+            .post("/auth/refresh", {}, { baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL, withCredentials: true })
             .then((res) => {
               const token = res.data.access_token;
               setAuthHeader(token);
