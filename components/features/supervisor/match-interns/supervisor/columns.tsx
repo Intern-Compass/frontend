@@ -18,6 +18,7 @@ export interface Supervisor {
 export const columns: ColumnDef<Supervisor>[] = [
   {
     accessorKey: "name",
+    accessorFn: (row) => `${row.firstname} ${row.lastname}`,
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
@@ -29,11 +30,6 @@ export const columns: ColumnDef<Supervisor>[] = [
           {firstname} {lastname}
         </span>
       );
-    },
-    filterFn: (row, columnId, filterValue) => {
-      const { firstname, lastname } = row.original;
-      const fullName = `${firstname} ${lastname}`.toLowerCase();
-      return fullName.includes(String(filterValue).toLowerCase());
     },
   },
   {

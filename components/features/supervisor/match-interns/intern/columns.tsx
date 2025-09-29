@@ -30,6 +30,7 @@ export interface Intern {
 export const columns: ColumnDef<Intern>[] = [
   {
     accessorKey: "name",
+    accessorFn: (row) => `${row.firstname} ${row.lastname}`,
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
@@ -41,11 +42,6 @@ export const columns: ColumnDef<Intern>[] = [
           {firstname} {lastname}
         </span>
       );
-    },
-    filterFn: (row, columnId, filterValue) => {
-      const { firstname, lastname } = row.original;
-      const fullName = `${firstname} ${lastname}`.toLowerCase();
-      return fullName.includes(String(filterValue).toLowerCase());
     },
   },
   {
